@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .loader { border-top-color: #991b1b; animation: spinner 0.6s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media print { 
+            .no-print { display: none !important; } 
+            .md\:ml-64 { margin-left: 0 !important; }
+            body { background: white; }
+            .print-card { border: 1px solid #e2e8f0 !important; box-shadow: none !important; }
+        }
+        #sidebar { transition: transform 0.3s ease-in-out; }
+        @media (max-width: 768px) { #sidebar.closed { transform: translateX(-100%); } }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <!-- Sidebar (Consistent with index.html) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-200 z-50 closed md:translate-x-0">
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+            <h1 class="text-xl font-black text-red-900 flex items-center gap-2">
+                <i class="fas fa-wallet"></i> Tracker
+            </h1>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-red-900">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <nav class="p-4 space-y-2">
+            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
+                <i class="fas fa-th-large w-5"></i> Dashboard
+            </a>
+            <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-900 text-white font-bold shadow-md">
+                <i class="fas fa-file-invoice-dollar w-5"></i> Reports
+            </a>
+            <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
+                <i class="fas fa-hand-holding-usd w-5"></i> Lended
+            </a>
+            <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
+                <i class="fas fa-file-signature w-5"></i> Debt
+            </a>
+            <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
+                <i class="fas fa-piggy-bank w-5"></i> Savings
+            </a>
+            <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
+                <i class="fas fa-scale-balanced w-5"></i> Balance
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 min-h-screen">
+        <!-- Header -->
+        <nav class="bg-red-900 text-white p-4 sticky top-0 z-30 shadow-md no-print">
+            <div class="max-w-5xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-lg font-bold">Financial Reports</h1>
+                </div>
+            </div>
+        </nav>
+
+        <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+            
+            <!-- Filter Section -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm no-print">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Start Date</label>
+                        <input type="date" id="startDate" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">End Date</label>
+                        <input type="date" id="endDate" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                    </div>
+                    <button onclick="generateReport()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-900 transition-all">
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="flex flex-col items-center py-10">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-2"></div>
+                <p class="text-gray-400 font-medium text-sm">Loading Transaction Data...</p>
+            </div>
+
+            <!-- Report Area -->
+            <div id="reportArea" class="hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-800">Period Summary</h2>
+                        <p id="print-date-range" class="text-sm text-slate-500"></p>
+                    </div>
+                    <button onclick="window.print()" class="no-print bg-red-100 text-red-900 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-200">
+                        <i class="fas fa-print mr-2"></i> Print PDF
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div id="summaryCards" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Income</p>
+                        <h2 id="rep-income" class="text-2xl font-black text-green-600">₱0.00</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Expenses</p>
+                        <h2 id="rep-expenses" class="text-2xl font-black text-red-600">₱0.00</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Net Balance</p>
+                        <h2 id="rep-balance" class="text-2xl font-black text-slate-800">₱0.00</h2>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden print-card">
+                    <div class="bg-slate-50 px-6 py-4 border-b">
+                        <h3 class="font-bold text-slate-700">Category Breakdown</h3>
+                    </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b">
+                            <tr>
+                                <th class="px-6 py-3">Category</th>
+                                <th class="px-6 py-3 text-right">Total Amount</th>
+                                <th class="px-6 py-3 text-right">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+
+                <!-- Detail Table -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden print-card">
+                    <div class="bg-slate-50 px-6 py-4 border-b">
+                        <h3 class="font-bold text-slate-700">Detailed Transactions</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left min-w-[500px]">
+                            <thead class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b">
+                                <tr>
+                                    <th class="px-6 py-3">Date</th>
+                                    <th class="px-6 py-3">Category</th>
+                                    <th class="px-6 py-3 text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if (!localStorage.getItem('user')) {
+            window.location.href = "login.html";
+        }
+        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+        let allData = [];
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('closed');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        function jsonp(url) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(data);
+                };
+                const script = document.createElement('script');
+                script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+                script.onerror = () => reject(new Error("Script load error"));
+                document.body.appendChild(script);
+            });
+        }
+
+        window.onload = async () => {
+            const today = new Date();
+            const firstDay = new Date(today.setDate(today.getDate() - today.getDay()));
+            const lastDay = new Date(today.setDate(today.getDate() - today.getDay() + 6));
+            
+            document.getElementById('startDate').value = firstDay.toISOString().split('T')[0];
+            document.getElementById('endDate').value = lastDay.toISOString().split('T')[0];
+            
+            await fetchData();
+        };
+
+        async function fetchData() {
+            try {
+                const rawData = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
+                allData = rawData.map(row => {
+                    let cleanRow = {};
+                    Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
+                    return cleanRow;
+                });
+                document.getElementById('loading').classList.add('hidden');
+                generateReport();
+            } catch (err) {
+                alert("Failed to load data.");
+            }
+        }
+
+        function generateReport() {
+            const startInput = document.getElementById('startDate').value;
+            const endInput = document.getElementById('endDate').value;
+            if (!startInput || !endInput) return;
+
+            const start = new Date(startInput);
+            const end = new Date(endInput);
+            end.setHours(23, 59, 59);
+
+            document.getElementById('print-date-range').innerText = `Period: ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`;
+
+            const filtered = allData.filter(item => {
+                const itemDate = new Date(item.Date);
+                return itemDate >= start && itemDate <= end;
+            });
+
+            let income = 0, expenses = 0;
+            const catTotals = {};
+
+            filtered.forEach(item => {
+                const amt = parseFloat(item.Amount) || 0;
+                const cat = (item.Category || "Miscellaneous").trim();
+
+                if (cat === 'Income') {
+                    income += amt;
+                } else {
+                    expenses += amt;
+                    catTotals[cat] = (catTotals[cat] || 0) + amt;
+                }
+            });
+
+            // Update Header Stats
+            document.getElementById('rep-income').innerText = `₱${income.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('rep-expenses').innerText = `₱${expenses.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('rep-balance').innerText = `₱${(income - expenses).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+            // Render Category Table
+            const catBody = document.getElementById('categoryBody');
+            catBody.innerHTML = Object.keys(catTotals)
+                .sort((a, b) => catTotals[b] - catTotals[a])
+                .map(cat => {
+                    const percentage = expenses > 0 ? ((catTotals[cat] / expenses) * 100).toFixed(1) : 0;
+                    return `
+                        <tr>
+                            <td class="px-6 py-4 font-bold text-slate-700">${cat}</td>
+                            <td class="px-6 py-4 text-right font-semibold">₱${catTotals[cat].toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                            <td class="px-6 py-4 text-right text-slate-400 text-xs">${percentage}%</td>
+                        </tr>`;
+                }).join('') || '<tr><td colspan="3" class="p-6 text-center text-slate-400">No data for this range.</td></tr>';
+
+            // Render Detail Table
+            const detailBody = document.getElementById('detailBody');
+            detailBody.innerHTML = filtered
+                .sort((a, b) => new Date(b.Date) - new Date(a.Date))
+                .map(row => `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 text-xs text-slate-400">${new Date(row.Date).toLocaleDateString()}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-700">${row.Category}</td>
+                        <td class="px-6 py-4 text-right font-black ${row.Category === 'Income' ? 'text-green-600' : 'text-slate-900'}">
+                            ₱${parseFloat(row.Amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                        </td>
+                    </tr>`).join('') || '<tr><td colspan="3" class="p-6 text-center text-slate-400">No transactions.</td></tr>';
+
+            document.getElementById('reportArea').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

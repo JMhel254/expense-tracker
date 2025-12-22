@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+        <div class="p-8 text-center bg-red-900 text-white">
+            <h1 class="text-3xl font-black">Join Us</h1>
+            <p class="opacity-70 text-sm mt-1">Start tracking your future today</p>
+        </div>
+        <form onsubmit="handleSignup(event)" class="p-8 space-y-4">
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Full Name</label>
+                <input type="text" id="name" required class="w-full border rounded-xl p-3 mt-1 outline-red-900 bg-slate-50">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</label>
+                <input type="email" id="email" required class="w-full border rounded-xl p-3 mt-1 outline-red-900 bg-slate-50">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Password</label>
+                <input type="password" id="pass" required class="w-full border rounded-xl p-3 mt-1 outline-red-900 bg-slate-50">
+            </div>
+            <button type="submit" id="regBtn" class="w-full bg-red-900 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-red-800 transition-all">Create Account</button>
+            <p class="text-center text-sm text-slate-500">Already have an account? <a href="login.html" class="text-red-900 font-bold hover:underline">Log in</a></p>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Creating Account..."; btn.disabled = true;
+
+            // In signup.html
+            const userData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('pass').value // Use 'password' to match the script
+            };
+            const callbackName = 'jsonp_' + Date.now();
+            const script = document.createElement('script');
+            script.src = `${API_URL}?action=signup&data=${encodeURIComponent(JSON.stringify(userData))}&callback=${callbackName}`;
+            
+            window[callbackName] = function(res) {
+                if(res.success) {
+                    alert("Account created! Please login.");
+                    window.location.href = "login.html";
+                } else {
+                    alert(res.message);
+                    btn.innerText = "Create Account"; btn.disabled = false;
+                }
+                document.body.removeChild(script);
+                delete window[callbackName];
+            };
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+</html>

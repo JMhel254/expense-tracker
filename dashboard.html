@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .loader { border-top-color: #991b1b; animation: spinner 0.6s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .card-shadow { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
+        #sidebar { transition: transform 0.3s ease-in-out; }
+        @media (max-width: 768px) { #sidebar.closed { transform: translateX(-100%); } }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-200 z-50 closed md:translate-x-0 flex flex-col">
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+            <h1 class="text-xl font-black text-red-900 flex items-center gap-2"><i class="fas fa-wallet"></i> Tracker</h1>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="p-4 space-y-2 flex-1">
+            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-900 text-white font-bold shadow-md"><i class="fas fa-th-large w-5"></i> Dashboard</a>
+            <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900"><i class="fas fa-file-invoice-dollar w-5"></i> Reports</a>
+            <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900"><i class="fas fa-hand-holding-usd w-5"></i> Lended</a>
+            <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900"><i class="fas fa-file-signature w-5"></i> Debt</a>
+            <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900"><i class="fas fa-piggy-bank w-5"></i> Savings</a>
+            <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900"><i class="fas fa-scale-balanced w-5"></i> Balance</a>
+        </nav>
+
+        <!-- User Profile & Logout Section -->
+        <div class="p-4 border-t border-slate-100 bg-slate-50">
+            <div class="flex items-center gap-3 px-2 mb-4">
+                <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white font-bold">
+                    <span id="userInitials">U</span>
+                </div>
+                <div class="overflow-hidden">
+                    <p id="userNameDisplay" class="text-sm font-bold text-slate-800 truncate">User Name</p>
+                    <p id="userEmailDisplay" class="text-[10px] text-slate-500 truncate">user@email.com</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-600 font-bold hover:bg-red-50 transition-all">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="md:ml-64 min-h-screen">
+        <nav class="bg-red-900 text-white p-4 sticky top-0 z-30 shadow-md">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl"><i class="fas fa-bars"></i></button>
+                    <h1 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-chart-pie"></i> Overview</h1>
+                </div>
+                <button onclick="openModal()" class="bg-white text-red-900 px-5 py-2 rounded-full text-sm font-bold shadow-lg active:scale-95 transition-all">
+                    <i class="fas fa-plus mr-1"></i> Add New
+                </button>
+            </div>
+        </nav>
+
+
+        <div class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
+            <!-- Stats -->
+            <div id="stats-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 card-shadow">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Current Balance</p>
+                    <h2 id="stat-balance" class="text-2xl font-black text-slate-800 mt-1">₱0.00</h2>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 card-shadow">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Income (Month)</p>
+                    <h2 id="stat-income" class="text-2xl font-black text-green-600 mt-1">₱0.00</h2>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 card-shadow">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Expenses (Month)</p>
+                    <h2 id="stat-expenses" class="text-2xl font-black text-red-600 mt-1">₱0.00</h2>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 card-shadow">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Savings</p>
+                    <h2 id="stat-savings" class="text-2xl font-black text-blue-600 mt-1">₱0.00</h2>
+                </div>
+            </div>
+
+            <!-- SEARCH & FILTERS SECTION -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="searchTerm" oninput="applyFilters()" placeholder="Search notes or category..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 outline-red-800 text-sm">
+                    </div>
+                    <select id="filterCategory" onchange="applyFilters()" class="md:w-48 px-4 py-3 rounded-xl border border-slate-200 outline-red-800 text-sm">
+                        <option value="">All Categories</option>
+                        <option>Groceries</option><option>Transportion</option><option>Shopping</option>
+                        <option>Entertainment</option><option>Food</option><option>Savings</option>
+                        <option>Miscellaneous</option><option>Tithes/Offering</option><option>Personal Care</option>
+                        <option>Debt Repayments</option><option>Family</option><option>Rent</option>
+                        <option>Investments</option><option>Lend</option><option>Income</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <input type="date" id="filterStart" onchange="applyFilters()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs outline-red-800" title="Start Date">
+                    <input type="date" id="filterEnd" onchange="applyFilters()" class="px-4 py-2 rounded-xl border border-slate-200 text-xs outline-red-800" title="End Date">
+                    <input type="number" id="filterMin" oninput="applyFilters()" placeholder="Min ₱" class="px-4 py-2 rounded-xl border border-slate-200 text-xs outline-red-800">
+                    <input type="number" id="filterMax" oninput="applyFilters()" placeholder="Max ₱" class="px-4 py-2 rounded-xl border border-slate-200 text-xs outline-red-800">
+                </div>
+                <div class="flex justify-end">
+                    <button onclick="resetFilters()" class="text-xs font-bold text-red-900 hover:underline"><i class="fas fa-undo mr-1"></i> Clear Filters</button>
+                </div>
+            </div>
+
+            <div id="loading" class="flex flex-col items-center py-20">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-2"></div>
+                <p class="text-gray-400 font-medium text-sm">Updating Dashboard...</p>
+            </div>
+
+            <!-- Table -->
+            <div id="content" class="hidden space-y-4">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="font-bold text-slate-700">Transactions</h3>
+                    <span id="entry-count" class="text-[10px] font-bold bg-slate-200 text-slate-600 px-2 py-1 rounded-md uppercase">0 Entries</span>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b">
+                                <tr>
+                                    <th class="px-6 py-4">Date</th>
+                                    <th class="px-6 py-4">Category</th>
+                                    <th class="px-6 py-4">Notes</th>
+                                    <th class="px-6 py-4 text-right">Amount</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="divide-y divide-slate-100 text-sm text-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal (Keep your existing modal code here) -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 id="modalTitle" class="font-bold text-slate-800 text-lg">New Transaction</h2>
+                <button onclick="closeModal()" class="text-slate-300 hover:text-slate-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <form id="entryForm" onsubmit="handleSave(event)" class="p-6 space-y-4">
+                <input type="hidden" id="rowId">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Date</label>
+                        <input type="date" id="date" required class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Category</label>
+                        <select id="category" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                            <option>Groceries</option><option>Transportion</option><option>Shopping</option>
+                            <option>Entertainment</option><option>Food</option><option>Savings</option>
+                            <option>Miscellaneous</option><option>Tithes/Offering</option><option>Personal Care</option>
+                            <option>Debt Repayments</option><option>Family</option><option>Rent</option>
+                            <option>Investments</option><option>Lend</option><option>Income</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Amount (₱)</label>
+                        <input type="number" id="amount" step="0.01" required class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Method</label>
+                        <select id="method" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                            <option>Cash</option><option>G-Cash</option><option>Bank</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</label>
+                        <select id="status" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
+                            <option>Paid</option><option>On Hold</option><option>Unpaid</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Notes</label>
+                        <textarea id="notes" rows="2" class="w-full border rounded-xl p-3 mt-1 outline-red-800" placeholder="Add details..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" id="saveBtn" class="w-full bg-red-900 text-white py-4 rounded-xl font-bold shadow-lg mt-4">Save Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        if (!localStorage.getItem('user')) {
+            window.location.href = "login.html";
+        }
+        
+        // 2. LOGOUT FUNCTION
+        function logout() {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('user');
+                window.location.href = "index.html";
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('closed');
+            overlay.classList.toggle('hidden');
+        }
+
+        
+        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+        let masterData = []; // Store data globally for filtering
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('closed');
+            overlay.classList.toggle('hidden');
+        }
+
+        function jsonp(url) {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(data);
+                };
+                const script = document.createElement('script');
+                script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+                script.onerror = () => reject(new Error("Script load error"));
+                document.body.appendChild(script);
+            });
+        }
+
+        async function loadData() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('content').classList.add('hidden');
+            try {
+                const rawData = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
+                masterData = rawData.map(row => {
+                    let cleanRow = {};
+                    Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
+                    return cleanRow;
+                });
+                
+                calculateStats(masterData);
+                applyFilters(); // Initial render
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content').classList.remove('hidden');
+            } catch (err) {
+                alert("Connection Error. Check your API URL.");
+            }
+        }
+
+        function applyFilters() {
+            const term = document.getElementById('searchTerm').value.toLowerCase();
+            const cat = document.getElementById('filterCategory').value;
+            const start = document.getElementById('filterStart').value;
+            const end = document.getElementById('filterEnd').value;
+            const min = parseFloat(document.getElementById('filterMin').value);
+            const max = parseFloat(document.getElementById('filterMax').value);
+
+            const filtered = masterData.filter(row => {
+                const amt = parseFloat(row.Amount) || 0;
+                const date = new Date(row.Date);
+                const category = (row.Category || "").toLowerCase();
+                const notes = (row.Notes || "").toLowerCase();
+
+                const matchText = !term || category.includes(term) || notes.includes(term);
+                const matchCat = !cat || row.Category === cat;
+                const matchMin = isNaN(min) || amt >= min;
+                const matchMax = isNaN(max) || amt <= max;
+                
+                let matchDate = true;
+                if (start) matchDate = matchDate && date >= new Date(start);
+                if (end) {
+                    const endDate = new Date(end);
+                    endDate.setHours(23, 59, 59);
+                    matchDate = matchDate && date <= endDate;
+                }
+
+                return matchText && matchCat && matchMin && matchMax && matchDate;
+            });
+
+            renderTable(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchTerm').value = '';
+            document.getElementById('filterCategory').value = '';
+            document.getElementById('filterStart').value = '';
+            document.getElementById('filterEnd').value = '';
+            document.getElementById('filterMin').value = '';
+            document.getElementById('filterMax').value = '';
+            applyFilters();
+        }
+
+        function calculateStats(data) {
+            const now = new Date();
+            let totalInc = 0, totalExp = 0, monthInc = 0, monthExp = 0, totalSav = 0;
+            
+            data.forEach(row => {
+                const amt = parseFloat(row.Amount) || 0;
+                const date = new Date(row.Date);
+                const isThisMonth = date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+                const cat = (row.Category || "").trim();
+
+                if (cat === 'Income') {
+                    totalInc += amt;
+                    if (isThisMonth) monthInc += amt;
+                } else if (cat === 'Savings' || cat === 'Investments') {
+                    totalSav += amt;
+                } else {
+                    totalExp += amt;
+                    if (isThisMonth) monthExp += amt;
+                }
+            });
+
+            const balance = totalInc - totalExp - totalSav;
+            document.getElementById('stat-balance').innerText = `₱${balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('stat-income').innerText = `₱${monthInc.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('stat-expenses').innerText = `₱${monthExp.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('stat-savings').innerText = `₱${totalSav.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            document.getElementById('entry-count').innerText = `${data.length} Entries`;
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-20 text-center text-slate-400 italic">No matching results found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(row => {
+                const safeNotes = (row.Notes || "").replace(/'/g, "\\'");
+                return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 text-xs text-slate-400 whitespace-nowrap">${new Date(row.Date).toLocaleDateString()}</td>
+                    <td class="px-6 py-4 font-semibold text-slate-700">${row.Category || "---"}</td>
+                    <td class="px-6 py-4 text-slate-500 text-xs italic truncate max-w-[150px]" title="${row.Notes}">${row.Notes || "---"}</td>
+                    <td class="px-6 py-4 font-bold text-slate-900 text-right">₱${parseFloat(row.Amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                    <td class="px-6 py-4 text-right space-x-1 whitespace-nowrap">
+                        <button onclick="editRow('${row['ID#']}', '${row.Date}', '${row.Category}', ${row.Amount}, '${row.Method}', '${row.Status}', '${safeNotes}')" class="text-blue-400 p-2"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteRow('${row['ID#']}')" class="text-red-300 p-2"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // --- Logic Handlers (Unchanged from original) ---
+        async function handleSave(e) {
+            e.preventDefault();
+            const btn = document.getElementById('saveBtn');
+            btn.innerText = "Saving..."; btn.disabled = true;
+            const entryData = {
+                id: document.getElementById('rowId').value,
+                date: document.getElementById('date').value,
+                category: document.getElementById('category').value,
+                amount: document.getElementById('amount').value,
+                method: document.getElementById('method').value,
+                status: document.getElementById('status').value,
+                notes: document.getElementById('notes').value
+            };
+            await jsonp(`${API_URL}?action=upsert&data=${encodeURIComponent(JSON.stringify(entryData))}`);
+            btn.innerText = "Save Transaction"; btn.disabled = false;
+            closeModal();
+            loadData();
+        }
+
+        async function deleteRow(id) {
+            if(confirm('Delete this entry?')) {
+                await jsonp(`${API_URL}?action=delete&id=${id}`);
+                loadData();
+            }
+        }
+
+        function editRow(id, date, cat, amt, meth, stat, notes) {
+            document.getElementById('rowId').value = id;
+            document.getElementById('date').value = new Date(date).toISOString().split('T')[0];
+            document.getElementById('category').value = cat;
+            document.getElementById('amount').value = amt;
+            document.getElementById('method').value = meth;
+            document.getElementById('status').value = stat;
+            document.getElementById('notes').value = notes;
+            document.getElementById('modalTitle').innerText = "Edit Transaction";
+            openModal();
+        }
+
+        function openModal() { document.getElementById('modal').classList.remove('hidden'); }
+        function closeModal() { 
+            document.getElementById('modal').classList.add('hidden'); 
+            document.getElementById('entryForm').reset();
+            document.getElementById('rowId').value = '';
+            document.getElementById('modalTitle').innerText = "New Transaction";
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
