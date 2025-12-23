@@ -3,37 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Tracker</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Login — Tracker</title>
+    <meta name="title" content="Login — Tracker">
+    <meta name="description" content="Access your financial dashboard and stay on top of your expenses.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Login — Tracker">
+    <meta property="og:description" content="Securely access your personal expense tracker.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: #991b1b;
+            filter: blur(100px);
+            opacity: 0.05;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .input-focus:focus {
+            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
-        <div class="p-8 text-center bg-red-900 text-white">
-            <h1 class="text-3xl font-black">Welcome Back</h1>
-            <p class="opacity-70 text-sm mt-1">Please enter your details</p>
+<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
+    
+    <!-- Decorative Background -->
+    <div class="blob -top-20 -left-20"></div>
+    <div class="blob -bottom-20 -right-20"></div>
+
+    <div class="w-full max-w-md">
+        <!-- Logo Section -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center bg-red-900 text-white w-12 h-12 rounded-2xl shadow-xl shadow-red-900/30 mb-4">
+                <i class="fas fa-wallet text-xl"></i>
+            </div>
+            <h1 class="text-2xl font-black text-slate-900">Welcome Back</h1>
+            <p class="text-slate-500 text-sm mt-1">Enter your credentials to access Tracker</p>
         </div>
-        <form onsubmit="handleLogin(event)" class="p-8 space-y-4">
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email Address</label>
-                <input type="email" id="email" required class="w-full border rounded-xl p-3 mt-1 outline-red-900 bg-slate-50">
-            </div>
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Password</label>
-                <input type="password" id="pass" required class="w-full border rounded-xl p-3 mt-1 outline-red-900 bg-slate-50">
-            </div>
-            <button type="submit" id="loginBtn" class="w-full bg-red-900 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-red-800 transition-all">Sign In</button>
-            <p class="text-center text-sm text-slate-500">Don't have an account? <a href="signup.html" class="text-red-900 font-bold hover:underline">Sign up</a></p>
-        </form>
+
+        <!-- Card -->
+        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 p-8 md:p-10 border border-white">
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <!-- Email Input -->
+                <div class="space-y-1.5">
+                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Email Address</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                        <input type="email" id="email" placeholder="name@company.com" required 
+                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between items-center px-1">
+                        <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider">Password</label>        
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                        <input type="password" id="pass" placeholder="••••••••" required 
+                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-12 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors">
+                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center gap-2 px-1">
+                    <input type="checkbox" id="remember" class="w-4 h-4 rounded border-slate-300 text-red-900 focus:ring-red-900/20">
+                    <label for="remember" class="text-xs text-slate-500 font-semibold cursor-pointer">Remember me for 30 days</label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="loginBtn" 
+                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-black shadow-xl shadow-red-900/20 hover:bg-red-800 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+                    <span>SIGN IN</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center mt-8 text-sm text-slate-500 font-semibold">
+            Don't have an account? 
+            <a href="signup.html" class="text-red-900 font-black hover:underline underline-offset-4">Create one for free</a>
+        </p>
     </div>
 
     <script>
+        // Check if already logged in
+        if (localStorage.getItem('user')) {
+            window.location.href = "dashboard.html";
+        }
+
         const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+
+        function togglePassword() {
+            const passInput = document.getElementById('pass');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
 
         async function handleLogin(e) {
             e.preventDefault();
             const btn = document.getElementById('loginBtn');
-            btn.innerText = "Verifying...";
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> VERIFYING...';
             btn.disabled = true;
 
             const email = document.getElementById('email').value;
@@ -41,7 +135,7 @@
 
             const callbackName = 'jsonp_' + Date.now();
             const script = document.createElement('script');
-            script.src = `${API_URL}?action=login&email=${email}&pass=${pass}&callback=${callbackName}`;
+            script.src = `${API_URL}?action=login&email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}&callback=${callbackName}`;
             
             window[callbackName] = function(res) {
                 if(res.success) {
@@ -49,12 +143,19 @@
                     window.location.href = "dashboard.html";
                 } else {
                     alert(res.message);
-                    btn.innerText = "Sign In";
+                    btn.innerHTML = originalText;
                     btn.disabled = false;
                 }
                 document.body.removeChild(script);
                 delete window[callbackName];
             };
+
+            script.onerror = () => {
+                alert("Connection failed. Check your internet.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            };
+
             document.body.appendChild(script);
         }
     </script>

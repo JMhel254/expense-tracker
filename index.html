@@ -3,62 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExpenseTracker - Smart Finance</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Tracker — Smart Finance, Simple Tracking</title>
+    <meta name="title" content="Tracker — Master Your Money">
+    <meta name="description" content="The all-in-one personal finance dashboard. Track expenses, manage lended money, crush debt, and grow your savings effortlessly.">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jmhel254.github.io/expense-tracker/">
+    <meta property="og:title" content="Tracker — Master Your Money">
+    <meta property="og:description" content="Stop wondering where your money went. Join Tracker and take control of your financial future today.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Tracker — Master Your Money">
+    <meta property="twitter:description" content="Detailed reports, debt management, and savings goals in one clean dashboard.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .blob { position: absolute; width: 300px; height: 300px; background: #991b1b; filter: blur(80px); opacity: 0.1; border-radius: 50%; z-index: -1; }
+    </style>
 </head>
-<body class="bg-white text-slate-900 font-sans">
+<body class="bg-white text-slate-900 overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <div class="text-2xl font-black text-red-900 flex items-center gap-2">
-            <i class="fas fa-wallet"></i> Tracker
-        </div>
-        <div class="space-x-4">
-            <a href="login.html" class="font-bold text-slate-600 hover:text-red-900">Login</a>
-            <a href="signup.html" class="bg-red-900 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:bg-red-800 transition-all">Join Free</a>
+    <nav class="sticky top-0 z-50 glass border-b border-slate-100">
+        <div class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-black text-red-900 flex items-center gap-2">
+                <div class="bg-red-900 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-wallet text-sm"></i>
+                </div>
+                <span>Tracker</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-bold text-slate-600">
+                <a href="#features" class="hover:text-red-900 transition-colors">Features</a>
+                <a href="#how-it-works" class="hover:text-red-900 transition-colors">How it Works</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="login.html" class="font-bold text-slate-600 hover:text-red-900 text-sm">Login</a>
+                <a href="signup.html" class="bg-red-900 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:bg-red-800 hover:-translate-y-0.5 transition-all text-sm">Join for Free</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 items-center gap-12">
-        <div>
-            <span class="bg-red-100 text-red-900 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Finance Management</span>
-            <h1 class="text-5xl md:text-7xl font-black text-slate-900 mt-6 leading-tight">Take control of your <span class="text-red-900">money</span>.</h1>
-            <p class="text-lg text-slate-500 mt-6">A simple, powerful, and free way to track your expenses, manage debts, and grow your savings in one place.</p>
-            <div class="mt-10 flex gap-4">
-                <a href="signup.html" class="bg-red-900 text-white px-8 py-4 rounded-2xl font-black shadow-xl hover:scale-105 transition-all">Start Tracking Now</a>
+    <header class="relative max-w-7xl mx-auto px-6 py-16 md:py-28 grid md:grid-cols-2 items-center gap-12">
+        <div class="blob -top-10 -left-10"></div>
+        <div class="z-10 text-center md:text-left">
+            <span class="inline-flex items-center gap-2 bg-red-50 text-red-900 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
+                Financial Freedom Starts Here
+            </span>
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 leading-tight">
+                Master your <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-600">money</span> without the stress.
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 mt-8 leading-relaxed">
+                The modern dashboard to track spending, manage debts, and hit your savings goals. No spreadsheets. No headache. Just clarity.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                <a href="signup.html" class="w-full sm:w-auto bg-red-900 text-white px-8 py-4 rounded-2xl font-black shadow-2xl shadow-red-900/30 hover:bg-red-800 hover:scale-105 transition-all text-center">
+                    Start Tracking Now — It's Free
+                </a>
+                <p class="text-xs text-slate-400 font-medium">No credit card required.</p>
             </div>
         </div>
-        <div class="relative">
-            <div class="absolute -inset-4 bg-red-100 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-            <img src="https://img.freepik.com/free-vector/dashboard-user-interface-design_23-2148386344.jpg" class="relative rounded-3xl shadow-2xl border border-slate-100">
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-red-900 to-red-600 rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            <img src="https://img.freepik.com/free-vector/dashboard-user-interface-design_23-2148386344.jpg" 
+                 alt="Tracker Dashboard Interface" 
+                 class="relative rounded-[2rem] shadow-2xl border border-slate-100 w-full transform group-hover:scale-[1.01] transition-all duration-500">
         </div>
     </header>
 
-    <!-- Features -->
-    <section class="bg-slate-50 py-20 px-6">
-        <div class="max-w-7xl mx-auto text-center mb-16">
-            <h2 class="text-3xl font-black">Everything you need to track.</h2>
+    <!-- Social Proof -->
+    <div class="max-w-7xl mx-auto px-6 py-10 border-y border-slate-100">
+        <p class="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-8">Trusted by individuals worldwide</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all">
+            <i class="fab fa-google text-2xl"></i>
+            <i class="fab fa-apple text-2xl"></i>
+            <i class="fab fa-stripe text-3xl"></i>
+            <i class="fab fa-paypal text-2xl"></i>
+            <i class="fab fa-amazon text-2xl"></i>
         </div>
+    </div>
+
+    <!-- Features -->
+    <section id="features" class="bg-slate-50/50 py-24 px-6 relative">
+        <div class="blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto text-center mb-20">
+            <h2 class="text-4xl font-black tracking-tight">Financial tools built for <span class="text-red-900">you.</span></h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto font-medium">Stop using notes and napkins. Use a system that actually helps you save more and spend less.</p>
+        </div>
+        
         <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                <div class="w-12 h-12 bg-red-100 text-red-900 rounded-xl flex items-center justify-center mb-6 text-xl"><i class="fas fa-chart-line"></i></div>
-                <h3 class="font-black text-xl mb-2">Detailed Reports</h3>
-                <p class="text-slate-500">Filter your spending by date and category with beautiful summaries.</p>
+            <!-- Card 1 -->
+            <div class="group bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-14 h-14 bg-red-50 text-red-900 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-red-900 group-hover:text-white transition-colors">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="font-black text-2xl mb-4">Smart Overview</h3>
+                <p class="text-slate-500 leading-relaxed">See your balance, monthly income, and total expenses at a glance. Visual intelligence for your wallet.</p>
             </div>
-            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                <div class="w-12 h-12 bg-blue-100 text-blue-900 rounded-xl flex items-center justify-center mb-6 text-xl"><i class="fas fa-piggy-bank"></i></div>
-                <h3 class="font-black text-xl mb-2">Savings Goals</h3>
-                <p class="text-slate-500">Track how much you're setting aside for your future self.</p>
+            
+            <!-- Card 2 -->
+            <div class="group bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3 class="font-black text-2xl mb-4">Lend & Debt</h3>
+                <p class="text-slate-500 leading-relaxed">Track money you've lended and debts you owe. Stay on top of your commitments without the awkwardness.</p>
             </div>
-            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                <div class="w-12 h-12 bg-amber-100 text-amber-900 rounded-xl flex items-center justify-center mb-6 text-xl"><i class="fas fa-hand-holding-usd"></i></div>
-                <h3 class="font-black text-xl mb-2">Lend & Debt</h3>
-                <p class="text-slate-500">Never forget who owes you money or how much you need to repay.</p>
+            
+            <!-- Card 3 -->
+            <div class="group bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    <i class="fas fa-vault"></i>
+                </div>
+                <h3 class="font-black text-2xl mb-4">Savings Growth</h3>
+                <p class="text-slate-500 leading-relaxed">Watch your wealth grow. Set aside money for the big things and track your progress in real-time.</p>
             </div>
         </div>
     </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="max-w-5xl mx-auto px-6 py-24">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl font-black mb-8">Set it up in <span class="text-red-900">seconds.</span></h2>
+                <div class="space-y-8">
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">1</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Create your Account</h4>
+                            <p class="text-slate-500">Sign up with your email and get your personal dashboard instantly.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">2</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Log Transactions</h4>
+                            <p class="text-slate-500">Add expenses as they happen. Categorize them for better insights later.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">3</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Analyze & Grow</h4>
+                            <p class="text-slate-500">Check your reports monthly to see where you can save and how to grow your net worth.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-red-900 rounded-[3rem] p-12 text-white shadow-2xl shadow-red-900/40 rotate-2">
+                <i class="fas fa-quote-left text-4xl text-red-400 mb-6"></i>
+                <p class="text-2xl font-bold leading-relaxed">"This app changed how I see money. I saved $2,000 in my first three months just by seeing where my small expenses were going."</p>
+                <div class="mt-8 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-red-800 border-2 border-red-700 overflow-hidden italic flex items-center justify-center font-black">M</div>
+                    <div>
+                        <p class="font-bold">Mark Sy</p>
+                        <p class="text-red-300 text-sm">Product Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="max-w-7xl mx-auto px-6 py-20">
+        <div class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-red-900/20 blur-[100px]"></div>
+            <div class="relative z-10">
+                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight">Ready to start your <br>financial journey?</h2>
+                <p class="text-slate-400 mt-6 max-w-xl mx-auto">Join thousands of others who are taking their first step towards smarter money management today.</p>
+                <div class="mt-10">
+                    <a href="signup.html" class="inline-block bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-all">
+                        Create My Free Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="text-xl font-black text-red-900 flex items-center gap-2">
+            <i class="fas fa-wallet"></i> Tracker
+        </div>
+        <div class="flex gap-8 text-sm font-bold text-slate-400">
+            <a href="#" class="hover:text-red-900 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-red-900 transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-red-900 transition-colors">Contact Support</a>
+        </div>
+        <p class="text-slate-400 text-sm font-medium">© 2024 Tracker. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
