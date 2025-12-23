@@ -4,123 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Primary Meta Tags -->
-    <title>Create Your Account — Tracker</title>
-    <meta name="title" content="Join Tracker — Smart Finance">
-    <meta name="description" content="Sign up today and start tracking your expenses, debts, and savings in one powerful dashboard.">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Join Tracker — Master Your Money">
-    <meta property="og:description" content="The easiest way to manage your personal finances. Sign up for free.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+    <!-- SEO & Meta Tags -->
+    <title>Join Tracker — Start Your Financial Journey</title>
+    <meta name="title" content="Join Tracker — Smart Finance, Simple Tracking">
+    <meta name="description" content="Create your account and join thousands of high-achievers mastering their money with Tracker.">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: #991b1b;
-            filter: blur(100px);
-            opacity: 0.05;
-            border-radius: 50%;
-            z-index: -1;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #ffffff;
         }
 
-        .input-focus:focus {
-            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.1);
+        .auth-gradient {
+            background: radial-gradient(circle at 100% 0%, rgba(153, 27, 27, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 0% 100%, rgba(153, 27, 27, 0.03) 0%, transparent 50%);
         }
 
-        /* Smooth page transition */
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
+        .input-glow:focus {
+            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.08);
+            border-color: #801b1b;
         }
+
+        .btn-glow:hover {
+            box-shadow: 0 10px 25px -5px rgba(153, 27, 27, 0.4);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
-    
-    <!-- Decorative Background -->
-    <div class="blob -top-20 -left-20"></div>
-    <div class="blob -bottom-20 -right-20"></div>
+<body class="auth-gradient min-h-screen flex items-stretch overflow-x-hidden">
 
-    <div class="w-full max-w-md fade-in">
-        <!-- Logo Section -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center bg-red-900 text-white w-12 h-12 rounded-2xl shadow-xl shadow-red-900/30 mb-4">
-                <i class="fas fa-rocket text-xl"></i>
+    <!-- Left Side: Benefit Panel (Hidden on Mobile) -->
+    <div class="hidden lg:flex lg:w-5/12 bg-slate-900 relative items-center justify-center p-12 overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-red-900/20 blur-[100px] rounded-full"></div>
+        
+        <div class="relative z-10 max-w-sm">
+            <a href="index.html" class="inline-flex items-center gap-2 mb-12 group">
+                <div class="bg-red-900 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <span class="text-xl font-black text-white">Tracker</span>
+            </a>
+
+            <h2 class="text-4xl font-extrabold text-white leading-tight mb-8">
+                Start your journey to <span class="text-red-500">financial freedom.</span>
+            </h2>
+
+            <ul class="space-y-6">
+                <li class="flex items-start gap-4">
+                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
+                        <i class="fas fa-check text-[10px]"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Unified Dashboard</h4>
+                        <p class="text-slate-400 text-xs mt-1">Track income, debt, and savings in one place.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
+                        <i class="fas fa-check text-[10px]"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Smart PDF Reports</h4>
+                        <p class="text-slate-400 text-xs mt-1">Analyze your spending with professional exports.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
+                        <i class="fas fa-check text-[10px]"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Debt Snowball Tool</h4>
+                        <p class="text-slate-400 text-xs mt-1">Strategy-based debt management at your fingertips.</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="mt-16 pt-8 border-t border-white/10">
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Trusted by builders at</p>
+                <div class="flex gap-6 mt-4 opacity-30 grayscale invert">
+                    <i class="fab fa-stripe text-2xl"></i>
+                    <i class="fab fa-airbnb text-2xl"></i>
+                    <i class="fab fa-slack text-2xl"></i>
+                </div>
             </div>
-            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Create Account</h1>
-            <p class="text-slate-500 text-sm mt-1">Join thousands managing money smarter</p>
         </div>
+    </div>
 
-        <!-- Signup Card -->
-        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 p-8 md:p-10 border border-white">
+    <!-- Right Side: Signup Form -->
+    <div class="w-full lg:w-7/12 flex items-center justify-center p-6 md:p-12">
+        <div class="w-full max-w-md animate-fade">
+            
+            <div class="mb-10">
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
+                <p class="text-slate-500 font-medium mt-2">Get started with your free-forever account.</p>
+            </div>
+
             <form onsubmit="handleSignup(event)" class="space-y-5">
-                
-                <!-- Name Input -->
-                <div class="space-y-1.5">
-                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Full Name</label>
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1-2 text-slate-300"></i>
+                <!-- Full Name -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Full Name</label>
+                    <div class="relative group">
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
                         <input type="text" id="name" placeholder="John Doe" required 
-                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-semibold input-glow">
                     </div>
                 </div>
 
-                <!-- Email Input -->
-                <div class="space-y-1.5">
-                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Email Address</label>
-                    <div class="relative">
-                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Email Address</label>
+                    <div class="relative group">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
                         <input type="email" id="email" placeholder="name@email.com" required 
-                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-semibold input-glow">
                     </div>
                 </div>
 
-                <!-- Password Input -->
-                <div class="space-y-1.5">
-                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Password</label>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                        <input type="password" id="pass" placeholder="Create a strong password" required 
-                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-12 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
-                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors">
+                <!-- Password -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Password</label>
+                    <div class="relative group">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
+                        <input type="password" id="pass" placeholder="Min. 8 characters" required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-12 outline-none transition-all text-sm font-semibold input-glow">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-900 transition-colors">
                             <i id="eyeIcon" class="fas fa-eye text-sm"></i>
                         </button>
                     </div>
-                    <p class="text-[10px] text-slate-400 ml-1">Minimum 8 characters with numbers.</p>
                 </div>
 
                 <!-- Terms -->
-                <div class="flex items-start gap-2 px-1 py-2">
-                    <input type="checkbox" id="terms" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-red-900 focus:ring-red-900/20">
-                    <label for="terms" class="text-[11px] text-slate-500 font-medium leading-relaxed">
-                        I agree to the <a href="#" class="text-red-900 font-bold">Terms of Service</a> and <a href="#" class="text-red-900 font-bold">Privacy Policy</a>.
-                    </label>
-                </div>
+                <label class="flex items-start gap-3 cursor-pointer group mt-4">
+                    <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 rounded border-slate-300 text-red-900 focus:ring-red-900/20 transition-all cursor-pointer">
+                    <span class="text-xs text-slate-500 font-medium leading-relaxed">
+                        I agree to the <a href="#" class="text-red-900 font-bold hover:underline">Terms of Service</a> and 
+                        <a href="#" class="text-red-900 font-bold hover:underline">Privacy Policy</a>.
+                    </span>
+                </label>
 
-                <!-- Submit Button -->
+                <!-- Action Button -->
                 <button type="submit" id="regBtn" 
-                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-black shadow-xl shadow-red-900/20 hover:bg-red-800 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-2">
-                    <span>CREATE ACCOUNT</span>
-                    <i class="fas fa-chevron-right text-xs"></i>
+                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-extrabold text-sm tracking-wide transition-all active:scale-[0.98] btn-glow flex items-center justify-center gap-3 mt-4">
+                    <span>CREATE MY ACCOUNT</span>
+                    <i class="fas fa-arrow-right text-[10px]"></i>
                 </button>
             </form>
-        </div>
 
-        <p class="text-center mt-8 text-sm text-slate-500 font-semibold">
-            Already have an account? 
-            <a href="login.html" class="text-red-900 font-black hover:underline underline-offset-4">Log in here</a>
-        </p>
+            <p class="text-center mt-10 text-slate-500 font-semibold text-sm">
+                Already have an account? 
+                <a href="login.html" class="text-red-900 font-extrabold hover:underline underline-offset-4">Sign in here</a>
+            </p>
+
+            <div class="mt-12 flex justify-center">
+                <a href="index.html" class="text-slate-400 hover:text-slate-600 text-xs font-bold flex items-center gap-2">
+                    <i class="fas fa-arrow-left text-[10px]"></i> Back to Home
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -143,8 +194,10 @@
             const btn = document.getElementById('regBtn');
             const originalContent = btn.innerHTML;
             
-            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> SECURING YOUR DATA...';
+            // UI Loading State
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SECURING YOUR DATA...';
             btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
 
             const userData = {
                 name: document.getElementById('name').value,
@@ -158,21 +211,23 @@
             
             window[callbackName] = function(res) {
                 if(res.success) {
-                    alert("Account created successfully! You can now log in.");
+                    alert("Welcome to Tracker! Your account has been created. Please log in.");
                     window.location.href = "login.html";
                 } else {
-                    alert(res.message || "Signup failed. Please try again.");
+                    alert(res.message || "Signup failed. This email might already be in use.");
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
+                    btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 }
                 document.body.removeChild(script);
                 delete window[callbackName];
             };
 
             script.onerror = () => {
-                alert("Network error. Please check your connection.");
+                alert("Network error. Please check your internet connection and try again.");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
             };
 
             document.body.appendChild(script);

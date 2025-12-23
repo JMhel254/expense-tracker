@@ -5,101 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    <title>Login — Tracker</title>
-    <meta name="title" content="Login — Tracker">
-    <meta name="description" content="Access your financial dashboard and stay on top of your expenses.">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Login — Tracker">
-    <meta property="og:description" content="Securely access your personal expense tracker.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+    <title>Sign In — Tracker</title>
+    <meta name="title" content="Sign In — Tracker">
+    <meta name="description" content="Securely access your Tracker dashboard to manage your finances, debt, and savings.">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: #991b1b;
-            filter: blur(100px);
-            opacity: 0.05;
-            border-radius: 50%;
-            z-index: -1;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #ffffff;
         }
 
-        .input-focus:focus {
-            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.1);
+        .auth-gradient {
+            background: radial-gradient(circle at 0% 0%, rgba(153, 27, 27, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 100%, rgba(153, 27, 27, 0.03) 0%, transparent 50%);
         }
+
+        .input-glow:focus {
+            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.08);
+            border-color: #801b1b;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 10px 25px -5px rgba(153, 27, 27, 0.4);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-slide { animation: slideIn 0.5s ease-out forwards; }
     </style>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
-    
-    <!-- Decorative Background -->
-    <div class="blob -top-20 -left-20"></div>
-    <div class="blob -bottom-20 -right-20"></div>
+<body class="auth-gradient min-h-screen flex items-stretch overflow-x-hidden">
 
-    <div class="w-full max-w-md">
-        <!-- Logo Section -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center bg-red-900 text-white w-12 h-12 rounded-2xl shadow-xl shadow-red-900/30 mb-4">
-                <i class="fas fa-wallet text-xl"></i>
-            </div>
-            <h1 class="text-2xl font-black text-slate-900">Welcome Back</h1>
-            <p class="text-slate-500 text-sm mt-1">Enter your credentials to access Tracker</p>
+    <!-- Left Side: Branding (Hidden on Mobile) -->
+    <div class="hidden lg:flex lg:w-1/2 bg-red-900 relative items-center justify-center p-12 overflow-hidden">
+        <!-- Abstract Shapes -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <div class="absolute top-[-10%] left-[-10%] w-80 h-80 rounded-full bg-white blur-3xl"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 rounded-full bg-white blur-3xl"></div>
         </div>
 
-        <!-- Card -->
-        <div class="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 p-8 md:p-10 border border-white">
-            <form onsubmit="handleLogin(event)" class="space-y-5">
-                <!-- Email Input -->
-                <div class="space-y-1.5">
-                    <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Email Address</label>
-                    <div class="relative">
-                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
-                        <input type="email" id="email" placeholder="name@company.com" required 
-                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
+        <div class="relative z-10 max-w-md text-center">
+            <div class="inline-flex items-center justify-center bg-white/10 backdrop-blur-xl p-4 rounded-3xl mb-8 border border-white/20">
+                <i class="fas fa-wallet text-white text-4xl"></i>
+            </div>
+            <h2 class="text-4xl font-extrabold text-white leading-tight mb-6">
+                Organize your financial life in minutes.
+            </h2>
+            <p class="text-red-100 text-lg font-medium opacity-80 leading-relaxed">
+                Join thousands of users who have reclaimed their financial clarity using Tracker.
+            </p>
+            
+            <!-- Mini Testimonial -->
+            <div class="mt-12 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 text-left">
+                <p class="text-white font-medium italic">"The best decision I made for my savings this year."</p>
+                <div class="flex items-center gap-3 mt-4">
+                    <div class="w-8 h-8 rounded-full bg-red-800 flex items-center justify-center font-bold text-xs text-white">JD</div>
+                    <span class="text-white text-sm font-bold">John Doe, Entrepreneur</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12">
+        <div class="w-full max-w-md animate-slide">
+            
+            <!-- Mobile Logo -->
+            <div class="lg:hidden flex justify-center mb-8">
+                <div class="bg-red-900 text-white w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl">
+                    <i class="fas fa-wallet text-xl"></i>
+                </div>
+            </div>
+
+            <div class="mb-10 text-center lg:text-left">
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Sign In</h1>
+                <p class="text-slate-500 font-medium mt-2">Welcome back! Please enter your details.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-6">
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Email Address</label>
+                    <div class="relative group">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
+                        <input type="email" id="email" placeholder="name@email.com" required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-semibold input-glow">
                     </div>
                 </div>
 
-                <!-- Password Input -->
-                <div class="space-y-1.5">
+                <!-- Password -->
+                <div class="space-y-2">
                     <div class="flex justify-between items-center px-1">
-                        <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider">Password</label>        
+                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Password</label>
+                        <a href="#" class="text-xs font-bold text-red-900 hover:underline">Forgot?</a>
                     </div>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                    <div class="relative group">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
                         <input type="password" id="pass" placeholder="••••••••" required 
-                            class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-12 outline-none focus:border-red-900/30 focus:bg-white input-focus transition-all text-sm font-semibold">
-                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-12 outline-none transition-all text-sm font-semibold input-glow">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-900 transition-colors">
                             <i id="eyeIcon" class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Remember Me -->
-                <div class="flex items-center gap-2 px-1">
-                    <input type="checkbox" id="remember" class="w-4 h-4 rounded border-slate-300 text-red-900 focus:ring-red-900/20">
-                    <label for="remember" class="text-xs text-slate-500 font-semibold cursor-pointer">Remember me for 30 days</label>
-                </div>
+                <label class="flex items-center gap-3 cursor-pointer group w-fit">
+                    <input type="checkbox" id="remember" class="w-5 h-5 rounded-lg border-slate-300 text-red-900 focus:ring-red-900/20 transition-all cursor-pointer">
+                    <span class="text-sm text-slate-500 font-semibold group-hover:text-slate-700">Remember for 30 days</span>
+                </label>
 
-                <!-- Submit Button -->
+                <!-- Action Button -->
                 <button type="submit" id="loginBtn" 
-                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-black shadow-xl shadow-red-900/20 hover:bg-red-800 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-                    <span>SIGN IN</span>
-                    <i class="fas fa-arrow-right text-xs"></i>
+                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-extrabold text-sm tracking-wide transition-all active:scale-[0.98] btn-glow flex items-center justify-center gap-3">
+                    <span>SIGN IN TO DASHBOARD</span>
+                    <i class="fas fa-chevron-right text-[10px]"></i>
                 </button>
             </form>
-        </div>
 
-        <p class="text-center mt-8 text-sm text-slate-500 font-semibold">
-            Don't have an account? 
-            <a href="signup.html" class="text-red-900 font-black hover:underline underline-offset-4">Create one for free</a>
-        </p>
+            <p class="text-center mt-10 text-slate-500 font-semibold text-sm">
+                New to Tracker? 
+                <a href="signup.html" class="text-red-900 font-extrabold hover:underline underline-offset-4">Create free account</a>
+            </p>
+
+            <div class="mt-12 flex justify-center gap-6">
+                <a href="index.html" class="text-slate-400 hover:text-slate-600 text-xs font-bold flex items-center gap-2">
+                    <i class="fas fa-arrow-left text-[10px]"></i> Back to Home
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -125,10 +167,12 @@
         async function handleLogin(e) {
             e.preventDefault();
             const btn = document.getElementById('loginBtn');
-            const originalText = btn.innerHTML;
+            const originalContent = btn.innerHTML;
             
-            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> VERIFYING...';
+            // UI Loading State
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AUTHENTICATING...';
             btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
 
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
@@ -142,18 +186,20 @@
                     localStorage.setItem('user', JSON.stringify(res.user));
                     window.location.href = "dashboard.html";
                 } else {
-                    alert(res.message);
-                    btn.innerHTML = originalText;
+                    alert(res.message || "Invalid credentials. Please try again.");
+                    btn.innerHTML = originalContent;
                     btn.disabled = false;
+                    btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 }
                 document.body.removeChild(script);
                 delete window[callbackName];
             };
 
             script.onerror = () => {
-                alert("Connection failed. Check your internet.");
-                btn.innerHTML = originalText;
+                alert("The authentication server is not responding. Please check your connection.");
+                btn.innerHTML = originalContent;
                 btn.disabled = false;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
             };
 
             document.body.appendChild(script);
