@@ -1,285 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports - Expense Tracker</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports - Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style>
-        .loader { border-top-color: #991b1b; animation: spinner 0.6s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media print { 
-            .no-print { display: none !important; } 
-            .md\:ml-64 { margin-left: 0 !important; }
-            body { background: white; }
-            .print-card { border: 1px solid #e2e8f0 !important; box-shadow: none !important; }
-        }
-        #sidebar { transition: transform 0.3s ease-in-out; }
-        @media (max-width: 768px) { #sidebar.closed { transform: translateX(-100%); } }
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+      
+      body { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        background-color: #fcfcfc;
+      }
+
+      /* Sidebar Active Link Style - Maroon Bubble */
+      .nav-active {
+        background-color: #801b1b;
+        color: white !important;
+        box-shadow: 0 8px 15px -3px rgba(128, 27, 27, 0.3);
+      }
+
+      /* Compact Input styling */
+      .input-bg {
+        background-color: #f8f9fb;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .input-bg:focus { background-color: #fff; box-shadow: 0 0 0 2px rgba(128, 27, 27, 0.1); }
+
+      /* Loader Spinner */
+      .loader {
+        border-top-color: #801b1b;
+        animation: spinner 0.8s linear infinite;
+      }
+      @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+      @media print { 
+        .no-print { display: none !important; } 
+        .md\:ml-64 { margin-left: 0 !important; }
+        body { background: white; padding: 0; }
+        .print-area { border: 1px solid #eee !important; border-radius: 0 !important; box-shadow: none !important; }
+      }
+
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
-</head>
-<body class="bg-slate-50 min-h-screen">
+  </head>
+  <body class="text-slate-900 antialiased overflow-x-hidden">
+    
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden backdrop-blur-sm no-print"></div>
 
-    <!-- Mobile Overlay -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+    <!-- Sidebar (Consistent width: w-64) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-100 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col no-print">
+      <div class="p-6 mb-2">
+        <h1 class="text-xl font-extrabold text-[#801b1b] flex items-center gap-2">
+          <i class="fas fa-wallet"></i> Tracker
+        </h1>
+      </div>
 
-    <!-- Sidebar (Consistent with index.html) -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-200 z-50 closed md:translate-x-0">
-        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h1 class="text-xl font-black text-red-900 flex items-center gap-2">
-                <i class="fas fa-wallet"></i> Tracker
-            </h1>
-            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-red-900">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        <nav class="p-4 space-y-2">
-            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
-                <i class="fas fa-th-large w-5"></i> Dashboard
-            </a>
-            <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-900 text-white font-bold shadow-md">
-                <i class="fas fa-file-invoice-dollar w-5"></i> Reports
-            </a>
-            <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
-                <i class="fas fa-hand-holding-usd w-5"></i> Lended
-            </a>
-            <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
-                <i class="fas fa-file-signature w-5"></i> Debt
-            </a>
-            <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
-                <i class="fas fa-piggy-bank w-5"></i> Savings
-            </a>
-            <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900 transition-all">
-                <i class="fas fa-scale-balanced w-5"></i> Balance
-            </a>
-        </nav>
+      <nav class="flex-1 px-4 space-y-1">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
+            <i class="fas fa-th-large w-5"></i> Dashboard
+        </a>
+        <a href="report.html" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all">
+            <i class="fas fa-file-invoice-dollar w-5"></i> Reports
+        </a>
+        <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
+            <i class="fas fa-hand-holding-usd w-5"></i> Lended
+        </a>
+        <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
+            <i class="fas fa-file-signature w-5"></i> Debt
+        </a>
+        <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
+            <i class="fas fa-piggy-bank w-5"></i> Savings
+        </a>
+        <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
+            <i class="fas fa-scale-balanced w-5"></i> Balance
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-50">
+        <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 text-sm font-bold hover:bg-rose-50 transition-all">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="md:ml-64 min-h-screen">
-        <!-- Header -->
-        <nav class="bg-red-900 text-white p-4 sticky top-0 z-30 shadow-md no-print">
-            <div class="max-w-5xl mx-auto flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleSidebar()" class="md:hidden text-white text-xl">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h1 class="text-lg font-bold">Financial Reports</h1>
-                </div>
-            </div>
-        </nav>
-
-        <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
-            
-            <!-- Filter Section -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm no-print">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Start Date</label>
-                        <input type="date" id="startDate" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">End Date</label>
-                        <input type="date" id="endDate" class="w-full border rounded-xl p-3 mt-1 outline-red-800">
-                    </div>
-                    <button onclick="generateReport()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-900 transition-all">
-                        Generate Report
-                    </button>
-                </div>
-            </div>
-
-            <!-- Loading State -->
-            <div id="loading" class="flex flex-col items-center py-10">
-                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-2"></div>
-                <p class="text-gray-400 font-medium text-sm">Loading Transaction Data...</p>
-            </div>
-
-            <!-- Report Area -->
-            <div id="reportArea" class="hidden space-y-6">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-xl font-black text-slate-800">Period Summary</h2>
-                        <p id="print-date-range" class="text-sm text-slate-500"></p>
-                    </div>
-                    <button onclick="window.print()" class="no-print bg-red-100 text-red-900 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-200">
-                        <i class="fas fa-print mr-2"></i> Print PDF
-                    </button>
-                </div>
-
-                <!-- Stats Cards -->
-                <div id="summaryCards" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Income</p>
-                        <h2 id="rep-income" class="text-2xl font-black text-green-600">₱0.00</h2>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Expenses</p>
-                        <h2 id="rep-expenses" class="text-2xl font-black text-red-600">₱0.00</h2>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 print-card">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Net Balance</p>
-                        <h2 id="rep-balance" class="text-2xl font-black text-slate-800">₱0.00</h2>
-                    </div>
-                </div>
-
-                <!-- Category Breakdown -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden print-card">
-                    <div class="bg-slate-50 px-6 py-4 border-b">
-                        <h3 class="font-bold text-slate-700">Category Breakdown</h3>
-                    </div>
-                    <table class="w-full text-left">
-                        <thead class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b">
-                            <tr>
-                                <th class="px-6 py-3">Category</th>
-                                <th class="px-6 py-3 text-right">Total Amount</th>
-                                <th class="px-6 py-3 text-right">%</th>
-                            </tr>
-                        </thead>
-                        <tbody id="categoryBody" class="divide-y divide-slate-100 text-sm"></tbody>
-                    </table>
-                </div>
-
-                <!-- Detail Table -->
-                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden print-card">
-                    <div class="bg-slate-50 px-6 py-4 border-b">
-                        <h3 class="font-bold text-slate-700">Detailed Transactions</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left min-w-[500px]">
-                            <thead class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold border-b">
-                                <tr>
-                                    <th class="px-6 py-3">Date</th>
-                                    <th class="px-6 py-3">Category</th>
-                                    <th class="px-6 py-3 text-right">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="detailBody" class="divide-y divide-slate-100 text-sm"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+      <!-- Top Nav -->
+      <nav class="bg-white border-b border-slate-100 px-4 py-3 sticky top-0 z-30 no-print">
+        <div class="flex items-center gap-4 max-w-6xl mx-auto">
+          <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2"><i class="fas fa-bars text-lg"></i></button>
+          <h2 class="text-sm font-bold text-slate-800">Financial Reports</h2>
         </div>
+      </nav>
+
+      <div class="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
+        
+        <!-- COMPACT DATE FILTER TOOLBAR -->
+        <div class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm no-print flex flex-wrap items-center gap-3 sm:w-fit">
+            <div class="flex items-center gap-2">
+                <label class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">From</label>
+                <input type="date" id="startDate" class="input-bg" />
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">To</label>
+                <input type="date" id="endDate" class="input-bg" />
+            </div>
+            <button onclick="generateReport()" class="bg-[#801b1b] text-white px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-red-800 transition-all shadow-md shadow-red-900/10">
+                Update
+            </button>
+        </div>
+
+        <!-- Loader -->
+        <div id="loading" class="flex flex-col items-center py-20 no-print">
+          <div class="loader rounded-full border-4 border-slate-50 h-10 w-10 mb-2"></div>
+          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Compiling Records...</p>
+        </div>
+
+        <!-- Report Content -->
+        <div id="reportArea" class="hidden space-y-6 animate-in fade-in duration-500">
+          
+          <div class="flex justify-between items-end px-2">
+            <div>
+              <h2 class="text-lg font-black text-slate-800">Period Summary</h2>
+              <p id="print-date-range" class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"></p>
+            </div>
+            <button onclick="window.print()" class="no-print bg-slate-900 text-white px-4 py-2 rounded-xl font-bold text-[10px] uppercase tracking-wider hover:opacity-90 transition-all">
+                <i class="fas fa-file-pdf mr-1.5"></i> Export PDF
+            </button>
+          </div>
+
+          <!-- Summary Cards (Same as Dashboard) -->
+          <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm print-area transition-transform hover:-translate-y-1">
+              <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Total Income</p>
+              <h2 id="rep-income" class="text-base md:text-xl font-black text-emerald-600 mt-1 truncate">₱0.00</h2>
+            </div>
+            <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm print-area transition-transform hover:-translate-y-1">
+              <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Total Expenses</p>
+              <h2 id="rep-expenses" class="text-base md:text-xl font-black text-rose-600 mt-1 truncate">₱0.00</h2>
+            </div>
+            <div class="bg-slate-900 text-white p-5 rounded-3xl shadow-xl shadow-slate-900/20 col-span-2 lg:col-span-1 print-area transition-transform hover:-translate-y-1">
+              <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">Net Balance</p>
+              <h2 id="rep-balance" class="text-xl font-black mt-1 truncate">₱0.00</h2>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <!-- Category Breakdown -->
+            <div class="lg:col-span-2 space-y-4">
+              <h3 class="font-bold text-slate-800 text-[10px] px-2 uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-4 bg-[#801b1b] rounded-full"></span> Spending by Category
+              </h3>
+              <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden print-area">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-bold border-b border-slate-50">
+                    <tr><th class="px-6 py-4">Category</th><th class="px-6 py-4 text-right">Amount</th><th class="px-6 py-4 text-right">%</th></tr>
+                  </thead>
+                  <tbody id="categoryBody" class="divide-y divide-slate-50 font-medium text-slate-600"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Transaction Detail (List) -->
+            <div class="lg:col-span-3 space-y-4">
+              <h3 class="font-bold text-slate-800 text-[10px] px-2 uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-4 bg-slate-300 rounded-full"></span> Transaction History
+              </h3>
+              <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden print-area">
+                <div class="overflow-x-auto no-scrollbar">
+                  <table class="w-full text-left min-w-[400px]">
+                    <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-bold border-b border-slate-50">
+                      <tr><th class="px-6 py-4">Date</th><th class="px-6 py-4">Category</th><th class="px-6 py-4 text-right">Amount</th></tr>
+                    </thead>
+                    <tbody id="detailBody" class="divide-y divide-slate-50 text-xs font-medium text-slate-600"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </main>
 
     <script>
-        if (!localStorage.getItem('user')) {
-            window.location.href = "login.html";
-        }
-        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
-        let allData = [];
+      if (!localStorage.getItem('user')) { window.location.href = "login.html"; }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
-        }
+      const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+      let allData = [];
 
-        function jsonp(url) {
-            return new Promise((resolve, reject) => {
-                const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-                window[callbackName] = function(data) {
-                    delete window[callbackName];
-                    document.body.removeChild(script);
-                    resolve(data);
-                };
-                const script = document.createElement('script');
-                script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
-                script.onerror = () => reject(new Error("Script load error"));
-                document.body.appendChild(script);
-            });
-        }
+      function toggleSidebar() {
+        const sb = document.getElementById('sidebar');
+        const ov = document.getElementById('sidebar-overlay');
+        sb.classList.toggle("-translate-x-full");
+        ov.classList.toggle("hidden");
+      }
 
-        window.onload = async () => {
-            const today = new Date();
-            const firstDay = new Date(today.setDate(today.getDate() - today.getDay()));
-            const lastDay = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-            
-            document.getElementById('startDate').value = firstDay.toISOString().split('T')[0];
-            document.getElementById('endDate').value = lastDay.toISOString().split('T')[0];
-            
-            await fetchData();
-        };
+      function logout() {
+        if (confirm("Logout?")) { localStorage.removeItem('user'); window.location.href = "index.html"; }
+      }
 
-        async function fetchData() {
-            try {
-                const rawData = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
-                allData = rawData.map(row => {
-                    let cleanRow = {};
-                    Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
-                    return cleanRow;
-                });
-                document.getElementById('loading').classList.add('hidden');
-                generateReport();
-            } catch (err) {
-                alert("Failed to load data.");
-            }
-        }
+      function jsonp(url) {
+        return new Promise((resolve) => {
+          const cb = 'jsonp_' + Math.round(100000 * Math.random());
+          window[cb] = (data) => { delete window[cb]; document.body.removeChild(script); resolve(data); };
+          const script = document.createElement('script');
+          script.src = `${url}${url.includes('?') ? '&' : '?'}callback=${cb}`;
+          document.body.appendChild(script);
+        });
+      }
 
-        function generateReport() {
-            const startInput = document.getElementById('startDate').value;
-            const endInput = document.getElementById('endDate').value;
-            if (!startInput || !endInput) return;
+      window.onload = async () => {
+        const now = new Date();
+        document.getElementById('startDate').value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+        document.getElementById('endDate').value = now.toISOString().split('T')[0];
+        await fetchData();
+      };
 
-            const start = new Date(startInput);
-            const end = new Date(endInput);
-            end.setHours(23, 59, 59);
+      async function fetchData() {
+        try {
+          const raw = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
+          allData = raw.map(row => {
+            let clean = {};
+            Object.keys(row).forEach(key => clean[key.trim()] = row[key]);
+            return clean;
+          });
+          document.getElementById('loading').classList.add('hidden');
+          generateReport();
+        } catch (err) { alert("Data error."); }
+      }
 
-            document.getElementById('print-date-range').innerText = `Period: ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`;
+      function generateReport() {
+        const start = new Date(document.getElementById('startDate').value);
+        const end = new Date(document.getElementById('endDate').value);
+        end.setHours(23, 59, 59);
 
-            const filtered = allData.filter(item => {
-                const itemDate = new Date(item.Date);
-                return itemDate >= start && itemDate <= end;
-            });
+        document.getElementById('print-date-range').innerText = `${start.toLocaleDateString()} — ${end.toLocaleDateString()}`;
 
-            let income = 0, expenses = 0;
-            const catTotals = {};
+        const filtered = allData.filter(item => {
+          const d = new Date(item.Date);
+          return d >= start && d <= end;
+        });
 
-            filtered.forEach(item => {
-                const amt = parseFloat(item.Amount) || 0;
-                const cat = (item.Category || "Miscellaneous").trim();
+        let income = 0, expenses = 0;
+        const catTotals = {};
 
-                if (cat === 'Income') {
-                    income += amt;
-                } else {
-                    expenses += amt;
-                    catTotals[cat] = (catTotals[cat] || 0) + amt;
-                }
-            });
+        filtered.forEach(item => {
+          const amt = parseFloat(item.Amount) || 0;
+          const cat = (item.Category || "Miscellaneous").trim();
+          if (cat === 'Income') { income += amt; } 
+          else { expenses += amt; catTotals[cat] = (catTotals[cat] || 0) + amt; }
+        });
 
-            // Update Header Stats
-            document.getElementById('rep-income').innerText = `₱${income.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-            document.getElementById('rep-expenses').innerText = `₱${expenses.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-            document.getElementById('rep-balance').innerText = `₱${(income - expenses).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        const fmt = (v) => `₱${v.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        document.getElementById('rep-income').innerText = fmt(income);
+        document.getElementById('rep-expenses').innerText = fmt(expenses);
+        document.getElementById('rep-balance').innerText = fmt(income - expenses);
 
-            // Render Category Table
-            const catBody = document.getElementById('categoryBody');
-            catBody.innerHTML = Object.keys(catTotals)
-                .sort((a, b) => catTotals[b] - catTotals[a])
-                .map(cat => {
-                    const percentage = expenses > 0 ? ((catTotals[cat] / expenses) * 100).toFixed(1) : 0;
-                    return `
-                        <tr>
-                            <td class="px-6 py-4 font-bold text-slate-700">${cat}</td>
-                            <td class="px-6 py-4 text-right font-semibold">₱${catTotals[cat].toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                            <td class="px-6 py-4 text-right text-slate-400 text-xs">${percentage}%</td>
-                        </tr>`;
-                }).join('') || '<tr><td colspan="3" class="p-6 text-center text-slate-400">No data for this range.</td></tr>';
+        document.getElementById('categoryBody').innerHTML = Object.keys(catTotals).sort((a,b) => catTotals[b] - catTotals[a]).map(cat => {
+          const perc = expenses > 0 ? ((catTotals[cat] / expenses) * 100).toFixed(1) : 0;
+          return `<tr><td class="px-6 py-4 font-extrabold text-slate-700 uppercase text-[9px] tracking-tight">${cat}</td><td class="px-6 py-4 text-right font-black">${fmt(catTotals[cat])}</td><td class="px-6 py-4 text-right text-[9px] font-bold text-slate-400">${perc}%</td></tr>`;
+        }).join('') || '<tr><td colspan="3" class="p-8 text-center text-slate-300 italic">No expense data</td></tr>';
 
-            // Render Detail Table
-            const detailBody = document.getElementById('detailBody');
-            detailBody.innerHTML = filtered
-                .sort((a, b) => new Date(b.Date) - new Date(a.Date))
-                .map(row => `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 text-xs text-slate-400">${new Date(row.Date).toLocaleDateString()}</td>
-                        <td class="px-6 py-4 font-semibold text-slate-700">${row.Category}</td>
-                        <td class="px-6 py-4 text-right font-black ${row.Category === 'Income' ? 'text-green-600' : 'text-slate-900'}">
-                            ₱${parseFloat(row.Amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
-                        </td>
-                    </tr>`).join('') || '<tr><td colspan="3" class="p-6 text-center text-slate-400">No transactions.</td></tr>';
+        document.getElementById('detailBody').innerHTML = filtered.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(row => `<tr><td class="px-6 py-4 opacity-50 text-[9px] font-bold uppercase tracking-tighter">${new Date(row.Date).toLocaleDateString()}</td><td class="px-6 py-4 font-bold text-slate-700 text-[9px] uppercase tracking-tight">${row.Category}</td><td class="px-6 py-4 text-right font-black ${row.Category === 'Income' ? 'text-emerald-600' : 'text-slate-800'}">${fmt(parseFloat(row.Amount))}</td></tr>`).join('') || '<tr><td colspan="3" class="p-8 text-center text-slate-300 italic">No transactions</td></tr>';
 
-            document.getElementById('reportArea').classList.remove('hidden');
-        }
+        document.getElementById('reportArea').classList.remove('hidden');
+      }
     </script>
-</body>
+  </body>
 </html>

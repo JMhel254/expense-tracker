@@ -1,215 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Debt Tracker - Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <style>
-        .loader { border-top-color: #991b1b; animation: spinner 0.6s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @media (max-width: 768px) { #sidebar.closed { transform: translateX(-100%); } }
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+      
+      body { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        background-color: #fcfcfc;
+      }
+
+      /* Sidebar Active Link Style - Maroon Bubble (Exact Dashboard Match) */
+      .nav-active {
+        background-color: #801b1b;
+        color: white !important;
+        box-shadow: 0 8px 15px -3px rgba(128, 27, 27, 0.3);
+      }
+
+      /* Smooth Transitions */
+      .transition-all-custom {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Loader Spinner */
+      .loader {
+        border-top-color: #801b1b;
+        animation: spinner 0.8s linear infinite;
+      }
+      @keyframes spinner {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Scrollbar */
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
-</head>
-<body class="bg-slate-50 min-h-screen">
+  </head>
+  <body class="text-slate-900 antialiased overflow-x-hidden">
+    
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <!-- Mobile Overlay -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+    <!-- Sidebar (Consistent Width: w-64) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-100 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col">
+      <div class="p-6 mb-2">
+        <h1 class="text-xl font-extrabold text-[#801b1b] flex items-center gap-2">
+          <i class="fas fa-wallet"></i> Tracker
+        </h1>
+      </div>
 
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-200 z-50 closed md:translate-x-0">
-        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h1 class="text-xl font-black text-red-900 flex items-center gap-2">
-                <i class="fas fa-wallet"></i> Tracker
-            </h1>
-            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-red-900"><i class="fas fa-times text-xl"></i></button>
-        </div>
-        <nav class="p-4 space-y-2">
-            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900">
-                <i class="fas fa-th-large w-5"></i> Dashboard
-            </a>
-            <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900">
-                <i class="fas fa-file-invoice-dollar w-5"></i> Reports
-            </a>
-            <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900">
-                <i class="fas fa-hand-holding-usd w-5"></i> Lended
-            </a>
-            <!-- Active Link -->
-            <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-900 text-white font-bold shadow-lg shadow-red-900/20">
-                <i class="fas fa-file-signature w-5"></i> Debt
-            </a>
-            <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900">
-                <i class="fas fa-piggy-bank w-5"></i> Savings
-            </a>
-            <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-red-900">
-                <i class="fas fa-scale-balanced w-5"></i> Balance
-            </a>
-        </nav>
-        <div class="absolute bottom-0 left-0 w-full p-6 border-t border-slate-100 bg-slate-50/50">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Version 1.0</p>
-            <p class="text-xs font-medium text-slate-500">© 2024 Expense Tracker</p>
-        </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all-custom">
+            <i class="fas fa-th-large w-5"></i> Dashboard
+        </a>
+        <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all-custom">
+            <i class="fas fa-file-invoice-dollar w-5"></i> Reports
+        </a>
+        <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all-custom">
+            <i class="fas fa-hand-holding-usd w-5"></i> Lended
+        </a>
+        <a href="debt.html" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all-custom">
+            <i class="fas fa-file-signature w-5"></i> Debt
+        </a>
+        <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all-custom">
+            <i class="fas fa-piggy-bank w-5"></i> Savings
+        </a>
+        <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all-custom">
+            <i class="fas fa-scale-balanced w-5"></i> Balance
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-50">
+        <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 text-sm font-bold hover:bg-rose-50 transition-all-custom">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
     </aside>
 
-    <main class="md:ml-64">
-        <!-- Top Navbar -->
-        <nav class="bg-red-900 text-white p-4 sticky top-0 z-30 shadow-md">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden text-white text-xl p-1"><i class="fas fa-bars"></i></button>
-                <h1 class="text-lg font-bold">Debt Repayments Tracker</h1>
-            </div>
-        </nav>
-
-        <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-8">
-            
-            <!-- Summary Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-rose-600 text-white p-6 rounded-3xl shadow-xl shadow-rose-600/20">
-                    <p class="text-xs font-bold uppercase opacity-80 tracking-widest">Total Paid Toward Debt</p>
-                    <h2 id="total-paid" class="text-3xl font-black mt-1">₱0.00</h2>
-                </div>
-                <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-xl shadow-slate-800/20">
-                    <p class="text-xs font-bold uppercase opacity-80 tracking-widest">Outstanding (Unpaid)</p>
-                    <h2 id="total-unpaid" class="text-3xl font-black mt-1 text-rose-400">₱0.00</h2>
-                </div>
-            </div>
-
-            <div id="loading" class="flex flex-col items-center py-10">
-                <div class="loader rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-2"></div>
-                <p class="text-slate-400 text-sm">Fetching debt data...</p>
-            </div>
-
-            <div id="content" class="hidden space-y-8">
-                <!-- Table 1: UNPAID/OUTSTANDING DEBTS -->
-                <section class="space-y-3">
-                    <h3 class="flex items-center gap-2 font-bold text-slate-700 px-1 uppercase text-xs tracking-wider">
-                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Outstanding Debts
-                    </h3>
-                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left min-w-[600px]">
-                                <thead class="bg-slate-50 text-[10px] font-bold uppercase text-slate-400 border-b">
-                                    <tr>
-                                        <th class="px-6 py-4">Date</th>
-                                        <th class="px-6 py-4">Notes</th>
-                                        <th class="px-6 py-4 text-right">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="unpaid-body" class="divide-y divide-slate-100 text-sm"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Table 2: PAID REPAYMENTS -->
-                <section class="space-y-3">
-                    <h3 class="flex items-center gap-2 font-bold text-slate-700 px-1 uppercase text-xs tracking-wider">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span> Completed Repayments
-                    </h3>
-                    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left min-w-[600px]">
-                                <thead class="bg-slate-50 text-[10px] font-bold uppercase text-slate-400 border-b">
-                                    <tr>
-                                        <th class="px-6 py-4">Date</th>
-                                        <th class="px-6 py-4">Notes</th>
-                                        <th class="px-6 py-4 text-right">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="paid-body" class="divide-y divide-slate-100 text-sm"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-            </div>
+    <!-- Content Area (Consistent Margin: md:ml-64) -->
+    <main class="md:ml-64 min-h-screen">
+      <!-- Navbar (Same padding as dashboard) -->
+      <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100 px-4 py-3">
+        <div class="flex items-center gap-3 max-w-6xl mx-auto">
+          <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2"><i class="fas fa-bars text-lg"></i></button>
+          <h2 class="text-sm font-bold text-slate-800">Debt Repayments Tracker</h2>
         </div>
+      </nav>
+
+      <div class="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
+        
+        <!-- Stats Cards (Grid matches Dashboard) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+          <div class="bg-[#801b1b] text-white p-4 md:p-6 rounded-3xl shadow-lg shadow-red-900/20 transition-transform hover:-translate-y-1">
+            <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">Total Repayments</p>
+            <h2 id="total-paid" class="text-base md:text-xl font-black mt-1 truncate">₱0.00</h2>
+          </div>
+          <div class="bg-slate-900 text-white p-4 md:p-6 rounded-3xl shadow-lg shadow-slate-900/20 transition-transform hover:-translate-y-1">
+            <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest">Outstanding</p>
+            <h2 id="total-unpaid" class="text-base md:text-xl font-black mt-1 text-rose-400 truncate">₱0.00</h2>
+          </div>
+          <!-- Placeholder cards to keep sizing consistency with Dashboard grid -->
+          <div class="hidden lg:block bg-white p-6 rounded-3xl border border-slate-50 shadow-sm opacity-50 border-dashed"></div>
+          <div class="hidden lg:block bg-white p-6 rounded-3xl border border-slate-50 shadow-sm opacity-50 border-dashed"></div>
+        </div>
+
+        <!-- Loader -->
+        <div id="loading" class="flex flex-col items-center py-20">
+          <div class="loader rounded-full border-4 border-slate-50 h-10 w-10 mb-3"></div>
+          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Processing Data...</p>
+        </div>
+
+        <div id="content" class="hidden space-y-8 animate-in fade-in duration-500">
+          
+          <!-- Outstanding Section -->
+          <section class="space-y-3">
+            <h3 class="font-bold text-slate-800 text-xs px-2 uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-4 bg-rose-500 rounded-full"></span> Outstanding Debts
+            </h3>
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+              <div class="overflow-x-auto no-scrollbar">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                  <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-bold">
+                    <tr>
+                      <th class="px-6 py-4">Date</th>
+                      <th class="px-6 py-4">Notes / Description</th>
+                      <th class="px-6 py-4 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="unpaid-body" class="divide-y divide-slate-50 text-xs font-medium text-slate-600"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- Completed Section -->
+          <section class="space-y-3">
+            <h3 class="font-bold text-slate-800 text-xs px-2 uppercase tracking-widest flex items-center gap-2">
+                <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span> Completed Repayments
+            </h3>
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+              <div class="overflow-x-auto no-scrollbar">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                  <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-bold">
+                    <tr>
+                      <th class="px-6 py-4">Date</th>
+                      <th class="px-6 py-4">Notes / Description</th>
+                      <th class="px-6 py-4 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paid-body" class="divide-y divide-slate-50 text-xs font-medium text-slate-600"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
     </main>
 
     <script>
-        if (!localStorage.getItem('user')) {
-            window.location.href = "login.html";
-        }
-        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
+      if (!localStorage.getItem('user')) { window.location.href = "login.html"; }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
-        }
+      const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
 
-        function jsonp(url){
-            return new Promise((res)=>{
-                const n='jsonp_'+Math.round(100000*Math.random());
-                window[n]=(d)=>{delete window[n];document.body.removeChild(s);res(d)};
-                const s=document.createElement('script');
-                s.src=url+(url.indexOf('?')>=0?'&':'?')+'callback='+n;
-                document.body.appendChild(s);
-            })
-        }
+      function toggleSidebar() {
+        const sb = document.getElementById('sidebar');
+        const ov = document.getElementById('sidebar-overlay');
+        sb.classList.toggle("-translate-x-full");
+        ov.classList.toggle("hidden");
+      }
 
-        async function load() {
-            try {
-                const raw = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
-                const data = raw.map(row => {
-                    let cleanRow = {};
-                    Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
-                    return cleanRow;
-                });
+      function logout() {
+        if (confirm("Logout?")) { localStorage.removeItem('user'); window.location.href = "index.html"; }
+      }
 
-                const debtData = data.filter(r => r.Category === "Debt Repayments");
-                
-                let paidSum = 0;
-                let unpaidSum = 0;
+      function jsonp(url) {
+        return new Promise((resolve) => {
+          const callbackName = 'jsonp_' + Math.round(100000 * Math.random());
+          window[callbackName] = (data) => {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            resolve(data);
+          };
+          const script = document.createElement('script');
+          script.src = `${url}${url.includes('?') ? '&' : '?'}callback=${callbackName}`;
+          document.body.appendChild(script);
+        });
+      }
 
-                const paidBody = document.getElementById('paid-body');
-                const unpaidBody = document.getElementById('unpaid-body');
+      async function load() {
+        try {
+          const raw = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
+          const data = raw.map(row => {
+            let cleanRow = {};
+            Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
+            return cleanRow;
+          });
 
-                // Filter into Two Arrays
-                const paidList = debtData.filter(r => r.Status === 'Paid');
-                const unpaidList = debtData.filter(r => r.Status !== 'Paid');
+          const debtData = data.filter(r => r.Category === "Debt Repayments");
+          
+          let paidSum = 0;
+          let unpaidSum = 0;
 
-                // Render Paid
-                paidBody.innerHTML = paidList.map(r => {
-                    const amt = parseFloat(r.Amount) || 0;
-                    paidSum += amt;
-                    return rowTemplate(r, amt);
-                }).join('') || emptyRow('No completed payments');
+          const paidBody = document.getElementById('paid-body');
+          const unpaidBody = document.getElementById('unpaid-body');
 
-                // Render Unpaid
-                unpaidBody.innerHTML = unpaidList.map(r => {
-                    const amt = parseFloat(r.Amount) || 0;
-                    unpaidSum += amt;
-                    return rowTemplate(r, amt);
-                }).join('') || emptyRow('No outstanding debts');
+          const paidList = debtData.filter(r => r.Status === 'Paid');
+          const unpaidList = debtData.filter(r => r.Status !== 'Paid');
 
-                document.getElementById('total-paid').innerText = `₱${paidSum.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                document.getElementById('total-unpaid').innerText = `₱${unpaidSum.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-                
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-
-            } catch (err) {
-                console.error(err);
-                alert("Error loading data.");
-            }
-        }
-
-        function rowTemplate(r, amt) {
+          const rowTemplate = (r, isPaid) => {
+            const amt = parseFloat(r.Amount) || 0;
+            if(isPaid) paidSum += amt; else unpaidSum += amt;
             return `
-                <tr class="hover:bg-slate-50 transition-colors">
-                    <td class="px-6 py-4 text-slate-400 font-medium">${new Date(r.Date).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 text-slate-600 italic">${r.Notes || '<span class="text-slate-300">No notes</span>'}</td>
-                    <td class="px-6 py-4 text-right font-black text-slate-900">₱${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                </tr>
+              <tr class="hover:bg-slate-50 transition-all">
+                <td class="px-6 py-4 opacity-50 text-[10px] font-bold uppercase tracking-tighter">${new Date(r.Date).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</td>
+                <td class="px-6 py-4 text-slate-500 italic truncate max-w-[200px]">${r.Notes || '---'}</td>
+                <td class="px-6 py-4 text-right font-black text-slate-800">₱${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+              </tr>
             `;
-        }
+          };
 
-        function emptyRow(msg) {
-            return `<tr><td colspan="3" class="p-10 text-center text-slate-400 italic">${msg}</td></tr>`;
-        }
+          const empty = '<tr><td colspan="3" class="py-12 text-center text-slate-300 italic">No records found</td></tr>';
 
-        window.onload = load;
+          paidBody.innerHTML = paidList.map(r => rowTemplate(r, true)).join('') || empty;
+          unpaidBody.innerHTML = unpaidList.map(r => rowTemplate(r, false)).join('') || empty;
+
+          const fmt = (v) => `₱${v.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+          document.getElementById('total-paid').innerText = fmt(paidSum);
+          document.getElementById('total-unpaid').innerText = fmt(unpaidSum);
+          
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('content').classList.remove('hidden');
+
+        } catch (err) { alert("Error loading data."); }
+      }
+
+      window.onload = load;
     </script>
-</body>
+  </body>
 </html>
