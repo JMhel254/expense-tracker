@@ -2,37 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Dashboard - Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-      
-      body { 
-        font-family: 'Plus Jakarta Sans', sans-serif; 
-        background-color: #fcfcfc;
-      }
-
-      /* Sidebar Active Link Style - Maroon Bubble */
       .nav-active {
-        background-color: #801b1b;
+        background-color: var(--primary);
         color: white !important;
         box-shadow: 0 8px 15px -3px rgba(128, 27, 27, 0.3);
       }
-
-      /* Modal Scale Animation */
+      
       .modal-anim {
         animation: modalScale 0.2s ease-out forwards;
       }
       @keyframes modalScale {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
+        from { opacity: 0; transform: scale(0.95) translateY(10px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
       }
 
-      /* Loader Spinner */
       .loader {
-        border-top-color: #801b1b;
+        border-top-color: var(--primary);
         animation: spinner 0.8s linear infinite;
       }
       @keyframes spinner {
@@ -40,34 +31,34 @@
         100% { transform: rotate(360deg); }
       }
 
-      /* Custom compact input styling */
       .input-field {
         background-color: #f8f9fb;
-        border: none;
+        border: 2px solid transparent;
         border-radius: 1rem;
         padding: 0.75rem 1rem;
         font-size: 0.875rem;
-        outline: none;
         width: 100%;
         transition: all 0.2s;
       }
       .input-field:focus {
         background-color: #fff;
-        box-shadow: 0 0 0 2px rgba(128, 27, 27, 0.1);
+        border-color: var(--primary);
+        outline: none;
       }
 
-      /* Hide Scrollbar */
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      @media (max-width: 768px) {
+        .main-content { padding-bottom: 5rem; }
+        .sidebar-desktop { display: none; }
+      }
     </style>
   </head>
-  <body class="text-slate-900 antialiased overflow-x-hidden">
+  <body class="text-slate-900 antialiased overflow-x-hidden selection:bg-red-100">
     
     <!-- Sidebar Overlay -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden backdrop-blur-sm transition-opacity"></div>
 
-    <!-- Sidebar (Consistent w-64) -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-100 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col">
+    <!-- Sidebar Desktop -->
+    <aside id="sidebar" class="sidebar-desktop fixed top-0 left-0 h-full w-64 bg-white border-r border-slate-100 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col">
       <div class="p-6 mb-2">
         <h1 class="text-xl font-extrabold text-[#801b1b] flex items-center gap-2">
           <i class="fas fa-wallet"></i> Tracker
@@ -75,7 +66,7 @@
       </div>
 
       <nav class="flex-1 px-4 space-y-1">
-        <a href="dashboard.html" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm">
+        <a href="dashboard.html" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-white">
             <i class="fas fa-th-large w-5"></i> Dashboard
         </a>
         <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
@@ -93,6 +84,9 @@
         <a href="balance.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all">
             <i class="fas fa-scale-balanced w-5"></i> Balance
         </a>
+        <button onclick="toggleTheme()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:bg-slate-50 transition-all mt-4 border border-dashed border-slate-200">
+            <i class="fas fa-moon w-5"></i> Appearance
+        </button>
       </nav>
 
       <div class="p-4 border-t border-slate-50">
@@ -102,46 +96,131 @@
       </div>
     </aside>
 
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav md:hidden">
+      <a href="dashboard.html" class="nav-item active">
+        <i class="fas fa-th-large"></i>
+        <span>Home</span>
+      </a>
+      <a href="report.html" class="nav-item">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <span>Reports</span>
+      </a>
+      <a href="savings.html" class="nav-item">
+        <i class="fas fa-piggy-bank"></i>
+        <span>Savings</span>
+      </a>
+      <a href="balance.html" class="nav-item">
+        <i class="fas fa-scale-balanced"></i>
+        <span>Balance</span>
+      </a>
+      <button onclick="openModal()" class="w-12 h-12 bg-[#801b1b] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-red-900/30 -mt-8 border-4 border-white">
+        <i class="fas fa-plus"></i>
+      </button>
+    </nav>
+
     <!-- Main Content -->
-    <main class="md:ml-64 min-h-screen">
-      <nav class="bg-white border-b border-slate-100 px-4 py-3 sticky top-0 z-30 flex justify-between items-center">
+    <main class="md:ml-64 min-h-screen main-content pb-20 md:pb-0">
+      <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-4 sticky top-0 z-30 flex justify-between items-center">
         <div class="flex items-center gap-3">
           <button onclick="toggleSidebar()" class="md:hidden text-slate-600 p-2"><i class="fas fa-bars"></i></button>
-          <h2 class="text-sm font-bold text-slate-800 hidden sm:block">Financial Overview</h2>
+          <div>
+            <h2 class="text-base font-bold text-slate-800">Hi, Tracker</h2>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Financial Overview</p>
+          </div>
         </div>
-        <button onclick="openModal()" class="bg-[#801b1b] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg hover:scale-105 active:scale-95 transition-all">
-          + Add New
+        <button onclick="openModal()" class="hidden md:flex bg-[#801b1b] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-red-900/20 hover:scale-105 active:scale-95 transition-all items-center gap-2">
+          <i class="fas fa-plus"></i> Add New
         </button>
       </nav>
 
       <div class="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
-        <!-- Stats Row (Consistent Size) -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-          <div class="bg-white p-4 md:p-6 rounded-3xl border border-slate-100 shadow-sm">
-            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Balance</p>
-            <h2 id="stat-balance" class="text-base font-black text-slate-800 mt-1 truncate">₱0.00</h2>
+        <!-- Stats Row -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div class="glass-card p-5 rounded-3xl animate-slide-up" style="animation-delay: 0.1s">
+            <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 mb-3 text-xs">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Net Balance</p>
+            <h2 id="stat-balance" class="text-lg font-black text-slate-800 mt-1 truncate">₱0.00</h2>
           </div>
-          <div class="bg-white p-4 md:p-6 rounded-3xl border border-slate-100 shadow-sm">
-            <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Income</p>
-            <h2 id="stat-income" class="text-base font-black text-emerald-600 mt-1 truncate">₱0.00</h2>
+          <div class="glass-card p-5 rounded-3xl animate-slide-up" style="animation-delay: 0.2s">
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 mb-3 text-xs">
+                <i class="fas fa-arrow-down"></i>
+            </div>
+            <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Monthly Income</p>
+            <h2 id="stat-income" class="text-lg font-black text-emerald-600 mt-1 truncate">₱0.00</h2>
           </div>
-          <div class="bg-white p-4 md:p-6 rounded-3xl border border-slate-100 shadow-sm">
-            <p class="text-[9px] font-bold text-rose-500 uppercase tracking-widest">Expenses</p>
-            <h2 id="stat-expenses" class="text-base font-black text-rose-600 mt-1 truncate">₱0.00</h2>
+          <div class="glass-card p-5 rounded-3xl animate-slide-up" style="animation-delay: 0.3s">
+            <div class="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-rose-600 mb-3 text-xs">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <p class="text-[10px] font-bold text-rose-500 uppercase tracking-widest">Monthly Expenses</p>
+            <h2 id="stat-expenses" class="text-lg font-black text-rose-600 mt-1 truncate">₱0.00</h2>
           </div>
-          <div class="bg-white p-4 md:p-6 rounded-3xl border border-slate-100 shadow-sm">
-            <p class="text-[9px] font-bold text-blue-500 uppercase tracking-widest">Savings</p>
-            <h2 id="stat-savings" class="text-base font-black text-blue-600 mt-1 truncate">₱0.00</h2>
+          <div class="glass-card p-5 rounded-3xl animate-slide-up" style="animation-delay: 0.4s">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-3 text-xs">
+                <i class="fas fa-piggy-bank"></i>
+            </div>
+            <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Total Savings</p>
+            <h2 id="stat-savings" class="text-lg font-black text-blue-600 mt-1 truncate">₱0.00</h2>
           </div>
+        </div>
+
+        <!-- Trend Chart & Budget Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up" style="animation-delay: 0.3s">
+            <!-- 30-Day Trend Chart -->
+            <div class="lg:col-span-2 glass-card p-6 rounded-[2.5rem]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">30-Day Cash Flow Trend</h3>
+                    <div class="flex gap-2">
+                        <span class="flex items-center gap-1.5 text-[9px] font-bold text-emerald-500 uppercase"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> In</span>
+                        <span class="flex items-center gap-1.5 text-[9px] font-bold text-rose-500 uppercase"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Out</span>
+                    </div>
+                </div>
+                <div id="trend-chart" class="h-40 flex items-end gap-1.5 px-2 pb-2 border-b border-slate-100">
+                    <!-- Bars injected by JS -->
+                </div>
+            </div>
+
+            <!-- Smart Budgets -->
+            <div class="glass-card p-6 rounded-[2.5rem] space-y-4">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Monthly Budgets</h3>
+                <div id="budget-list" class="space-y-4">
+                    <!-- Progress bars injected by JS -->
+                </div>
+                <button onclick="setBudgets()" class="w-full py-2 bg-slate-50 rounded-xl text-[9px] font-black text-slate-400 uppercase tracking-widest hover:bg-slate-100 transition-all">Manage Limits</button>
+            </div>
+        </div>
+
+        <!-- Recurring Bills Summary -->
+        <div id="recurring-bills" class="hidden animate-slide-up" style="animation-delay: 0.45s">
+            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-2">Subscription & Recurring Bills</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Est. Monthly Bills</p>
+                            <h4 id="bill-estimate" class="text-sm font-black text-slate-800">₱0.00</h4>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] font-bold text-indigo-500 uppercase">Auto-detected</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Search & Filter Bar -->
         <div class="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row gap-2">
           <div class="relative flex-1">
-            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
-            <input type="text" id="searchTerm" oninput="applyFilters()" placeholder="Search transactions..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 border-none outline-none text-xs" />
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-sm"></i>
+            <input type="text" id="searchTerm" oninput="applyFilters()" placeholder="Search transactions..." class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-50 border-none outline-none text-xs font-medium focus:ring-2 ring-red-500/10 transition-all" />
           </div>
-          <select id="filterCategory" onchange="applyFilters()" class="px-3 py-2 rounded-xl bg-slate-50 text-xs font-semibold text-slate-500 outline-none border-none cursor-pointer">
+          <select id="filterCategory" onchange="applyFilters()" class="px-4 py-2.5 rounded-xl bg-slate-50 text-xs font-bold text-slate-500 outline-none border-none cursor-pointer hover:bg-slate-100 transition-all">
             <option value="">All Categories</option>
             <option>Groceries</option><option>Transportation</option><option>Shopping</option>
             <option>Entertainment</option><option>Food</option><option>Savings</option>
@@ -153,16 +232,16 @@
 
         <!-- Loading -->
         <div id="loading" class="flex flex-col items-center py-20">
-          <div class="loader rounded-full border-4 border-slate-50 h-10 w-10 mb-2"></div>
-          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Syncing Records...</p>
+          <div class="loader rounded-full border-4 border-slate-50 h-12 w-12 mb-4"></div>
+          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest animate-pulse">Syncing with Cloud...</p>
         </div>
 
         <!-- Table Content -->
-        <div id="content" class="hidden">
+        <div id="content" class="hidden animate-slide-up" style="animation-delay: 0.5s">
           <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
             <div class="overflow-x-auto no-scrollbar">
               <table class="w-full text-left border-collapse min-w-[700px]">
-                <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-bold">
+                <thead class="bg-slate-50/50 text-slate-400 text-[9px] uppercase font-extrabold tracking-widest">
                   <tr>
                     <th class="px-8 py-5">Date</th>
                     <th class="px-8 py-5">Category</th>
@@ -171,7 +250,7 @@
                     <th class="px-8 py-5 text-center">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="tableBody" class="divide-y divide-slate-50 text-xs font-medium text-slate-600"></tbody>
+                <tbody id="tableBody" class="divide-y divide-slate-50 text-xs font-semibold text-slate-600"></tbody>
               </table>
             </div>
           </div>
@@ -179,43 +258,28 @@
       </div>
     </main>
 
-    <!-- Tiny Compact Modal (Matches your image) -->
-    <div id="modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-[340px] rounded-[2rem] shadow-2xl overflow-hidden modal-anim relative">
-        <button onclick="closeModal()" class="absolute right-5 top-5 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-900 transition-all">
-          <i class="fas fa-times text-xs"></i>
-        </button>
-
-        <div class="p-6 pb-4">
-          <h2 id="modalTitle" class="text-lg font-extrabold text-[#1a2b4b]">New Transaction</h2>
-          <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Fill in the details</p>
+    <!-- Modal Form (Mobile Bottom Sheet Style) -->
+    <div id="modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] flex items-end md:items-center justify-center p-0 md:p-4">
+      <div class="bg-white w-full max-w-md rounded-t-[2.5rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden modal-anim relative p-6">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h2 id="modalTitle" class="text-xl font-black text-slate-900">New Transaction</h2>
+            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Enter details below</p>
+          </div>
+          <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-all">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         
-        <form id="entryForm" onsubmit="handleSave(event)" class="px-6 pb-8 space-y-4">
+        <form id="entryForm" onsubmit="handleSave(event)" class="space-y-5">
           <input type="hidden" id="rowId" />
           
-          <div class="space-y-1">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date</label>
-            <input type="date" id="date" required class="input-field" />
-          </div>
-
-          <div class="space-y-1">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Category</label>
-            <select id="category" class="input-field appearance-none">
-                <option>Groceries</option><option>Transportation</option><option>Shopping</option>
-                <option>Entertainment</option><option>Food</option><option>Savings</option>
-                <option>Miscellaneous</option><option>Tithes/Offering</option><option>Personal Care</option>
-                <option>Debt Repayments</option><option>Family</option><option>Rent</option>
-                <option>Investments</option><option>Lend</option><option>Income</option>
-            </select>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Amount (₱)</label>
-              <input type="number" id="amount" step="0.01" required placeholder="0.00" class="input-field font-bold" />
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Process Date</label>
+              <input type="date" id="date" required class="input-field" />
             </div>
-            <div class="space-y-1">
+            <div class="space-y-1.5">
               <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Method</label>
               <select id="method" class="input-field">
                 <option>Cash</option><option>G-Cash</option><option>Bank</option>
@@ -223,45 +287,37 @@
             </div>
           </div>
 
-          <div class="space-y-1">
-            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Description</label>
-            <textarea id="notes" rows="2" placeholder="What was this for?" class="input-field resize-none"></textarea>
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Transaction Category</label>
+            <select id="category" class="input-field appearance-none">
+              <option>Groceries</option><option>Transportation</option><option>Shopping</option>
+              <option>Entertainment</option><option>Food</option><option>Savings</option>
+              <option>Miscellaneous</option><option>Tithes/Offering</option><option>Personal Care</option>
+              <option>Debt Repayments</option><option>Family</option><option>Rent</option>
+              <option>Investments</option><option>Lend</option><option>Income</option>
+            </select>
           </div>
 
-          <button type="submit" id="saveBtn" class="w-full bg-[#801b1b] text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-red-900/30 active:scale-95 transition-all mt-2">
-            Save Transaction
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Total Amount (₱)</label>
+            <input type="number" id="amount" step="0.01" required placeholder="0.00" class="input-field font-bold text-lg" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Specific Notes</label>
+            <textarea id="notes" rows="2" placeholder="Tell us more about this..." class="input-field resize-none"></textarea>
+          </div>
+
+          <button type="submit" id="saveBtn" class="w-full bg-[#801b1b] text-white py-4 rounded-2xl font-black text-sm shadow-xl shadow-red-900/30 active:scale-95 transition-all mt-4">
+            Record Transaction
           </button>
         </form>
       </div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
-      // Auth Guard
-      if (!localStorage.getItem("user")) { window.location.href = "login.html"; }
-
-      function toggleSidebar() {
-        const sb = document.getElementById("sidebar");
-        const ov = document.getElementById("sidebar-overlay");
-        sb.classList.toggle("-translate-x-full");
-        ov.classList.toggle("hidden");
-      }
-
-      function logout() {
-        if (confirm("Logout from Tracker?")) { localStorage.removeItem("user"); window.location.href = "index.html"; }
-      }
-
-      const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
       let masterData = [];
-
-      function jsonp(url) {
-        return new Promise((resolve) => {
-          const cb = "cb" + Math.round(100000 * Math.random());
-          window[cb] = (data) => { delete window[cb]; document.body.removeChild(script); resolve(data); };
-          const script = document.createElement("script");
-          script.src = `${url}${url.includes('?') ? '&' : '?'}callback=${cb}`;
-          document.body.appendChild(script);
-        });
-      }
 
       async function loadData() {
         document.getElementById("loading").classList.remove("hidden");
@@ -276,17 +332,104 @@
           updateUI();
           document.getElementById("loading").classList.add("hidden");
           document.getElementById("content").classList.remove("hidden");
-        } catch (e) { alert("Network error. Please refresh."); }
+        } catch (e) { 
+          alert("Network error. Please check your connection."); 
+        }
       }
 
       function updateUI() {
         calculateStats(masterData);
         renderTable(masterData);
+        renderBudgets(masterData);
+        renderTrend(masterData);
+      }
+
+      function renderBudgets(data) {
+        const budgets = JSON.parse(localStorage.getItem('category_budgets') || '{"Groceries": 5000, "Food": 3000, "Transportation": 2000}');
+        const now = new Date();
+        const totals = {};
+        
+        data.forEach(r => {
+            const d = new Date(r.Date);
+            if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) {
+                const cat = r.Category;
+                totals[cat] = (totals[cat] || 0) + (parseFloat(r.Amount) || 0);
+            }
+        });
+
+        const list = document.getElementById('budget-list');
+        list.innerHTML = Object.keys(budgets).map(cat => {
+            const spent = totals[cat] || 0;
+            const limit = budgets[cat];
+            const perc = Math.min(100, (spent / limit) * 100);
+            const isNear = perc > 85;
+            
+            return `
+                <div class="space-y-1.5">
+                    <div class="flex justify-between text-[10px] font-black uppercase tracking-tight">
+                        <span class="${isNear ? 'text-rose-500' : 'text-slate-600'}">${cat}</span>
+                        <span class="text-slate-400">${formatCurrency(spent)} / ${formatCurrency(limit)}</span>
+                    </div>
+                    <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-1000 ${isNear ? 'bg-rose-500' : 'bg-[#801b1b]'}" style="width: ${perc}%"></div>
+                    </div>
+                </div>`;
+        }).join('') || '<p class="text-[10px] text-slate-300 italic">No budgets set</p>';
+      }
+
+      function renderTrend(data) {
+        const chart = document.getElementById('trend-chart');
+        const now = new Date();
+        const days = 30;
+        const trend = [];
+        
+        for (let i = days - 1; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(now.getDate() - i);
+            const dateStr = d.toISOString().split('T')[0];
+            
+            let dailyIn = 0, dailyOut = 0;
+            data.forEach(r => {
+                if (r.Date.startsWith(dateStr)) {
+                    const amt = parseFloat(r.Amount) || 0;
+                    if (r.Category === 'Income') dailyIn += amt;
+                    else if (r.Category !== 'Savings' && r.Category !== 'Investments') dailyOut += amt;
+                }
+            });
+            trend.push({ in: dailyIn, out: dailyOut });
+        }
+
+        const maxVal = Math.max(...trend.map(t => Math.max(t.in, t.out)), 100);
+        chart.innerHTML = trend.map(t => `
+            <div class="flex-1 flex flex-col justify-end gap-0.5 group relative h-full">
+                <div class="w-full bg-emerald-500/20 group-hover:bg-emerald-500/40 transition-all rounded-t-sm" style="height: ${(t.in / maxVal) * 100}%"></div>
+                <div class="w-full bg-rose-500/20 group-hover:bg-rose-500/40 transition-all rounded-t-sm" style="height: ${(t.out / maxVal) * 100}%"></div>
+                <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[8px] font-black px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                    +${formatCurrency(t.in)} | -${formatCurrency(t.out)}
+                </div>
+            </div>`).join('');
+      }
+
+      function setBudgets() {
+          const current = localStorage.getItem('category_budgets') || '{"Groceries": 5000}';
+          const hint = `Example: <span class="bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded">{"Food": 2000, "Bills": 10000}</span><br/>Use correct JSON quotes and commas.`;
+          showPrompt("Set Category Budgets (JSON)", current, (val) => {
+              if (val) {
+                  try { 
+                      JSON.parse(val); 
+                      localStorage.setItem('category_budgets', val);
+                      updateUI();
+                      showToast("Budgets updated", "success");
+                  } catch(e) { showToast("Invalid JSON format", "error"); }
+              }
+          }, hint);
       }
 
       function calculateStats(data) {
         const now = new Date();
         let inc = 0, exp = 0, monthInc = 0, monthExp = 0, totalSav = 0;
+        const recurringCats = ["Rent", "Investments", "Family"]; // Static recurring types
+        let billSum = 0;
 
         data.forEach(row => {
           const amt = parseFloat(row.Amount) || 0;
@@ -298,38 +441,64 @@
             inc += amt; if (isMonth) monthInc += amt;
           } else if (cat === "Savings" || cat === "Investments") {
             totalSav += amt;
+            if (cat === "Investments") billSum += amt; // Assuming periodic investment
           } else {
             exp += amt; if (isMonth) monthExp += amt;
+            if (recurringCats.includes(cat)) billSum += amt;
           }
         });
 
-        const f = (v) => `₱${v.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-        document.getElementById("stat-balance").innerText = f(inc - exp - totalSav);
-        document.getElementById("stat-income").innerText = f(monthInc);
-        document.getElementById("stat-expenses").innerText = f(monthExp);
-        document.getElementById("stat-savings").innerText = f(totalSav);
+        document.getElementById("stat-balance").innerText = formatCurrency(inc - exp - totalSav);
+        document.getElementById("stat-income").innerText = formatCurrency(monthInc);
+        document.getElementById("stat-expenses").innerText = formatCurrency(monthExp);
+        document.getElementById("stat-savings").innerText = formatCurrency(totalSav);
+        
+        // Update Bills UI
+        const billEl = document.getElementById("recurring-bills");
+        const billVal = document.getElementById("bill-estimate");
+        if (billSum > 0) {
+            billEl.classList.remove("hidden");
+            // Simple heuristic for "est. monthly" - if we found some in the archives
+            // for brevity in this MVP, we show the sum of detected recurring categories
+            // In a real app, we'd average them.
+            billVal.innerText = formatCurrency(billSum / Math.max(1, Math.floor(data.length / 30))); 
+            // Rough average over time
+        }
       }
 
       function renderTable(data) {
         const tbody = document.getElementById("tableBody");
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="py-20 text-center text-slate-300 italic">No transactions found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="py-20 text-center"><div class="flex flex-col items-center opacity-30"><i class="fas fa-folder-open text-4xl mb-3"></i><p class="text-[10px] font-bold uppercase tracking-widest">No Records Found</p></div></td></tr>';
             return;
         }
 
-        tbody.innerHTML = data.map(row => {
+        tbody.innerHTML = data.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(row => {
             const dateStr = new Date(row.Date).toLocaleDateString('en-US', {month:'short', day:'numeric'});
             const cleanNotes = (row.Notes || "").replace(/'/g, "\\'");
+            const isIncome = row.Category === "Income";
+            
             return `
-                <tr class="hover:bg-slate-50 transition-colors group">
-                    <td class="px-8 py-5 opacity-50 text-[10px] font-bold uppercase tracking-tighter">${dateStr}</td>
-                    <td class="px-8 py-5"><span class="px-2.5 py-1 bg-slate-100 rounded-lg text-[10px] font-bold text-slate-500 uppercase tracking-wide">${row.Category}</span></td>
-                    <td class="px-8 py-5 text-slate-500 italic max-w-xs truncate font-normal">${row.Notes || '---'}</td>
-                    <td class="px-8 py-5 text-right font-black text-slate-800">₱${parseFloat(row.Amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <tr class="hover:bg-slate-50/80 transition-colors group">
+                    <td class="px-8 py-5">
+                      <p class="text-[10px] font-black uppercase tracking-tight text-slate-800">${dateStr}</p>
+                      <p class="text-[9px] text-slate-400 font-bold">${new Date(row.Date).getFullYear()}</p>
+                    </td>
+                    <td class="px-8 py-5">
+                      <span class="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black text-slate-500 uppercase tracking-widest">${row.Category}</span>
+                    </td>
+                    <td class="px-8 py-5 text-slate-500 font-medium max-w-xs truncate italic">${row.Notes || '---'}</td>
+                    <td class="px-8 py-5 text-right font-black ${isIncome ? 'text-emerald-600' : 'text-slate-900'}">
+                      ${formatCurrency(parseFloat(row.Amount))}
+                    </td>
                     <td class="px-8 py-5 text-center">
-                        <div class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="editRow('${row["ID#"]}', '${row.Date}', '${row.Category}', ${row.Amount}, '${row.Method}', '${row.Status}', '${cleanNotes}')" class="text-slate-400 hover:text-blue-600 transition-colors"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteRow('${row["ID#"]}')" class="text-slate-300 hover:text-rose-600 transition-colors"><i class="fas fa-trash"></i></button>
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="editRow('${row["ID#"]}', '${row.Date}', '${row.Category}', ${row.Amount}, '${row.Method}', '${row.Status}', '${cleanNotes}')" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center shadow-sm border border-slate-200">
+                                <i class="fas fa-edit text-xs"></i>
+                            </button>
+                            <button onclick="deleteRow('${row["ID#"]}')" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-400 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center shadow-sm border border-slate-200">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>`;
@@ -349,7 +518,9 @@
       async function handleSave(e) {
         e.preventDefault();
         const btn = document.getElementById("saveBtn");
+        const originalText = btn.innerText;
         btn.innerText = "Syncing..."; btn.disabled = true;
+        
         const data = {
           id: document.getElementById("rowId").value,
           date: document.getElementById("date").value,
@@ -359,17 +530,28 @@
           notes: document.getElementById("notes").value,
           status: "Paid"
         };
-        await jsonp(`${API_URL}?action=upsert&data=${encodeURIComponent(JSON.stringify(data))}`);
-        closeModal();
-        await loadData();
-        btn.innerText = "Save Transaction"; btn.disabled = false;
+        
+        try {
+          await jsonp(`${API_URL}?action=upsert&data=${encodeURIComponent(JSON.stringify(data))}`);
+          closeModal();
+          await loadData();
+          showToast("Sync Successful");
+        } catch (err) {
+          showToast("Sync Failed", "error");
+        } finally {
+          btn.innerText = originalText; btn.disabled = false;
+        }
       }
 
       async function deleteRow(id) {
-        if (confirm("Delete this entry forever?")) {
-          await jsonp(`${API_URL}?action=delete&id=${id}`);
-          await loadData();
-        }
+        showConfirm("Are you sure you want to delete this entry forever?", async () => {
+          try {
+            await jsonp(`${API_URL}?action=delete&id=${id}`);
+            masterData = masterData.filter(r => r["ID#"] != id);
+            updateUI();
+            showToast("Transaction Deleted", "success");
+          } catch(e) { showToast("Delete Failed", "error"); }
+        });
       }
 
       function editRow(id, date, cat, amt, meth, stat, notes) {
@@ -379,7 +561,7 @@
         document.getElementById("amount").value = amt;
         document.getElementById("method").value = meth;
         document.getElementById("notes").value = notes;
-        document.getElementById("modalTitle").innerText = "Edit Transaction";
+        document.getElementById("modalTitle").innerText = "Update Record";
         openModal();
       }
 

@@ -2,181 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO & Meta Tags -->
-    <title>Join Tracker — Start Your Financial Journey</title>
-    <meta name="title" content="Join Tracker — Smart Finance, Simple Tracking">
-    <meta name="description" content="Create your account and join thousands of high-achievers mastering their money with Tracker.">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Create Account — Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="style.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #ffffff;
-        }
-
-        .auth-gradient {
-            background: radial-gradient(circle at 100% 0%, rgba(153, 27, 27, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 0% 100%, rgba(153, 27, 27, 0.03) 0%, transparent 50%);
-        }
-
-        .input-glow:focus {
-            box-shadow: 0 0 0 4px rgba(153, 27, 27, 0.08);
-            border-color: #801b1b;
-        }
-
-        .btn-glow:hover {
-            box-shadow: 0 10px 25px -5px rgba(153, 27, 27, 0.4);
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
-<body class="auth-gradient min-h-screen flex items-stretch overflow-x-hidden">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <!-- Left Side: Benefit Panel (Hidden on Mobile) -->
-    <div class="hidden lg:flex lg:w-5/12 bg-slate-900 relative items-center justify-center p-12 overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-red-900/20 blur-[100px] rounded-full"></div>
-        
-        <div class="relative z-10 max-w-sm">
-            <a href="index.html" class="inline-flex items-center gap-2 mb-12 group">
-                <div class="bg-red-900 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    <i class="fas fa-wallet"></i>
-                </div>
-                <span class="text-xl font-black text-white">Tracker</span>
-            </a>
+    <!-- Theme Toggle Floating -->
+    <button onclick="toggleTheme()" class="fixed top-6 right-6 w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-slate-400 hover:text-[#801b1b] transition-all z-50">
+        <i class="fas fa-moon text-lg"></i>
+    </button>
 
-            <h2 class="text-4xl font-extrabold text-white leading-tight mb-8">
-                Start your journey to <span class="text-red-500">financial freedom.</span>
-            </h2>
-
-            <ul class="space-y-6">
-                <li class="flex items-start gap-4">
-                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
-                        <i class="fas fa-check text-[10px]"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm">Unified Dashboard</h4>
-                        <p class="text-slate-400 text-xs mt-1">Track income, debt, and savings in one place.</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-4">
-                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
-                        <i class="fas fa-check text-[10px]"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm">Smart PDF Reports</h4>
-                        <p class="text-slate-400 text-xs mt-1">Analyze your spending with professional exports.</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-4">
-                    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
-                        <i class="fas fa-check text-[10px]"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold text-sm">Debt Snowball Tool</h4>
-                        <p class="text-slate-400 text-xs mt-1">Strategy-based debt management at your fingertips.</p>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="mt-16 pt-8 border-t border-white/10">
-                <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Trusted by builders at</p>
-                <div class="flex gap-6 mt-4 opacity-30 grayscale invert">
-                    <i class="fab fa-stripe text-2xl"></i>
-                    <i class="fab fa-airbnb text-2xl"></i>
-                    <i class="fab fa-slack text-2xl"></i>
-                </div>
+    <div class="w-full max-w-md animate-fade">
+        <!-- Logo -->
+        <div class="flex flex-col items-center mb-10">
+            <div class="bg-[#801b1b] text-white w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-2xl shadow-red-900/30 mb-6">
+                <i class="fas fa-wallet text-2xl"></i>
             </div>
+            <h1 class="text-3xl font-black tracking-tight text-center">Join Tracker</h1>
+            <p class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mt-2">Start your financial journey today</p>
         </div>
-    </div>
 
-    <!-- Right Side: Signup Form -->
-    <div class="w-full lg:w-7/12 flex items-center justify-center p-6 md:p-12">
-        <div class="w-full max-w-md animate-fade">
-            
-            <div class="mb-10">
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
-                <p class="text-slate-500 font-medium mt-2">Get started with your free-forever account.</p>
-            </div>
-
+        <div class="glass-card p-8 rounded-[2.5rem]">
             <form onsubmit="handleSignup(event)" class="space-y-5">
                 <!-- Full Name -->
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Full Name</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
                     <div class="relative group">
-                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
                         <input type="text" id="name" placeholder="John Doe" required 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-semibold input-glow">
+                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
                     </div>
                 </div>
 
                 <!-- Email -->
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Email Address</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
                     <div class="relative group">
-                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
                         <input type="email" id="email" placeholder="name@email.com" required 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-semibold input-glow">
+                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div class="space-y-2">
-                    <label class="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Password</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
                     <div class="relative group">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-900 transition-colors"></i>
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
                         <input type="password" id="pass" placeholder="Min. 8 characters" required 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-12 outline-none transition-all text-sm font-semibold input-glow">
-                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-900 transition-colors">
-                            <i id="eyeIcon" class="fas fa-eye text-sm"></i>
+                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-12 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#801b1b] transition-colors">
+                            <i id="eyeIcon" class="fas fa-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Terms -->
                 <label class="flex items-start gap-3 cursor-pointer group mt-4">
-                    <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 rounded border-slate-300 text-red-900 focus:ring-red-900/20 transition-all cursor-pointer">
-                    <span class="text-xs text-slate-500 font-medium leading-relaxed">
-                        I agree to the <a href="#" class="text-red-900 font-bold hover:underline">Terms of Service</a> and 
-                        <a href="#" class="text-red-900 font-bold hover:underline">Privacy Policy</a>.
+                    <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 rounded-lg border-slate-200 text-[#801b1b] focus:ring-red-900/10 transition-all cursor-pointer">
+                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                        I agree to the <a href="#" class="text-[#801b1b] hover:underline">Terms</a> and 
+                        <a href="#" class="text-[#801b1b] hover:underline">Privacy Policy</a>
                     </span>
                 </label>
 
                 <!-- Action Button -->
                 <button type="submit" id="regBtn" 
-                    class="w-full bg-red-900 text-white py-4 rounded-2xl font-extrabold text-sm tracking-wide transition-all active:scale-[0.98] btn-glow flex items-center justify-center gap-3 mt-4">
-                    <span>CREATE MY ACCOUNT</span>
-                    <i class="fas fa-arrow-right text-[10px]"></i>
+                    class="w-full bg-[#801b1b] text-white py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-red-900/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3 mt-4">
+                    <span>Create My Account</span>
+                    <i class="fas fa-arrow-right text-[9px]"></i>
                 </button>
             </form>
 
-            <p class="text-center mt-10 text-slate-500 font-semibold text-sm">
-                Already have an account? 
-                <a href="login.html" class="text-red-900 font-extrabold hover:underline underline-offset-4">Sign in here</a>
-            </p>
-
-            <div class="mt-12 flex justify-center">
-                <a href="index.html" class="text-slate-400 hover:text-slate-600 text-xs font-bold flex items-center gap-2">
-                    <i class="fas fa-arrow-left text-[10px]"></i> Back to Home
-                </a>
+            <div class="mt-8 pt-8 border-t border-slate-50 text-center">
+                <p class="text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+                    Already have an account? 
+                    <a href="login.html" class="text-[#801b1b] hover:underline underline-offset-4 ml-1">Sign in here</a>
+                </p>
             </div>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+            <a href="index.html" class="text-slate-400 hover:text-slate-600 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all">
+                <i class="fas fa-chevron-left text-[8px]"></i> Back to Home
+            </a>
         </div>
     </div>
 
+    <script src="shared.js"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxJAJUYfLB5kIYXnpPAIegWFouW5ABnEPFFtEHNDGoZ1zr7JL2FkpIAoiHOcE-EXb8nIA/exec";
-
         function togglePassword() {
             const passInput = document.getElementById('pass');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -194,10 +118,8 @@
             const btn = document.getElementById('regBtn');
             const originalContent = btn.innerHTML;
             
-            // UI Loading State
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SECURING YOUR DATA...';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Securing data...';
             btn.disabled = true;
-            btn.classList.add('opacity-80', 'cursor-not-allowed');
 
             const userData = {
                 name: document.getElementById('name').value,
@@ -205,32 +127,21 @@
                 password: document.getElementById('pass').value 
             };
 
-            const callbackName = 'jsonp_' + Date.now();
-            const script = document.createElement('script');
-            script.src = `${API_URL}?action=signup&data=${encodeURIComponent(JSON.stringify(userData))}&callback=${callbackName}`;
-            
-            window[callbackName] = function(res) {
+            try {
+                const res = await jsonp(`${API_URL}?action=signup&data=${encodeURIComponent(JSON.stringify(userData))}`);
                 if(res.success) {
-                    alert("Welcome to Tracker! Your account has been created. Please log in.");
-                    window.location.href = "login.html";
+                    showToast("Welcome! Please log in.");
+                    setTimeout(() => window.location.href = "login.html", 2000);
                 } else {
-                    alert(res.message || "Signup failed. This email might already be in use.");
+                    showToast(res.message || "Signup failed", "error");
                     btn.innerHTML = originalContent;
                     btn.disabled = false;
-                    btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 }
-                document.body.removeChild(script);
-                delete window[callbackName];
-            };
-
-            script.onerror = () => {
-                alert("Network error. Please check your internet connection and try again.");
+            } catch (err) {
+                showToast("Network error. Try again.", "error");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
-                btn.classList.remove('opacity-80', 'cursor-not-allowed');
-            };
-
-            document.body.appendChild(script);
+            }
         }
     </script>
 </body>
