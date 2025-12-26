@@ -1,307 +1,211 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tracker — Master Your Money</title>
     
+    <!-- Primary Meta Tags -->
+    <title>Tracker — Smart Finance, Simple Tracking</title>
+    <meta name="title" content="Tracker — Master Your Money">
+    <meta name="description" content="The all-in-one personal finance dashboard. Track expenses, manage lended money, crush debt, and grow your savings effortlessly.">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jmhel254.github.io/expense-tracker/">
+    <meta property="og:title" content="Tracker — Master Your Money">
+    <meta property="og:description" content="Stop wondering where your money went. Join Tracker and take control of your financial future today.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Tracker — Master Your Money">
+    <meta property="twitter:description" content="Detailed reports, debt management, and savings goals in one clean dashboard.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=1200&h=630&fit=crop">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: { 900: '#991b1b', 800: '#7f1d1d' }
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="index.css" rel="stylesheet" />
+    <script src="js/ui-utils.js"></script>
     <style>
-        .hero-gradient {
-            background: radial-gradient(circle at top right, rgba(128, 27, 27, 0.05), transparent 40%),
-                        radial-gradient(circle at bottom left, rgba(128, 27, 27, 0.03), transparent 40%);
-        }
-        .bento-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border-color);
-        }
-        .bento-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px -15px rgba(128, 27, 27, 0.1);
-            border-color: #801b1b33;
-        }
-        .floating { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .blob { position: absolute; width: 300px; height: 300px; background: #991b1b; filter: blur(80px); opacity: 0.1; border-radius: 50%; z-index: -1; }
     </style>
 </head>
-<body class="hero-gradient">
+  <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 overflow-x-hidden transition-colors duration-300">
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-[100] glass-card border-b border-slate-100 dark:border-white/5">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2 group cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <div class="bg-[#801b1b] text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
-                    <i class="fas fa-wallet text-lg"></i>
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-black text-red-900 dark:text-red-500 flex items-center gap-2">
+                <div class="bg-red-900 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-wallet text-sm"></i>
                 </div>
-                <span class="text-xl font-black tracking-tight text-[#801b1b]">Tracker</span>
+                <span>Tracker</span>
             </div>
-            
-            <div class="hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                <a href="#features" class="hover:text-[#801b1b] transition-colors">Features</a>
-                <a href="#comparison" class="hover:text-[#801b1b] transition-colors">Efficiency</a>
-                <button onclick="toggleTheme()" class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center hover:bg-slate-100 transition-all">
-                    <i class="fas fa-moon text-xs"></i>
-                </button>
+            <div class="hidden md:flex space-x-8 text-sm font-bold text-slate-600 dark:text-slate-400">
+                <a href="#features" class="hover:text-red-900 transition-colors">Features</a>
+                <a href="#how-it-works" class="hover:text-red-900 transition-colors">How it Works</a>
             </div>
-
             <div class="flex items-center gap-4">
-                <a href="login.html" class="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#801b1b]">Sign In</a>
-                <a href="signup.html" class="bg-[#801b1b] text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-900/20 hover:opacity-95 transition-all active:scale-95">
-                    Start Free
-                </a>
+                <button onclick="ThemeManager.toggle()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                  <i class="fas fa-moon dark:hidden"></i>
+                  <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+                <a href="login.html" class="font-bold text-slate-600 dark:text-slate-400 hover:text-red-900 text-sm">Login</a>
+                <a href="signup.html" class="bg-red-900 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:bg-red-800 hover:-translate-y-0.5 transition-all text-sm">Join for Free</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="max-w-7xl mx-auto px-6 pt-16 pb-24 md:pt-32 md:pb-48 grid lg:grid-cols-2 gap-16 items-center">
-        <div data-aos="fade-up">
-            <div class="inline-flex items-center gap-2 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/20 text-[#801b1b] px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest mb-8">
-                <span class="flex h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse"></span>
-                Trusted by 2,000+ Builders
-            </div>
-            <h1 class="text-5xl md:text-7xl font-black leading-[1.1] tracking-tight">
-                Your money, <br/>
-                <span class="text-[#801b1b]">Finally Organized.</span>
+    <header class="relative max-w-7xl mx-auto px-6 py-16 md:py-28 grid md:grid-cols-2 items-center gap-12">
+        <div class="blob -top-10 -left-10"></div>
+        <div class="z-10 text-center md:text-left">
+            <span class="inline-flex items-center gap-2 bg-red-50 text-red-900 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                </span>
+                Financial Freedom Starts Here
+            </span>
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 dark:text-white leading-tight">
+                Master your <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-900 to-red-600">money</span> without the stress.
             </h1>
-            <p class="text-lg text-slate-400 mt-8 leading-relaxed max-w-lg font-medium">
-                Stop guessing where your paycheck goes. Tracker brings your expenses, lended money, and savings into one stunning, professional dashboard.
+            <p class="text-lg md:text-xl text-slate-500 mt-8 leading-relaxed">
+                The modern dashboard to track spending, manage debts, and hit your savings goals. No spreadsheets. No headache. Just clarity.
             </p>
-            <div class="mt-12 flex flex-col sm:flex-row gap-4">
-                <a href="signup.html" class="bg-[#801b1b] text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-red-900/30 hover:scale-[1.02] transition-all text-center">
-                    Get Started Now
+            <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                <a href="signup.html" class="w-full sm:w-auto bg-red-900 text-white px-8 py-4 rounded-2xl font-black shadow-2xl shadow-red-900/30 hover:bg-red-800 hover:scale-105 transition-all text-center">
+                    Start Tracking Now — It's Free
                 </a>
-                <div class="flex items-center gap-3 px-4 py-4 sm:py-0">
-                    <div class="flex -space-x-2">
-                        <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white dark:border-slate-800"></div>
-                        <div class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white dark:border-slate-800"></div>
-                        <div class="w-8 h-8 rounded-full bg-slate-400 border-2 border-white dark:border-slate-800"></div>
-                    </div>
-                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">+50 joined today</span>
-                </div>
+                <p class="text-xs text-slate-400 font-medium">No credit card required.</p>
             </div>
         </div>
-
-        <div class="relative" data-aos="zoom-in">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-100 rounded-full blur-3xl opacity-60"></div>
-            <div class="relative glass-card rounded-[2.5rem] shadow-2xl p-4 border border-slate-100 dark:border-white/5 transform rotate-2 hover:rotate-0 transition-transform duration-700">
-                <div class="bg-slate-50 dark:bg-slate-900 rounded-[1.8rem] overflow-hidden border border-slate-100 dark:border-white/5 aspect-video flex items-center justify-center p-8">
-                     <div class="w-full space-y-4">
-                         <div class="h-4 bg-[#801b1b]/10 rounded-full w-2/3"></div>
-                         <div class="h-20 bg-[#801b1b]/5 rounded-2xl w-full"></div>
-                         <div class="grid grid-cols-2 gap-4">
-                             <div class="h-12 bg-emerald-500/10 rounded-xl"></div>
-                             <div class="h-12 bg-rose-500/10 rounded-xl"></div>
-                         </div>
-                     </div>
-                </div>
-            </div>
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-red-900 to-red-600 rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            <img src="https://img.freepik.com/free-vector/dashboard-user-interface-design_23-2148386344.jpg" 
+                 alt="Tracker Dashboard Interface" 
+                 class="relative rounded-[2rem] shadow-2xl border border-slate-100 w-full transform group-hover:scale-[1.01] transition-all duration-500">
         </div>
-    </section>
+    </header>
 
-    <!-- Workflow: How it Works -->
-    <section class="max-w-7xl mx-auto px-6 py-24 border-t border-slate-50 dark:border-white/5">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-black tracking-tight">Three steps to clarity.</h2>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-4">Simple. Fast. Effective.</p>
+    <!-- Social Proof -->
+    <div class="max-w-7xl mx-auto px-6 py-10 border-y border-slate-100">
+        <p class="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-8">Trusted by individuals worldwide</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all">
+            <i class="fab fa-google text-2xl"></i>
+            <i class="fab fa-apple text-2xl"></i>
+            <i class="fab fa-stripe text-3xl"></i>
+            <i class="fab fa-paypal text-2xl"></i>
+            <i class="fab fa-amazon text-2xl"></i>
         </div>
+    </div>
 
-        <div class="grid md:grid-cols-3 gap-12">
-            <div class="text-center group" data-aos="fade-up">
-                <div class="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#801b1b] group-hover:text-white transition-all">
-                    <span class="text-xl font-black">1</span>
-                </div>
-                <h4 class="text-lg font-black mb-2">Create Account</h4>
-                <p class="text-sm text-slate-400 font-medium">Set up your private wallet in under 60 seconds. No credit card required.</p>
-            </div>
-            <div class="text-center group" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#801b1b] group-hover:text-white transition-all">
-                    <span class="text-xl font-black">2</span>
-                </div>
-                <h4 class="text-lg font-black mb-2">Log Activity</h4>
-                <p class="text-sm text-slate-400 font-medium">Record expenses, debt repayments, or lended money with a single click.</p>
-            </div>
-            <div class="text-center group" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-[#801b1b] group-hover:text-white transition-all">
-                    <span class="text-xl font-black">3</span>
-                </div>
-                <h4 class="text-lg font-black mb-2">Grow Wealth</h4>
-                <p class="text-sm text-slate-400 font-medium">Analyze patterns, set budgets, and reach your savings goals faster.</p>
-            </div>
+    <!-- Features -->
+    <section id="features" class="bg-slate-50/50 py-24 px-6 relative">
+        <div class="blob top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto text-center mb-20">
+            <h2 class="text-4xl font-black tracking-tight">Financial tools built for <span class="text-red-900">you.</span></h2>
+            <p class="text-slate-500 mt-4 max-w-2xl mx-auto font-medium">Stop using notes and napkins. Use a system that actually helps you save more and spend less.</p>
         </div>
-    </section>
-
-    <!-- Comparison Section -->
-    <section id="comparison" class="max-w-5xl mx-auto px-6 py-24">
-        <div class="glass-card rounded-[3rem] p-8 md:p-16 border-slate-100 dark:border-white/5 overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-[#801b1b]/5 blur-3xl opacity-50"></div>
-            <div class="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight">Forget the messy spreadsheets.</h2>
-                    <p class="text-slate-400 mt-6 font-medium">Manual tracking is slow and error-prone. Tracker automates the visualization of your financial health.</p>
-                    <div class="mt-8 space-y-4">
-                        <div class="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                            <i class="fas fa-check-circle text-emerald-500"></i> No complex formulas needed
-                        </div>
-                        <div class="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                            <i class="fas fa-check-circle text-emerald-500"></i> Instant Dark Mode support
-                        </div>
-                        <div class="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                            <i class="fas fa-check-circle text-emerald-500"></i> Mobile-first accessible design
-                        </div>
-                    </div>
+        
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="group glass-card p-10">
+                <div class="w-14 h-14 bg-red-50 text-red-900 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-red-900 group-hover:text-white transition-colors">
+                    <i class="fas fa-chart-pie"></i>
                 </div>
-                <div class="bg-slate-50 dark:bg-white/5 p-8 rounded-[2rem] border border-slate-100 dark:border-white/5">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-[#801b1b] mb-4">The Result</p>
-                    <p class="text-2xl font-black text-slate-800 dark:text-white">Save roughly <span class="text-emerald-500">5 hours</span> of manual data entry every month.</p>
-                </div>
+                <h3 class="font-black text-2xl mb-4">Smart Overview</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">See your balance, monthly income, and total expenses at a glance. Visual intelligence for your wallet.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Bento Grid Features (Existing) -->
-    <section id="features" class="max-w-7xl mx-auto px-6 py-24">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl font-black tracking-tight">Built for modern life.</h2>
-            <p class="text-[10px] font-black uppercase tracking-widest text-[#801b1b] mt-4">One app to replace five tools</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bento-card glass-card p-10 rounded-[2.5rem] flex flex-col justify-between" data-aos="fade-up">
-                <div>
-                    <div class="w-12 h-12 bg-red-50 text-[#801b1b] rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-bolt text-lg"></i>
-                    </div>
-                    <h3 class="text-2xl font-black mb-4 tracking-tight">Real-time Insights</h3>
-                    <p class="text-slate-400 font-medium leading-relaxed max-w-sm">Every transaction is instantly categorized. See your daily burn rate and monthly projections without lifting a finger.</p>
-                </div>
-            </div>
-
-            <div class="bento-card bg-[#801b1b] p-10 rounded-[2.5rem] text-white" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6">
-                    <i class="fas fa-shield-halved text-lg text-white"></i>
-                </div>
-                <h3 class="text-2xl font-black mb-4 tracking-tight">Debt Master</h3>
-                <p class="text-red-100 text-sm font-medium leading-relaxed">Automated repayment schedules. We help you snowball your debt so you pay less interest over time.</p>
-            </div>
-
-            <div class="bento-card glass-card p-10 rounded-[2.5rem]" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                    <i class="fas fa-hand-holding-dollar text-lg"></i>
-                </div>
-                <h3 class="text-xl font-black mb-2 tracking-tight">Lended Tracker</h3>
-                <p class="text-slate-400 text-sm font-medium">Never forget who owes you money. Detailed visibility into your receivables.</p>
-            </div>
-
-            <div class="md:col-span-2 bento-card glass-card p-10 rounded-[2.5rem] flex flex-col md:flex-row gap-10 items-center" data-aos="fade-up" data-aos-delay="300">
-                <div class="flex-1">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-piggy-bank text-lg"></i>
-                    </div>
-                    <h3 class="text-2xl font-black mb-4 tracking-tight">Savings Automation</h3>
-                    <p class="text-slate-400 font-medium leading-relaxed">Set goals for travel, emergency funds, or that new car. Track progress with beautiful visualizations.</p>
-                </div>
-                <div class="flex-1 w-full bg-slate-50 dark:bg-white/5 p-6 rounded-2xl">
-                    <div class="h-2 w-full bg-slate-200 dark:bg-white/10 rounded-full mb-4">
-                        <div class="h-full w-2/3 bg-emerald-500 rounded-full transition-all duration-1000"></div>
-                    </div>
-                    <p class="text-[9px] font-black text-slate-400 uppercase">Quarterly Goal</p>
-                    <p class="text-sm font-black">66.7% Accomplished</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="max-w-7xl mx-auto px-6 py-24 bg-slate-50/50 dark:bg-transparent">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-black">What builders say.</h2>
-            <p class="text-[10px] font-black uppercase tracking-widest text-[#801b1b] mt-4">Reviews from the community</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="glass-card p-8 rounded-[2rem] border-slate-100 dark:border-white/5" data-aos="fade-up">
-                <div class="flex gap-1 text-amber-400 mb-4 text-[10px]">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="text-sm text-slate-500 font-medium italic mb-6">"Finally an expense tracker that doesn't look like it was made in 2005. The glassmorphism UI is just chef's kiss."</p>
-                <p class="text-xs font-black">Alex Rivera</p>
-                <p class="text-[9px] font-bold text-slate-400 uppercase">Product Designer</p>
-            </div>
-            <div class="glass-card p-8 rounded-[2rem] border-slate-100 dark:border-white/5" data-aos="fade-up" data-aos-delay="100">
-                <div class="flex gap-1 text-amber-400 mb-4 text-[10px]">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="text-sm text-slate-500 font-medium italic mb-6">"The debt management tool helped me clear my credit card balance in half the time I expected. Pure magic."</p>
-                <p class="text-xs font-black">Sarah Chen</p>
-                <p class="text-[9px] font-bold text-slate-400 uppercase">Software Engineer</p>
-            </div>
-            <div class="glass-card p-8 rounded-[2rem] border-slate-100 dark:border-white/5" data-aos="fade-up" data-aos-delay="200">
-                <div class="flex gap-1 text-amber-400 mb-4 text-[10px]">
-                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                </div>
-                <p class="text-sm text-slate-500 font-medium italic mb-6">"Simple, effective, and private. I've tried every app on the store, and this is the one I'm sticking with."</p>
-                <p class="text-xs font-black">Marcus Thorne</p>
-                <p class="text-[9px] font-bold text-slate-400 uppercase">Entrepreneur</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="max-w-3xl mx-auto px-6 py-24">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-3xl font-black">Got questions?</h2>
-            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-4">Everything you need to know</p>
-        </div>
-        <div class="space-y-4" data-aos="fade-up">
-            <details class="group glass-card rounded-2xl border-slate-100 dark:border-white/5 overflow-hidden">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-black text-sm">
-                    Is my data secure?
-                    <i class="fas fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <div class="px-6 pb-6 text-sm text-slate-400 font-medium">
-                    Yes. We use industry-standard encryption and your data is stored securely in a private database. We never sell your personal financial information.
-                </div>
-            </details>
-            <details class="group glass-card rounded-2xl border-slate-100 dark:border-white/5 overflow-hidden">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-black text-sm">
-                    Can I export my data?
-                    <i class="fas fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <div class="px-6 pb-6 text-sm text-slate-400 font-medium">
-                    Absolutely. You can download your transaction history at any time in CSV or PDF format for your own records or for tax purposes.
-                </div>
-            </details>
-            <details class="group glass-card rounded-2xl border-slate-100 dark:border-white/5 overflow-hidden">
-                <summary class="flex items-center justify-between p-6 cursor-pointer list-none font-black text-sm">
-                    Is there a mobile app?
-                    <i class="fas fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
-                </summary>
-                <div class="px-6 pb-6 text-sm text-slate-400 font-medium">
-                    Our platform is a Progressive Web App (PWA). You can "Add to Home Screen" on any iPhone or Android device for a full app-like experience.
-                </div>
-            </details>
-        </div>
-    </section>
-
-    <!-- Final CTA Banner -->
-    <section class="max-w-7xl mx-auto px-6 py-24 mb-12">
-        <div class="bg-slate-900 rounded-[3.5rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
-            <div class="absolute -top-20 -right-20 w-80 h-80 bg-[#801b1b]/30 blur-[120px] rounded-full"></div>
-            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-[#801b1b]/20 blur-[120px] rounded-full"></div>
             
-            <div class="relative z-10" data-aos="zoom-in">
-                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight">Ready to master <br class="hidden md:block" /> your future?</h2>
-                <p class="text-slate-400 mt-8 text-lg max-w-xl mx-auto font-medium">Join 2,000+ others who have reclaimed their financial freedom today.</p>
-                <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="signup.html" class="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 transition-all shadow-xl">
-                        Get Started for Free
+            <!-- Card 2 -->
+            <div class="group glass-card p-10">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <h3 class="font-black text-2xl mb-4">Lend & Debt</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Track money you've lended and debts you owe. Stay on top of your commitments without the awkwardness.</p>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="group glass-card p-10">
+                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-8 text-2xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    <i class="fas fa-vault"></i>
+                </div>
+                <h3 class="font-black text-2xl mb-4">Savings Growth</h3>
+                <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Watch your wealth grow. Set aside money for the big things and track your progress in real-time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="max-w-5xl mx-auto px-6 py-24">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl font-black mb-8">Set it up in <span class="text-red-900">seconds.</span></h2>
+                <div class="space-y-8">
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">1</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Create your Account</h4>
+                            <p class="text-slate-500">Sign up with your email and get your personal dashboard instantly.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">2</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Log Transactions</h4>
+                            <p class="text-slate-500">Add expenses as they happen. Categorize them for better insights later.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="shrink-0 w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold">3</div>
+                        <div>
+                            <h4 class="font-bold text-lg">Analyze & Grow</h4>
+                            <p class="text-slate-500">Check your reports monthly to see where you can save and how to grow your net worth.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-red-900 rounded-[3rem] p-12 text-white shadow-2xl shadow-red-900/40 rotate-2">
+                <i class="fas fa-quote-left text-4xl text-red-400 mb-6"></i>
+                <p class="text-2xl font-bold leading-relaxed">"This app changed how I see money. I saved $2,000 in my first three months just by seeing where my small expenses were going."</p>
+                <div class="mt-8 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-red-800 border-2 border-red-700 overflow-hidden italic flex items-center justify-center font-black">M</div>
+                    <div>
+                        <p class="font-bold">Mark Sy</p>
+                        <p class="text-red-300 text-sm">Product Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="max-w-7xl mx-auto px-6 py-20">
+        <div class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-red-900/20 blur-[100px]"></div>
+            <div class="relative z-10">
+                <h2 class="text-4xl md:text-6xl font-black text-white leading-tight">Ready to start your <br>financial journey?</h2>
+                <p class="text-slate-400 mt-6 max-w-xl mx-auto">Join thousands of others who are taking their first step towards smarter money management today.</p>
+                <div class="mt-10">
+                    <a href="signup.html" class="inline-block bg-white text-slate-900 px-10 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-all">
+                        Create My Free Account
                     </a>
                 </div>
             </div>
@@ -309,20 +213,17 @@
     </section>
 
     <!-- Footer -->
-    <footer class="max-w-7xl mx-auto px-6 py-16 border-t border-slate-100 dark:border-white/5 text-center">
-        <div class="flex flex-col items-center gap-6">
-            <div class="flex items-center gap-2">
-                <div class="bg-[#801b1b] text-white w-8 h-8 rounded-lg flex items-center justify-center"><i class="fas fa-wallet text-xs"></i></div>
-                <span class="text-xl font-black text-[#801b1b]">Tracker</span>
-            </div>
-            <p class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">© 2025 Tracker Technologies Inc.</p>
+    <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="text-xl font-black text-red-900 flex items-center gap-2">
+            <i class="fas fa-wallet"></i> Tracker
         </div>
+        <div class="flex gap-8 text-sm font-bold text-slate-400">
+            <a href="#" class="hover:text-red-900 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-red-900 transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-red-900 transition-colors">Contact Support</a>
+        </div>
+        <p class="text-slate-400 text-sm font-medium">© 2024 Tracker. All rights reserved.</p>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="shared.js"></script>
-    <script>
-        AOS.init({ once: true, duration: 1000 });
-    </script>
 </body>
 </html>

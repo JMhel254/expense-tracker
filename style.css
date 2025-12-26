@@ -15,12 +15,13 @@
 }
 
 [data-theme='dark'] {
-  --bg-main: #0f172a;
-  --bg-card: #1e293b;
+  --bg-main: #020617; /* Darker, sleek slate */
+  --bg-card: #0f172a; /* Deeper card background */
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --primary: #ef4444; /* Slightly brighter for dark mode */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --primary: #f87171; /* High contrast primary */
+  --nav-bg: rgba(15, 23, 42, 0.8);
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
@@ -205,11 +206,31 @@ body {
 
 [data-theme='dark'] .text-slate-900,
 [data-theme='dark'] .text-slate-800,
-[data-theme='dark'] .text-slate-700 {
+[data-theme='dark'] .text-slate-700,
+[data-theme='dark'] .text-slate-600 {
     color: var(--text-main) !important;
 }
 
+[data-theme='dark'] .text-slate-400,
+[data-theme='dark'] .text-slate-500 {
+    color: var(--text-muted) !important;
+}
+
 [data-theme='dark'] .bg-slate-50,
-[data-theme='dark'] .bg-slate-100 {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+[data-theme='dark'] .bg-slate-100,
+[data-theme='dark'] .bg-slate-200 {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+[data-theme='dark'] .border-slate-100,
+[data-theme='dark'] .border-slate-200 {
+    border-color: var(--border-color) !important;
+}
+
+/* Fix for mobile navigation blur visibility */
+@media (max-width: 768px) {
+    .glass-card {
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+    }
 }

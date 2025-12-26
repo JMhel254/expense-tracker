@@ -148,6 +148,7 @@ function toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme');
     const target = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', target);
+    document.documentElement.classList.toggle('dark', target === 'dark');
     localStorage.setItem('theme', target);
     showToast(`Switched to ${target} mode`, 'success');
 }
@@ -157,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAuth();
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
+  document.documentElement.classList.toggle('dark', savedTheme === 'dark');
 });
 
 // CSV Export Utility
