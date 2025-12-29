@@ -49,6 +49,7 @@
         .text-gradient {
             background: linear-gradient(135deg, #7f1d1d 0%, #ef4444 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .bg-gradient-premium {
@@ -94,8 +95,8 @@
 
                 <!-- Auth Buttons -->
                 <div class="flex items-center gap-4">
-                    <a href="login.html" class="text-sm font-semibold text-slate-600 hover:text-slate-900">Log in</a>
-                    <a href="signup.html" class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
+                    <a href="login/" class="text-sm font-semibold text-slate-600 hover:text-slate-900">Log in</a>
+                    <a href="signup/" class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5">
                         Get Started
                     </a>
                 </div>
@@ -128,7 +129,7 @@
             </p>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="signup.html" class="w-full sm:w-auto px-8 py-4 bg-red-900 text-white rounded-2xl font-bold text-lg shadow-xl shadow-red-900/20 hover:bg-red-800 hover:scale-105 transition-all">
+                <a href="signup/" class="w-full sm:w-auto px-8 py-4 bg-red-900 text-white rounded-2xl font-bold text-lg shadow-xl shadow-red-900/20 hover:bg-red-800 hover:scale-105 transition-all">
                     Start Your Journey
                 </a>
                 <a href="#features" class="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
@@ -309,10 +310,10 @@
             <h2 class="text-4xl md:text-5xl font-black text-white mb-8 tracking-tight">Stop stressing about money.<br>Start controlling it.</h2>
             <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto">Join the community of smart savers who have transformed their financial lives with Tracker.</p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="signup.html" class="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 font-bold rounded-full shadow-2xl hover:bg-slate-50 hover:scale-105 transition-all">
+                <a href="signup/" class="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 font-bold rounded-full shadow-2xl hover:bg-slate-50 hover:scale-105 transition-all">
                     Create Free Account
                 </a>
-                <a href="login.html" class="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all">
+                <a href="login/" class="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-all">
                     Log In
                 </a>
             </div>
@@ -386,5 +387,21 @@
             </div>
         </div>
     </footer>
+    <script>
+        // Check if user is already logged in
+        if (localStorage.getItem('user')) {
+            const loginLink = document.querySelector('a[href="login/"]');
+            if (loginLink) {
+                loginLink.href = 'dashboard/';
+                loginLink.innerHTML = '<i class="fas fa-th-large mr-2"></i> Dashboard';
+            }
+            
+            const startLinks = document.querySelectorAll('a[href="signup/"]');
+            startLinks.forEach(link => {
+                link.href = 'dashboard/';
+                link.innerText = 'Back to Dash';
+            });
+        }
+    </script>
 </body>
 </html>

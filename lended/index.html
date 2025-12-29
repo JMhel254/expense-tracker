@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="dark">
+  <head>
+    <script>
+      if (!localStorage.getItem('user')) { window.location.href = '../login/'; }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Lended Track - Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+            colors: {
+               slate: { 850: '#1e293b' }
+            }
+          }
+        }
+      };
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+      .nav-active {
+        background-color: var(--primary);
+        color: white !important;
+        box-shadow: 0 8px 15px -3px rgba(128, 27, 27, 0.3);
+      }
+      
+      .loader {
+        border-top-color: var(--primary);
+        animation: spinner 0.8s linear infinite;
+      }
+      @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+      @media (max-width: 768px) {
+        .main-content { padding-bottom: 6rem; }
+        .sidebar-desktop { display: none; }
+      }
+    </style>
+  </head>
+  <body class="text-slate-900 antialiased overflow-x-hidden selection:bg-red-100 dark:bg-[#020617] dark:text-white transition-colors duration-500">
+    
+    <!-- Abstract Mesh Backgrounds -->
+    <div class="fixed top-0 right-0 w-[800px] h-[800px] bg-[#801b1b]/5 dark:bg-[#801b1b]/10 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 -z-10 pointer-events-none"></div>
+    <div class="fixed bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 dark:bg-blue-500/10 blur-[120px] rounded-full -translate-x-1/3 translate-y-1/3 -z-10 pointer-events-none"></div>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Sidebar Desktop -->
+    <aside id="sidebar" class="sidebar-desktop fixed top-0 left-0 h-screen w-64 bg-white dark:bg-[#020617] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col shadow-2xl border-r border-slate-100 dark:border-white/5">
+      <div class="p-6 mb-2">
+        <h1 class="text-xl font-black text-[#801b1b] dark:text-white flex items-center gap-3 tracking-tighter">
+          <div class="bg-[#801b1b] text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-lg"><i class="fas fa-wallet text-xs"></i></div>
+          Tracker
+        </h1>
+      </div>
+
+      <nav class="flex-1 px-4 space-y-1.5">
+        <a href="../dashboard/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-th-large w-4 text-xs"></i> Dashboard
+        </a>
+        <a href="../report/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-file-invoice-dollar w-4 text-xs"></i> Reports
+        </a>
+        <a href="../lended/" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-white shadow-lg shadow-red-900/20">
+            <i class="fas fa-hand-holding-usd w-4 text-xs"></i> Lended
+        </a>
+        <a href="../debt/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-file-signature w-4 text-xs"></i> Debt
+        </a>
+        <a href="../savings/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-piggy-bank w-4 text-xs"></i> Savings
+        </a>
+        <a href="../balance/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-scale-balanced w-4 text-xs"></i> Balance
+        </a>
+        <a href="../arcade/" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-gamepad w-4 text-xs"></i> Arcade
+        </a>
+      </nav>
+      
+      <div class="p-6"></div>
+    </aside>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="fixed bottom-4 left-4 right-4 h-16 glass-card rounded-xl border border-white/20 dark:border-white/5 z-[60] md:hidden flex items-center justify-around px-6 shadow-2xl backdrop-blur-3xl">
+      <a href="../dashboard/" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-th-large text-lg"></i>
+        <span class="text-[8px] font-black uppercase tracking-widest">Hub</span>
+      </a>
+      <a href="../report/" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-chart-pie text-lg"></i>
+        <span class="text-[8px] font-black uppercase tracking-widest">Growth</span>
+      </a>
+      
+      <button onclick="location.href='../dashboard/'" class="w-12 h-12 bg-[#801b1b] rounded-full flex items-center justify-center text-white shadow-2xl shadow-red-900/40 -mt-12 border-[4px] border-[#020617] dark:border-[#020617]/50 relative z-20 active:scale-90 transition-transform">
+        <i class="fas fa-plus text-lg"></i>
+      </button>
+
+      <a href="../savings/" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-piggy-bank text-lg"></i>
+        <span class="text-[8px] font-black uppercase tracking-widest">Saves</span>
+      </a>
+      <a href="../balance/" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-scale-balanced text-lg"></i>
+        <span class="text-[8px] font-black uppercase tracking-widest">Wealth</span>
+      </a>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="md:ml-64 min-h-screen main-content pb-20 md:pb-8 pr-0">
+      <nav class="w-full px-6 py-4 sticky top-0 z-30 flex justify-between items-center bg-white/80 dark:bg-[#020617]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
+        <div class="flex items-center gap-4">
+          <button onclick="toggleSidebar()" class="md:hidden text-slate-600 dark:text-slate-400 p-2"><i class="fas fa-bars"></i></button>
+          <div>
+            <h2 class="text-sm font-black text-slate-900 dark:text-white tracking-tight">Receivables Ledger</h2>
+            <div class="flex items-center gap-2">
+                <span class="flex h-1 w-1 rounded-full bg-amber-500"></span>
+                <p class="text-[8px] text-slate-400 font-black uppercase tracking-[0.15em]">Third-party Debt Tracking</p>
+            </div>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/20 transition-all border border-slate-100 dark:border-white/5" title="Logout">
+            <i class="fas fa-sign-out-alt text-xs"></i>
+        </button>
+      </nav>
+
+      <div class="p-4 md:p-6 max-w-7xl mx-auto space-y-6 mt-2">
+        
+        <!-- Stats Card -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div class="glass-card p-6 rounded-xl border border-white/20 dark:border-white/5 shadow-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 col-span-1 lg:col-span-2">
+            <div class="w-10 h-10 rounded-lg bg-amber-500 text-white flex items-center justify-center mb-4 shadow-lg shadow-amber-500/30">
+                <i class="fas fa-handshake text-xs"></i>
+            </div>
+            <p class="text-[9px] font-black opacity-60 uppercase tracking-[0.2em]">Total Outstanding Capital</p>
+            <h2 id="lended-total" class="text-xl font-black mt-1 tracking-tighter">₱0.00</h2>
+          </div>
+        </div>
+
+        <!-- Loader -->
+        <div id="loading" class="flex flex-col items-center py-10">
+          <div class="loader rounded-full border-2 border-slate-200 dark:border-white/5 h-8 w-8 mb-4"></div>
+          <p class="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] animate-pulse">Syncing Receivables...</p>
+        </div>
+
+        <!-- Content -->
+        <div id="content" class="hidden" data-aos="fade-up">
+          <div class="glass-card rounded-xl border border-white/20 dark:border-white/5 shadow-xl overflow-hidden">
+            <div class="overflow-x-auto no-scrollbar">
+              <table class="w-full text-left border-collapse min-w-[600px]">
+                <thead class="bg-slate-50/50 dark:bg-white/5 text-slate-400 dark:text-slate-500 text-[8px] uppercase font-black tracking-[0.2em]">
+                  <tr>
+                    <th class="px-6 py-4">Timestamp</th>
+                    <th class="px-6 py-4 text-center">Status Profile</th>
+                    <th class="px-6 py-4">Specific Context</th>
+                    <th class="px-6 py-4 text-right">Outstanding Value</th>
+                  </tr>
+                </thead>
+                <tbody id="lended-body" class="divide-y divide-slate-50 dark:divide-white/5 text-[10px] font-bold text-slate-600 dark:text-slate-300"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <script src="../js/shared.js"></script>
+    <script>
+      async function loadLendData() {
+        try {
+          const raw = await jsonp(`${API_URL}?action=read&t=${Date.now()}`);
+          const data = raw.map(row => {
+            let cleanRow = {};
+            Object.keys(row).forEach(key => cleanRow[key.trim()] = row[key]);
+            return cleanRow;
+          });
+
+          const filtered = data.filter(r => r.Category === "Lend");
+          let total = 0;
+
+          const tbody = document.getElementById('lended-body');
+          
+          if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="py-20 text-center"><div class="flex flex-col items-center opacity-20"><i class="fas fa-handshake-alt text-4xl mb-4"></i><p class="text-[9px] font-black uppercase tracking-[0.3em]">No Active Receivables</p></div></td></tr>';
+          } else {
+            tbody.innerHTML = filtered.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(r => {
+              const amt = parseFloat(r.Amount) || 0;
+              total += amt;
+              return `
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group">
+                  <td class="px-6 py-4">
+                    <p class="text-[9px] font-black uppercase text-slate-900 dark:text-white">${new Date(r.Date).toLocaleDateString()}</p>
+                    <p class="text-[8px] text-slate-400 font-bold tracking-widest">${new Date(r.Date).getFullYear()}</p>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm ${r.Status === 'Paid' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}">
+                      ${r.Status || 'Unpaid'}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-slate-500 dark:text-slate-400 italic truncate max-w-[200px] font-medium">${r.Notes || '---'}</td>
+                  <td class="px-6 py-4 text-right font-black text-slate-900 dark:text-white text-xs">${formatCurrency(amt)}</td>
+                </tr>
+              `;
+            }).join('');
+          }
+
+          document.getElementById('lended-total').innerText = formatCurrency(total);
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('content').classList.remove('hidden');
+
+        } catch (err) { showToast("Error loading receivables.", "error"); }
+      }
+
+      window.onload = loadLendData;
+    </script>
+  </body>
+</html>

@@ -3,13 +3,19 @@ const API_URL =
 
 // Auth Guard
 function checkAuth() {
-  if (
-    !localStorage.getItem("user") &&
-    !window.location.pathname.includes("login.html") &&
-    !window.location.pathname.includes("signup.html") &&
-    !window.location.pathname.includes("index.html")
-  ) {
-    window.location.href = "login.html";
+  const path = window.location.pathname;
+  // A page is public if it's the home page, login, or signup
+  const isRoot = path === "/" || path.endsWith("/index.html") && !path.includes("/dashboard/") && !path.includes("/report/") && !path.includes("/lended/") && !path.includes("/debt/") && !path.includes("/savings/") && !path.includes("/balance/") && !path.includes("/arcade/");
+  const isLogin = path.includes("/login/");
+  const isSignup = path.includes("/signup/");
+  const isPublicPage = isRoot || isLogin || isSignup;
+  
+  if (!localStorage.getItem("user") && !isPublicPage) {
+    // Determine redirect path based on current depth
+    // If we're at root, the path to login is "login/"
+    // If we're in a subfolder (like dashboard/), the path to login is "../login/"
+    const redirectPath = (path === "/" || (path.endsWith("/index.html") && !path.split('/').slice(0, -1).pop())) ? "login/" : "../login/";
+    window.location.href = redirectPath;
   }
 }
 
@@ -25,7 +31,10 @@ function toggleSidebar() {
 function logout() {
   showConfirm("Are you sure you want to logout from Tracker?", () => {
     localStorage.removeItem("user");
-    window.location.href = "index.html";
+    // Determine root path based on current depth
+    const path = window.location.pathname;
+    const isRoot = path === "/" || path.endsWith("/index.html");
+    window.location.href = isRoot ? "./" : "../";
   });
 }
 
