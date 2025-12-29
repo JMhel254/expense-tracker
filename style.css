@@ -10,8 +10,8 @@
   --safe: #10b981;
   --danger: #e11d48;
   --info: #3b82f6;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
 }
 
 [data-theme='dark'] {
@@ -87,7 +87,7 @@ body {
   background-color: var(--primary);
   color: white;
   padding: 0.75rem 1.5rem;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   font-weight: 700;
   box-shadow: 0 8px 16px -4px rgba(128, 27, 27, 0.25);
   transition: all 0.2s;
@@ -144,7 +144,7 @@ body {
   background: var(--bg-card);
   color: var(--text-main);
   padding: 0.75rem 1.25rem;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   font-size: 0.8rem;
   font-weight: 700;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
@@ -184,7 +184,7 @@ body {
   background: var(--bg-card);
   width: 100%;
   max-width: 400px;
-  border-radius: 2.5rem;
+  border-radius: 1.5rem;
   padding: 2.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   border: 1px solid var(--border-color);

@@ -3,149 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Create Account — Tracker | Start Your Financial Journey</title>
-    <meta name="description" content="Join Tracker today and start mastering your money. Create a free account to track expenses, manage debt, and reach your savings goals.">
-    <meta name="keywords" content="signup, create account, tracker, personal finance app">
+    <title>Create Account — Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    boxShadow: { 'card': '0 20px 40px -10px rgba(0,0,0,0.05)' }
+                }
+            }
         }
-        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
+    </script>
+    <style>
+        body { background-color: #f8fafc; color: #0f172a; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 selection:bg-red-100 dark:bg-[#020617] dark:text-white transition-colors duration-500 overflow-x-hidden">
-    
-    <!-- Abstract Mesh Backgrounds -->
-    <div class="fixed top-0 right-0 w-[800px] h-[800px] bg-[#801b1b]/5 dark:bg-[#801b1b]/10 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 -z-10 pointer-events-none"></div>
-    <div class="fixed bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 dark:bg-blue-500/10 blur-[120px] rounded-full -translate-x-1/3 translate-y-1/3 -z-10 pointer-events-none"></div>
+<body class="min-h-screen flex items-center justify-center p-6 selection:bg-red-100">
 
-    <!-- Theme Toggle Floating -->
-    <button onclick="toggleTheme()" class="fixed top-6 right-6 w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-slate-400 hover:text-[#801b1b] dark:hover:text-white transition-all z-50 shadow-xl border border-white/20 dark:border-white/5" aria-label="Toggle Dark Mode">
-        <i class="fas fa-moon text-lg"></i>
-    </button>
+    <!-- Back Button -->
+    <a href="index.html" class="absolute top-6 left-6 text-slate-400 hover:text-red-900 transition-colors flex items-center gap-2 font-bold text-xs uppercase tracking-widest z-10">
+        <i class="fas fa-chevron-left"></i> Home
+    </a>
 
-    <div class="w-full max-w-md animate-fade">
-        <!-- Logo -->
-        <div class="flex flex-col items-center mb-10">
-            <div class="bg-[#801b1b] text-white w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-3xl shadow-red-900/40 mb-8 border-4 border-white dark:border-[#020617]">
-                <i class="fas fa-wallet text-2xl"></i>
+    <!-- Main Container -->
+    <div class="w-full max-w-[360px] animate-fade-in-up">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-red-900 to-red-600 text-white shadow-xl shadow-red-500/20 mb-6">
+                <i class="fas fa-wallet text-lg"></i>
             </div>
-            <h1 class="text-3xl font-black tracking-tighter text-slate-900 dark:text-white text-center">Join Tracker</h1>
-            <p class="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] mt-3">Start your financial journey today</p>
+            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Join Tracker</h1>
+            <p class="text-sm text-slate-500 mt-2 font-medium">Start your journey to financial freedom.</p>
         </div>
 
-        <div class="glass-card p-10 rounded-[3rem] border border-white/20 dark:border-white/5 shadow-3xl">
-            <form onsubmit="handleSignup(event)" class="space-y-5">
-                <!-- Full Name -->
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
-                    <div class="relative group">
-                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
+        <!-- Card -->
+        <div class="bg-white rounded-3xl shadow-card border border-slate-100 p-8 relative overflow-hidden">
+            <form onsubmit="handleSignup(event)" class="space-y-4">
+                
+                <!-- Name -->
+                <div class="group">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Full Name</label>
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-red-900 transition-colors text-xs"></i>
                         <input type="text" id="name" placeholder="John Doe" required 
-                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold outline-none focus:border-red-900 focus:ring-1 focus:ring-red-900/10 transition-all placeholder:text-slate-300">
                     </div>
                 </div>
 
                 <!-- Email -->
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
-                    <div class="relative group">
-                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
-                        <input type="email" id="email" placeholder="name@email.com" required 
-                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
+                <div class="group">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Email</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-red-900 transition-colors text-xs"></i>
+                        <input type="email" id="email" placeholder="john@example.com" required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold outline-none focus:border-red-900 focus:ring-1 focus:ring-red-900/10 transition-all placeholder:text-slate-300">
                     </div>
                 </div>
 
                 <!-- Password -->
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
-                    <div class="relative group">
-                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-[#801b1b] transition-colors"></i>
-                        <input type="password" id="pass" placeholder="Min. 8 characters" required 
-                            class="w-full bg-slate-50/50 border border-slate-100 rounded-2xl py-4 pl-12 pr-12 outline-none transition-all text-sm font-bold text-slate-700 focus:ring-4 focus:ring-red-900/5 focus:border-[#801b1b]">
-                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#801b1b] transition-colors">
+                <div class="group">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-red-900 transition-colors text-xs"></i>
+                        <input type="password" id="pass" placeholder="••••••••" required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-10 text-sm font-semibold outline-none focus:border-red-900 focus:ring-1 focus:ring-red-900/10 transition-all placeholder:text-slate-300">
+                        <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-600 transition-colors">
                             <i id="eyeIcon" class="fas fa-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Terms -->
-                <label class="flex items-start gap-3 cursor-pointer group mt-4">
-                    <input type="checkbox" id="terms" required class="mt-1 w-5 h-5 rounded-lg border-slate-200 text-[#801b1b] focus:ring-red-900/10 transition-all cursor-pointer">
-                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
-                        I agree to the <a href="#" class="text-[#801b1b] hover:underline">Terms</a> and 
-                        <a href="#" class="text-[#801b1b] hover:underline">Privacy Policy</a>
+                <label class="flex items-start gap-3 cursor-pointer group pt-1">
+                    <input type="checkbox" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-red-900 focus:ring-red-900/20">
+                    <span class="text-xs font-semibold text-slate-500 leading-tight">
+                        I agree to the <a href="#" class="text-red-900 hover:underline">Terms</a> and <a href="#" class="text-red-900 hover:underline">Privacy Policy</a>
                     </span>
                 </label>
 
-                <!-- Action Button -->
-                <button type="submit" id="regBtn" 
-                    class="w-full bg-[#801b1b] text-white py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-red-900/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3 mt-4">
-                    <span>Create My Account</span>
-                    <i class="fas fa-arrow-right text-[9px]"></i>
+                <!-- Submit -->
+                <button type="submit" id="regBtn" class="w-full bg-slate-900 text-white rounded-xl py-3.5 font-bold text-sm shadow-lg hover:bg-slate-800 hover:-translate-y-0.5 transition-all mt-2">
+                    Create Account
                 </button>
             </form>
-
-            <div class="mt-8 pt-8 border-t border-slate-100 dark:border-white/5 text-center">
-                <p class="text-slate-400 font-black text-[10px] uppercase tracking-widest text-slate-400">
-                    Already have an account? 
-                    <a href="login.html" class="text-[#801b1b] dark:text-white hover:underline underline-offset-8 ml-1 transition-all">Sign in here</a>
-                </p>
-            </div>
         </div>
 
-        <div class="mt-8 flex justify-center">
-            <a href="index.html" class="text-slate-400 hover:text-slate-600 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all">
-                <i class="fas fa-chevron-left text-[8px]"></i> Back to Home
-            </a>
-        </div>
+        <!-- Footer -->
+        <p class="text-center mt-8 text-xs font-semibold text-slate-400">
+            Already have an account? <a href="login.html" class="text-red-900 hover:text-red-700 transition-colors">Sign in</a>
+        </p>
+    </div>
+
+    <!-- Background Decor -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-50 rounded-full blur-[100px] opacity-60 translate-x-1/3 -translate-y-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-[100px] opacity-60 -translate-x-1/3 translate-y-1/3"></div>
     </div>
 
     <script src="shared.js"></script>
     <script>
         function togglePassword() {
-            const passInput = document.getElementById('pass');
-            const eyeIcon = document.getElementById('eyeIcon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passInput.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
+            const i = document.getElementById('pass'), icon = document.getElementById('eyeIcon');
+            i.type = i.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
         }
 
         async function handleSignup(e) {
             e.preventDefault();
             const btn = document.getElementById('regBtn');
-            const originalContent = btn.innerHTML;
-            
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Securing data...';
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             btn.disabled = true;
 
-            const userData = {
+            const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 password: document.getElementById('pass').value 
             };
 
             try {
-                const res = await jsonp(`${API_URL}?action=signup&data=${encodeURIComponent(JSON.stringify(userData))}`);
+                const res = await jsonp(`${API_URL}?action=signup&data=${encodeURIComponent(JSON.stringify(data))}`);
                 if(res.success) {
-                    showToast("Welcome! Please log in.");
-                    setTimeout(() => window.location.href = "login.html", 2000);
+                    alert("Account created! Please log in.");
+                    window.location.href = "login.html";
                 } else {
-                    showToast(res.message || "Signup failed", "error");
-                    btn.innerHTML = originalContent;
+                    alert(res.message || "Signup failed");
+                    btn.innerHTML = original;
                     btn.disabled = false;
                 }
             } catch (err) {
-                showToast("Network error. Try again.", "error");
-                btn.innerHTML = originalContent;
+                alert("Connection failed");
+                btn.innerHTML = original;
                 btn.disabled = false;
             }
         }

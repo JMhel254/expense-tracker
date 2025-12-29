@@ -32,7 +32,7 @@
       }
 
       @media (max-width: 768px) {
-        .main-content { padding-bottom: 5rem; }
+        .main-content { padding-bottom: 6rem; }
         .sidebar-desktop { display: none; }
       }
     </style>
@@ -47,166 +47,157 @@
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden backdrop-blur-sm transition-opacity"></div>
 
     <!-- Sidebar Desktop -->
-    <aside id="sidebar" class="sidebar-desktop fixed top-6 left-6 h-[calc(100vh-3rem)] w-64 glass-card border border-white/20 dark:border-white/5 z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col rounded-[2.5rem] shadow-2xl">
-      <div class="p-8 mb-2">
-        <h1 class="text-2xl font-black text-[#801b1b] dark:text-white flex items-center gap-3 tracking-tighter">
-          <div class="bg-[#801b1b] text-white w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"><i class="fas fa-wallet text-xs"></i></div>
+    <aside id="sidebar" class="sidebar-desktop fixed top-0 left-0 h-screen w-64 bg-white dark:bg-[#020617] z-50 transition-transform duration-300 -translate-x-full md:translate-x-0 flex flex-col shadow-2xl border-r border-slate-100 dark:border-white/5">
+      <div class="p-6 mb-2">
+        <h1 class="text-xl font-black text-[#801b1b] dark:text-white flex items-center gap-3 tracking-tighter">
+          <div class="bg-[#801b1b] text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-lg"><i class="fas fa-wallet text-xs"></i></div>
           Tracker
         </h1>
       </div>
 
-      <nav class="flex-1 px-4 space-y-2">
-        <a href="dashboard.html" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-all">
-            <i class="fas fa-th-large w-4 text-sm"></i> Dashboard
+      <nav class="flex-1 px-4 space-y-1.5">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-th-large w-4 text-xs"></i> Dashboard
         </a>
-        <a href="report.html" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-all">
-            <i class="fas fa-chart-pie w-4 text-sm"></i> Reports
+        <a href="report.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-file-invoice-dollar w-4 text-xs"></i> Reports
         </a>
-        <a href="lended.html" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-all">
-            <i class="fas fa-hand-holding-usd w-4 text-sm"></i> Lended
+        <a href="lended.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-hand-holding-usd w-4 text-xs"></i> Lended
         </a>
-        <a href="debt.html" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-all">
-            <i class="fas fa-file-signature w-4 text-sm"></i> Debt
+        <a href="debt.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-file-signature w-4 text-xs"></i> Debt
         </a>
-        <a href="savings.html" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5 transition-all">
-            <i class="fas fa-piggy-bank w-4 text-sm"></i> Savings
+        <a href="savings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-piggy-bank w-4 text-xs"></i> Savings
         </a>
-        <a href="balance.html" class="nav-active flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-white shadow-xl shadow-red-900/20">
-            <i class="fas fa-scale-balanced w-4 text-sm"></i> Balance
+        <a href="balance.html" class="nav-active flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-white shadow-lg shadow-red-900/20">
+            <i class="fas fa-scale-balanced w-4 text-xs"></i> Balance
         </a>
-        
-        <div class="px-5 pt-8 pb-4">
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Appearance</p>
-        </div>
-        <button onclick="toggleTheme()" class="w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl font-black text-[11px] uppercase tracking-widest text-slate-400 hover:bg-white/50 dark:hover:bg-white/5 transition-all group">
-            <div class="w-6 h-6 bg-slate-100 dark:bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-[#801b1b] group-hover:text-white transition-colors">
-                <i class="fas fa-moon text-[10px]"></i>
-            </div>
-            Dark Mode
-        </button>
+        <a href="arcade.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:text-[#801b1b] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+            <i class="fas fa-gamepad w-4 text-xs"></i> Arcade
+        </a>
       </nav>
-
-      <div class="p-6">
-        <button onclick="logout()" class="w-full flex items-center gap-3 px-5 py-3.5 rounded-2xl text-rose-500 font-black text-[11px] uppercase tracking-widest hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all border border-rose-100/50 dark:border-rose-500/20">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </div>
+      
+      <div class="p-6"></div>
     </aside>
 
     <!-- Mobile Bottom Nav -->
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass-card rounded-[2rem] border border-white/20 dark:border-white/5 z-[60] md:hidden flex items-center justify-around px-8 shadow-2xl backdrop-blur-3xl">
-      <a href="dashboard.html" class="flex flex-col items-center gap-1.5 text-slate-400">
-        <i class="fas fa-th-large text-xl"></i>
+    <nav class="fixed bottom-4 left-4 right-4 h-16 glass-card rounded-xl border border-white/20 dark:border-white/5 z-[60] md:hidden flex items-center justify-around px-6 shadow-2xl backdrop-blur-3xl">
+      <a href="dashboard.html" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-th-large text-lg"></i>
         <span class="text-[8px] font-black uppercase tracking-widest">Hub</span>
       </a>
-      <a href="report.html" class="flex flex-col items-center gap-1.5 text-slate-400">
-        <i class="fas fa-chart-pie text-xl"></i>
+      <a href="report.html" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-chart-pie text-lg"></i>
         <span class="text-[8px] font-black uppercase tracking-widest">Growth</span>
       </a>
       
-      <button onclick="location.href='dashboard.html'" class="w-16 h-16 bg-[#801b1b] rounded-full flex items-center justify-center text-white shadow-2xl shadow-red-900/40 -mt-16 border-[6px] border-[#020617] dark:border-[#020617]/50 relative z-20 active:scale-90 transition-transform">
-        <i class="fas fa-plus text-xl"></i>
+      <button onclick="location.href='dashboard.html'" class="w-12 h-12 bg-[#801b1b] rounded-full flex items-center justify-center text-white shadow-2xl shadow-red-900/40 -mt-12 border-[4px] border-[#020617] dark:border-[#020617]/50 relative z-20 active:scale-90 transition-transform">
+        <i class="fas fa-plus text-lg"></i>
       </button>
 
-      <a href="savings.html" class="flex flex-col items-center gap-1.5 text-slate-400">
-        <i class="fas fa-piggy-bank text-xl"></i>
+      <a href="savings.html" class="flex flex-col items-center gap-1 text-slate-400">
+        <i class="fas fa-piggy-bank text-lg"></i>
         <span class="text-[8px] font-black uppercase tracking-widest">Saves</span>
       </a>
-      <a href="balance.html" class="flex flex-col items-center gap-1.5 text-[#801b1b] dark:text-white">
-        <i class="fas fa-scale-balanced text-xl"></i>
+      <a href="balance.html" class="flex flex-col items-center gap-1 text-[#801b1b] dark:text-white">
+        <i class="fas fa-scale-balanced text-lg"></i>
         <span class="text-[8px] font-black uppercase tracking-widest">Wealth</span>
       </a>
     </nav>
 
     <!-- Main Content -->
-    <main class="md:ml-72 min-h-screen main-content pb-20 md:pb-8 pr-0 md:pr-6 pt-6">
-      <nav class="glass-card mx-4 md:mx-0 rounded-3xl border border-white/20 dark:border-white/5 px-6 py-4 sticky top-6 z-30 flex justify-between items-center shadow-xl backdrop-blur-2xl">
+    <main class="md:ml-64 min-h-screen main-content pb-20 md:pb-8 pr-0">
+      <nav class="w-full px-6 py-4 sticky top-0 z-30 flex justify-between items-center bg-white/80 dark:bg-[#020617]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
         <div class="flex items-center gap-4">
           <button onclick="toggleSidebar()" class="md:hidden text-slate-600 dark:text-slate-400 p-2"><i class="fas fa-bars"></i></button>
           <div>
-            <h2 class="text-lg font-black text-slate-900 dark:text-white tracking-tight">Financial Timeline</h2>
+            <h2 class="text-sm font-black text-slate-900 dark:text-white tracking-tight">Financial Timeline</h2>
             <div class="flex items-center gap-2">
-                <span class="flex h-1.5 w-1.5 rounded-full bg-[#801b1b]"></span>
-                <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.15em]">Private Ledger Access Active</p>
+                <span class="flex h-1 w-1 rounded-full bg-[#801b1b]"></span>
+                <p class="text-[8px] text-slate-400 font-black uppercase tracking-[0.15em]">Private Ledger Access Active</p>
             </div>
           </div>
         </div>
+        <button onclick="logout()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/20 transition-all border border-slate-100 dark:border-white/5" title="Logout">
+            <i class="fas fa-sign-out-alt text-xs"></i>
+        </button>
       </nav>
 
-      <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12 mt-4">
+      <div class="p-4 md:p-6 max-w-7xl mx-auto space-y-8 mt-2">
         
         <!-- Date Filter Toolbar -->
-        <div class="glass-card p-6 rounded-[2.5rem] border border-white/20 dark:border-white/5 shadow-2xl flex flex-wrap items-center gap-6 sm:w-fit">
-            <div class="flex items-center gap-4">
-                <div class="bg-slate-50 dark:bg-white/5 p-3 rounded-2xl border border-slate-100 dark:border-white/5">
-                    <label class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Origin Date</label>
-                    <input type="date" id="startDate" class="bg-transparent border-none outline-none text-xs font-black text-slate-900 dark:text-white p-0" />
+        <div class="glass-card p-5 rounded-xl border border-white/20 dark:border-white/5 shadow-lg flex flex-col sm:flex-row items-center gap-4 sm:w-fit">
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                <div class="flex flex-col w-full sm:w-auto">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Origin Date</label>
+                    <input type="date" id="startDate" class="bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-xl px-4 py-2.5 text-[10px] font-bold dark:text-white outline-none focus:border-[#801b1b] transition-all w-full sm:w-auto" />
                 </div>
-                <div class="w-4 h-0.5 bg-slate-200 dark:bg-white/10 rounded-full"></div>
-                <div class="bg-slate-50 dark:bg-white/5 p-3 rounded-2xl border border-slate-100 dark:border-white/5">
-                    <label class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Terminal Date</label>
-                    <input type="date" id="endDate" class="bg-transparent border-none outline-none text-xs font-black text-slate-900 dark:text-white p-0" />
+                <div class="flex flex-col w-full sm:w-auto">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Terminal Date</label>
+                    <input type="date" id="endDate" class="bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-xl px-4 py-2.5 text-[10px] font-bold dark:text-white outline-none focus:border-[#801b1b] transition-all w-full sm:w-auto" />
                 </div>
             </div>
-            <button onclick="applyFilters()" class="w-12 h-12 bg-[#801b1b] text-white rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl shadow-red-900/20">
-                <i class="fas fa-sync-alt text-sm"></i>
+            <button onclick="applyFilters()" class="w-full sm:w-10 h-10 bg-[#801b1b] text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-red-900/20 sm:mt-5">
+                <i class="fas fa-sync-alt text-xs"></i>
             </button>
         </div>
 
         <!-- Period Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card p-8 rounded-[2.5rem] border border-emerald-500/20 bg-emerald-500/[0.02] shadow-xl group hover:bg-emerald-500/[0.04] transition-all">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 transition-transform group-hover:rotate-12">
-                    <i class="fas fa-arrow-trend-up"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-6 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.02] shadow-md group hover:bg-emerald-500/[0.04] transition-all">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 transition-transform group-hover:rotate-12">
+                    <i class="fas fa-arrow-trend-up text-xs"></i>
                 </div>
-                <p class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em]">Liquid Inflow</p>
+                <p class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em]">Liquid Inflow</p>
             </div>
-            <h2 id="total-inc" class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">₱0.00</h2>
+            <h2 id="total-inc" class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">₱0.00</h2>
           </div>
           
-          <div class="glass-card p-8 rounded-[2.5rem] border border-rose-500/20 bg-rose-500/[0.02] shadow-xl group hover:bg-rose-500/[0.04] transition-all">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-10 h-10 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20 transition-transform group-hover:-rotate-12">
-                    <i class="fas fa-arrow-trend-down"></i>
+          <div class="glass-card p-6 rounded-xl border border-rose-500/20 bg-rose-500/[0.02] shadow-md group hover:bg-rose-500/[0.04] transition-all">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20 transition-transform group-hover:-rotate-12">
+                    <i class="fas fa-arrow-trend-down text-xs"></i>
                 </div>
-                <p class="text-[10px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-[0.2em]">Capital Outflow</p>
+                <p class="text-[9px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-[0.2em]">Capital Outflow</p>
             </div>
-            <h2 id="total-exp" class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">₱0.00</h2>
+            <h2 id="total-exp" class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">₱0.00</h2>
           </div>
 
-          <div class="glass-card p-8 rounded-[2.5rem] border border-white/20 dark:border-white/5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-2xl">
-            <div class="flex items-center gap-4 mb-6 opacity-60">
-                <div class="w-10 h-10 rounded-2xl bg-white/10 dark:bg-slate-900/5 flex items-center justify-center border border-white/10">
-                    <i class="fas fa-scale-balanced"></i>
+          <div class="glass-card p-6 rounded-xl border border-white/20 dark:border-white/5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl">
+            <div class="flex items-center gap-3 mb-4 opacity-70">
+                <div class="w-8 h-8 rounded-lg bg-white/10 dark:bg-slate-900/5 flex items-center justify-center border border-white/10">
+                    <i class="fas fa-scale-balanced text-xs"></i>
                 </div>
-                <p class="text-[10px] font-black uppercase tracking-[0.2em]">Net Variance</p>
+                <p class="text-[9px] font-black uppercase tracking-[0.2em]">Net Variance</p>
             </div>
-            <h2 id="total-net" class="text-3xl font-black tracking-tighter">₱0.00</h2>
+            <h2 id="total-net" class="text-2xl font-black tracking-tighter">₱0.00</h2>
           </div>
         </div>
 
         <!-- Table Loading -->
-        <div id="loading" class="flex flex-col items-center py-20">
-          <div class="loader rounded-full border-4 border-slate-200 dark:border-white/5 h-12 w-12 mb-4"></div>
-          <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Compiling Records...</p>
+        <div id="loading" class="flex flex-col items-center py-10">
+          <div class="loader rounded-full border-2 border-slate-200 dark:border-white/5 h-8 w-8 mb-4"></div>
+          <p class="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] animate-pulse">Compiling Records...</p>
         </div>
 
         <!-- Ledger Content -->
         <div id="content" class="hidden">
-            <div class="glass-card rounded-[3rem] border border-white/20 dark:border-white/5 shadow-3xl overflow-hidden">
+            <div class="glass-card rounded-xl border border-white/20 dark:border-white/5 shadow-xl overflow-hidden">
                 <div class="overflow-x-auto no-scrollbar">
                   <table class="w-full text-left border-collapse min-w-[700px]">
-                    <thead class="bg-slate-50/50 dark:bg-white/5 text-slate-400 dark:text-slate-500 text-[10px] uppercase font-black tracking-[0.2em]">
+                    <thead class="bg-slate-50/50 dark:bg-white/5 text-slate-400 dark:text-slate-500 text-[8px] uppercase font-black tracking-[0.2em]">
                       <tr>
-                        <th class="px-10 py-6">Timestamp</th>
-                        <th class="px-10 py-6">Domain Class</th>
-                        <th class="px-10 py-6">Contextual Intelligence</th>
-                        <th class="px-10 py-6 text-center">Status Protocol</th>
-                        <th class="px-10 py-6 text-right">Value Delta</th>
+                        <th class="px-6 py-4">Timestamp</th>
+                        <th class="px-6 py-4">Domain Class</th>
+                        <th class="px-6 py-4">Contextual Intelligence</th>
+                        <th class="px-6 py-4 text-center">Status Protocol</th>
+                        <th class="px-6 py-4 text-right">Value Delta</th>
                       </tr>
                     </thead>
-                    <tbody id="ledger-body" class="divide-y divide-slate-50 dark:divide-white/5 text-[11px] font-bold text-slate-600 dark:text-slate-300"></tbody>
+                    <tbody id="ledger-body" class="divide-y divide-slate-50 dark:divide-white/5 text-[10px] font-bold text-slate-600 dark:text-slate-300"></tbody>
                   </table>
                 </div>
             </div>
@@ -257,7 +248,7 @@
         const tbody = document.getElementById('ledger-body');
         
         if (data.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="py-32 text-center"><div class="flex flex-col items-center opacity-20"><i class="fas fa-list-ul text-6xl mb-6"></i><p class="text-[12px] font-black uppercase tracking-[0.3em]">No Historical Entries</p></div></td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" class="py-20 text-center"><div class="flex flex-col items-center opacity-20"><i class="fas fa-list-ul text-4xl mb-4"></i><p class="text-[9px] font-black uppercase tracking-[0.3em]">No Historical Entries</p></div></td></tr>';
         } else {
           tbody.innerHTML = data.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(r => {
             const amt = parseFloat(r.Amount) || 0;
@@ -266,20 +257,20 @@
 
             return `
               <tr class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group">
-                <td class="px-10 py-6">
-                    <p class="text-[11px] font-black uppercase text-slate-900 dark:text-white">${new Date(r.Date).toLocaleDateString()}</p>
-                    <p class="text-[9px] text-slate-400 font-bold tracking-widest">${new Date(r.Date).getFullYear()}</p>
+                <td class="px-6 py-4">
+                    <p class="text-[9px] font-black uppercase text-slate-900 dark:text-white">${new Date(r.Date).toLocaleDateString()}</p>
+                    <p class="text-[8px] text-slate-400 font-bold tracking-widest">${new Date(r.Date).getFullYear()}</p>
                 </td>
-                <td class="px-10 py-6">
-                   <span class="px-4 py-1 bg-slate-100 dark:bg-white/5 rounded-lg text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest shadow-sm border border-slate-200/50 dark:border-white/5">${r.Category}</span>
+                <td class="px-6 py-4">
+                   <span class="px-3 py-1 bg-slate-100 dark:bg-white/5 rounded-lg text-[8px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest shadow-sm border border-slate-200/50 dark:border-white/5">${r.Category}</span>
                 </td>
-                <td class="px-10 py-6 text-slate-500 dark:text-slate-400 italic max-w-xs truncate font-medium">${r.Notes || '---'}</td>
-                <td class="px-10 py-6 text-center">
-                  <span class="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm ${r.Status === 'Paid' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}">
+                <td class="px-6 py-4 text-slate-500 dark:text-slate-400 italic max-w-xs truncate font-medium text-xs">${r.Notes || '---'}</td>
+                <td class="px-6 py-4 text-center">
+                  <span class="px-3 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-sm ${r.Status === 'Paid' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}">
                     ${r.Status || 'Paid'}
                   </span>
                 </td>
-                <td class="px-10 py-6 text-right font-black ${isInc ? 'text-emerald-500' : 'text-slate-900 dark:text-white'} text-base">
+                <td class="px-6 py-4 text-right font-black ${isInc ? 'text-emerald-500' : 'text-slate-900 dark:text-white'} text-xs">
                   ${isInc ? '+' : '-'} ${formatCurrency(amt)}
                 </td>
               </tr>`;

@@ -90,8 +90,8 @@ function showConfirm(msg, onConfirm) {
             <h3 class="text-xl font-black mb-4">Are you sure?</h3>
             <p class="text-slate-400 font-medium mb-8 leading-relaxed">${msg}</p>
             <div class="flex gap-4">
-                <button id="modal-cancel" class="flex-1 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all">Cancel</button>
-                <button id="modal-confirm" class="flex-1 px-6 py-3 bg-[#801b1b] text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/20 active:scale-95 transition-all">Confirm</button>
+                <button id="modal-cancel" class="flex-1 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all">Cancel</button>
+                <button id="modal-confirm" class="flex-1 px-6 py-3 bg-[#801b1b] text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/20 active:scale-95 transition-all">Confirm</button>
             </div>
         </div>
     `;
@@ -116,12 +116,12 @@ function showPrompt(msg, defaultValue, onInput, hint = "") {
             <h3 class="text-xl font-black mb-2">${msg}</h3>
             <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Please enter a value below</p>
             <div class="relative mb-4">
-                <input type="text" id="modal-input" value="${defaultValue}" class="w-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-2xl px-5 py-4 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-[#801b1b] transition-all">
+                <input type="text" id="modal-input" value="${defaultValue}" class="w-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl px-5 py-4 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-[#801b1b] transition-all">
             </div>
             ${hint ? `<p class="text-[9px] font-bold text-slate-400 italic mb-8 leading-relaxed">${hint}</p>` : '<div class="mb-4"></div>'}
             <div class="flex gap-4">
-                <button id="modal-cancel" class="flex-1 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all">Cancel</button>
-                <button id="modal-submit" class="flex-1 px-6 py-3 bg-[#801b1b] text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/20 active:scale-95 transition-all">Submit</button>
+                <button id="modal-cancel" class="flex-1 px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all">Cancel</button>
+                <button id="modal-submit" class="flex-1 px-6 py-3 bg-[#801b1b] text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/20 active:scale-95 transition-all">Submit</button>
             </div>
         </div>
     `;

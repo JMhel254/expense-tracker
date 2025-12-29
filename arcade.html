@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Arcade — Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chess Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: {
+                        slate: { 850: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; color: #0f172a; touch-action: manipulation; }
+        .game-canvas {
+            background-color: #0f172a;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom Scrollbar for game logs */
+        .log-scroll::-webkit-scrollbar { width: 4px; }
+        .log-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        
+        .tab-btn.active {
+            background-color: #0f172a;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .tab-btn.inactive {
+            background-color: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Tic Tac Toe Grid */
+        .ttt-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            cursor: pointer;
+            border-radius: 1rem;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+        .ttt-cell:hover { transform: scale(0.95); }
+        .ttt-cell.x { color: #ef4444; }
+        .ttt-cell.o { color: #3b82f6; }
+
+        /* Prevent scrolling while dragging chess pieces */
+        #board { touch-action: none; }
+        /* Fix piece images size if needed */
+        .chessboard-63f37 img { max-width: 100%; }
+    </style>
+</head>
+<body class="min-h-screen p-4 pb-24 md:p-6 md:pb-20">
+
+    <!-- Header -->
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center mb-6 md:mb-10 gap-4">
+        <div class="text-center md:text-left">
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3 justify-center md:justify-start">
+                <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white text-lg shadow-lg">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                Arcade
+            </h1>
+            <p class="text-slate-500 text-sm font-medium mt-1">Take a mental break. No data recorded.</p>
+        </div>
+        <a href="dashboard.html" class="flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-red-900 transition-colors bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+            <i class="fas fa-arrow-left"></i> <span class="hidden md:inline">Back to Dashboard</span> <span class="md:hidden">Back</span>
+        </a>
+    </div>
+
+    <!-- Game Selector Tabs -->
+    <div class="max-w-5xl mx-auto mb-8 overflow-x-auto pb-4 md:pb-0">
+        <div class="flex justify-center gap-3 min-w-max px-2">
+            <button onclick="switchGame('snake')" id="tab-snake" class="tab-btn active flex items-center gap-2 px-5 py-2.5 rounded-full font-bold transition-all hover:scale-105 text-sm md:text-base">
+                <i class="fas fa-worm"></i> Snake
+            </button>
+            <button onclick="switchGame('chess')" id="tab-chess" class="tab-btn inactive flex items-center gap-2 px-5 py-2.5 rounded-full font-bold transition-all hover:scale-105 text-sm md:text-base">
+                <i class="fas fa-chess mb-0.5"></i> Chess
+            </button>
+            <button onclick="switchGame('tictactoe')" id="tab-tictactoe" class="tab-btn inactive flex items-center gap-2 px-5 py-2.5 rounded-full font-bold transition-all hover:scale-105 text-sm md:text-base">
+                <i class="fas fa-xmarks-lines"></i> Tic-Tac-Toe
+            </button>
+        </div>
+    </div>
+
+    <!-- Snake Game -->
+    <div id="game-snake" class="max-w-md mx-auto fade-in">
+        <div class="bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <div class="font-bold text-slate-900 text-sm md:text-base">Score: <span id="score" class="text-emerald-500">0</span></div>
+                <div class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest">High: <span id="highScore">0</span></div>
+            </div>
+            
+            <div class="relative w-full aspect-square bg-slate-900 rounded-2xl overflow-hidden shadow-inner mb-6">
+                <canvas id="snakeCanvas" width="400" height="400" class="w-full h-full object-contain"></canvas>
+                
+                <!-- Start Overlay -->
+                <div id="snake-overlay" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-6 text-center z-10">
+                    <div class="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/10">
+                        <i class="fas fa-worm text-4xl text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-xl mb-2">Ready to Play?</h3>
+                    <div class="flex flex-col gap-1 text-slate-400 text-sm mb-8">
+                        <p>Eat <span class="text-red-400">●</span> to grow.</p>
+                        <p class="text-xs opacity-75">It gets faster as you eat!</p>
+                    </div>
+                    <button onclick="startSnake()" class="px-8 py-3 bg-emerald-500 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform active:scale-95 flex items-center gap-2">
+                        <i class="fas fa-play"></i> Start Game
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Mobile Controls (D-Pad) -->
+            <div class="md:hidden select-none pb-8">
+                <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 shadow-inner max-w-[240px] mx-auto relative z-20">
+                    <div class="grid grid-cols-3 gap-2">
+                        <div></div>
+                        <button class="h-16 bg-white border-b-4 border-slate-200 rounded-xl text-slate-400 active:border-b-0 active:translate-y-1 active:bg-emerald-50 active:text-emerald-600 transition-all shadow-sm flex items-center justify-center touch-manipulation" onmousedown="handleInput('ArrowUp')" ontouchstart="handleInput('ArrowUp'); event.preventDefault()">
+                            <i class="fas fa-chevron-up text-xl"></i>
+                        </button>
+                        <div></div>
+                        
+                        <button class="h-16 bg-white border-b-4 border-slate-200 rounded-xl text-slate-400 active:border-b-0 active:translate-y-1 active:bg-emerald-50 active:text-emerald-600 transition-all shadow-sm flex items-center justify-center touch-manipulation" onmousedown="handleInput('ArrowLeft')" ontouchstart="handleInput('ArrowLeft'); event.preventDefault()">
+                            <i class="fas fa-chevron-left text-xl"></i>
+                        </button>
+                        <div class="flex items-center justify-center">
+                            <div class="w-4 h-4 rounded-full bg-slate-200"></div>
+                        </div>
+                        <button class="h-16 bg-white border-b-4 border-slate-200 rounded-xl text-slate-400 active:border-b-0 active:translate-y-1 active:bg-emerald-50 active:text-emerald-600 transition-all shadow-sm flex items-center justify-center touch-manipulation" onmousedown="handleInput('ArrowRight')" ontouchstart="handleInput('ArrowRight'); event.preventDefault()">
+                            <i class="fas fa-chevron-right text-xl"></i>
+                        </button>
+                        
+                        <div></div>
+                        <button class="h-16 bg-white border-b-4 border-slate-200 rounded-xl text-slate-400 active:border-b-0 active:translate-y-1 active:bg-emerald-50 active:text-emerald-600 transition-all shadow-sm flex items-center justify-center touch-manipulation" onmousedown="handleInput('ArrowDown')" ontouchstart="handleInput('ArrowDown'); event.preventDefault()">
+                            <i class="fas fa-chevron-down text-xl"></i>
+                        </button>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex justify-center items-center gap-6 mt-4 opacity-50">
+                <div class="flex gap-1">
+                    <span class="px-2 py-1 border border-slate-200 rounded text-xs font-bold text-slate-400">←</span>
+                    <span class="px-2 py-1 border border-slate-200 rounded text-xs font-bold text-slate-400">↓</span>
+                    <span class="px-2 py-1 border border-slate-200 rounded text-xs font-bold text-slate-400">↑</span>
+                    <span class="px-2 py-1 border border-slate-200 rounded text-xs font-bold text-slate-400">→</span>
+                </div>
+                <span class="text-xs font-medium text-slate-400">to move</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chess Game -->
+    <div id="game-chess" class="max-w-4xl mx-auto hidden fade-in">
+        <div class="grid lg:grid-cols-2 gap-6 lg:gap-8">
+            <!-- Board Wrapper -->
+            <!-- Reduced padding p-2 for mobile to maximize size -->
+            <div class="bg-white p-2 md:p-4 rounded-3xl shadow-xl border border-slate-100 flex justify-center items-center">
+                <div id="board" class="w-full max-w-[400px] aspect-square"></div>
+            </div>
+            
+            <!-- Controls & Info -->
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 flex flex-col h-full">
+                <div class="mb-6 flex justify-between items-start">
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 mb-1">Status</h3>
+                        <div id="status" class="text-sm font-medium text-slate-500">White to move</div>
+                    </div>
+                    <div class="bg-slate-50 px-3 py-1 rounded-lg border border-slate-200">
+                        <span class="text-xs font-bold text-slate-500 uppercase">AI: <span id="difficulty-label">Hard</span></span>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-slate-50 rounded-xl p-4 mb-6 overflow-hidden min-h-[150px] border border-slate-100 relative">
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 sticky top-0 bg-slate-50 pb-2">Move History</h4>
+                    <div id="pgn" class="text-xs md:text-sm text-slate-600 font-mono h-[120px] overflow-y-auto log-scroll"></div>
+                </div>
+
+                <div class="space-y-3 mt-auto">
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="game.undo(); game.undo(); board.position(game.fen()); updateStatus();" class="py-3 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 transition-colors text-sm">
+                            <i class="fas fa-undo mr-2 text-xs"></i> Undo
+                        </button>
+                        <button onclick="resetChess()" class="py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors text-sm shadow-lg shadow-slate-900/10">
+                            New Game
+                        </button>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-slate-100">
+                         <label class="flex justify-between items-center text-sm font-bold text-slate-600 cursor-pointer">
+                            <span>Difficulty</span>
+                            <select id="search-depth" onchange="document.getElementById('difficulty-label').innerText = this.options[this.selectedIndex].text.split(' ')[0]" class="bg-transparent text-right outline-none cursor-pointer text-slate-900">
+                                <option value="1">Easy (Depth 1)</option>
+                                <option value="2">Medium (Depth 2)</option>
+                                <option value="3" selected>Hard (Depth 3)</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tic-Tac-Toe Game -->
+    <div id="game-tictactoe" class="max-w-md mx-auto hidden fade-in">
+         <div class="bg-white p-6 rounded-3xl shadow-xl border border-slate-100">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                     <h3 class="font-bold text-slate-900">Tic-Tac-Toe</h3>
+                     <p class="text-xs text-slate-500 font-medium">You are X • AI is O</p>
+                </div>
+                <button onclick="resetTicTacToe()" class="w-10 h-10 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition-colors">
+                    <i class="fas fa-redo-alt text-xs"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 bg-slate-100 p-3 rounded-2xl mb-6">
+                <!-- Cells generated by JS -->
+                <div class="ttt-cell" onclick="makeMove(0)"></div>
+                <div class="ttt-cell" onclick="makeMove(1)"></div>
+                <div class="ttt-cell" onclick="makeMove(2)"></div>
+                <div class="ttt-cell" onclick="makeMove(3)"></div>
+                <div class="ttt-cell" onclick="makeMove(4)"></div>
+                <div class="ttt-cell" onclick="makeMove(5)"></div>
+                <div class="ttt-cell" onclick="makeMove(6)"></div>
+                <div class="ttt-cell" onclick="makeMove(7)"></div>
+                <div class="ttt-cell" onclick="makeMove(8)"></div>
+            </div>
+
+            <div id="ttt-status" class="text-center font-bold text-slate-900 py-2 bg-slate-50 rounded-xl">
+                Your Turn
+            </div>
+         </div>
+    </div>
+
+    <script>
+        // --- Navigation ---
+        function switchGame(gameId) {
+            ['snake', 'chess', 'tictactoe'].forEach(g => {
+                document.getElementById(`game-${g}`).classList.add('hidden');
+                document.getElementById(`tab-${g}`).classList.remove('active');
+                document.getElementById(`tab-${g}`).classList.add('inactive');
+            });
+            
+            document.getElementById(`game-${gameId}`).classList.remove('hidden');
+            document.getElementById(`tab-${gameId}`).classList.add('active');
+            document.getElementById(`tab-${gameId}`).classList.remove('inactive');
+
+            if (gameId === 'chess') {
+                setTimeout(() => window.board && window.board.resize(), 100);
+            }
+        }
+
+        // --- Snake Logic ---
+        const canvas = document.getElementById('snakeCanvas');
+        const ctx = canvas.getContext('2d');
+        const GRID = 20;
+        let snake = [], food = {}, dx = 0, dy = 0, score = 0, highScore = localStorage.getItem('snakeHighScore') || 0;
+        let gameTimer;
+        let currentSpeed = 150;
+        let changingDirection = false;
+        let isGameRunning = false;
+
+        document.getElementById('highScore').innerText = highScore;
+
+        function startSnake() {
+            document.getElementById('snake-overlay').classList.add('hidden');
+            snake = [{x: 10, y: 10}];
+            placeFood();
+            dx = 1; dy = 0; score = 0;
+            currentSpeed = 150; // Reset speed
+            isGameRunning = true;
+            document.getElementById('score').innerText = 0;
+            
+            if(gameTimer) clearTimeout(gameTimer);
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!isGameRunning) return;
+            changingDirection = false;
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            
+            // Wrap Walls
+            if (head.x < 0) head.x = canvas.width/GRID - 1;
+            if (head.x >= canvas.width/GRID) head.x = 0;
+            if (head.y < 0) head.y = canvas.height/GRID - 1;
+            if (head.y >= canvas.height/GRID) head.y = 0;
+
+            // Collision
+            if (snake.some(p => p.x === head.x && p.y === head.y)) return gameOver();
+
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                document.getElementById('score').innerText = score;
+                placeFood();
+                // Increase speed (decrease interval)
+                // Cap minimum interval at 50ms (very fast)
+                currentSpeed = Math.max(50, 150 - (score/10 * 3));
+            } else {
+                snake.pop();
+            }
+            drawSnake();
+            
+            // Variable speed loop
+            gameTimer = setTimeout(gameLoop, currentSpeed);
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Food
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc((food.x * GRID) + GRID/2, (food.y * GRID) + GRID/2, GRID/2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Snake
+            snake.forEach((p, i) => {
+                ctx.fillStyle = i === 0 ? '#34d399' : '#10b981';
+                ctx.fillRect(p.x * GRID, p.y * GRID, GRID-2, GRID-2);
+            });
+        }
+
+        function placeFood() {
+            food = {x: Math.floor(Math.random() * (canvas.width/GRID)), y: Math.floor(Math.random() * (canvas.height/GRID))};
+            if(snake.some(p => p.x === food.x && p.y === food.y)) placeFood();
+        }
+
+        function gameOver() {
+            clearTimeout(gameTimer);
+            isGameRunning = false;
+            if(score > highScore) { highScore = score; localStorage.setItem('snakeHighScore', highScore); document.getElementById('highScore').innerText = highScore; }
+            document.getElementById('snake-overlay').classList.remove('hidden');
+            document.querySelector('#snake-overlay h3').innerText = "Game Over!";
+        }
+
+        function handleInput(key) {
+            // Auto-start if not running
+            if (!isGameRunning && key.startsWith('Arrow')) {
+                startSnake();
+                return;
+            }
+
+            if (changingDirection) return;
+            
+            const goingUp = dy === -1;
+            const goingDown = dy === 1;
+            const goingRight = dx === 1;
+            const goingLeft = dx === -1;
+
+            if (key === 'ArrowLeft' && !goingRight) { dx = -1; dy = 0; changingDirection = true; }
+            if (key === 'ArrowUp' && !goingDown) { dx = 0; dy = -1; changingDirection = true; }
+            if (key === 'ArrowRight' && !goingLeft) { dx = 1; dy = 0; changingDirection = true; }
+            if (key === 'ArrowDown' && !goingUp) { dx = 0; dy = 1; changingDirection = true; }
+        }
+
+        document.addEventListener('keydown', e => handleInput(e.key));
+
+        // --- Tic Tac Toe Logic ---
+        let tttBoard = Array(9).fill(null);
+        let tttActive = true;
+
+        function checkWin(board) {
+            const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for(let combo of wins) {
+                if(board[combo[0]] && board[combo[0]] === board[combo[1]] && board[combo[0]] === board[combo[2]]) return board[combo[0]];
+            }
+            if(board.every(c => c)) return 'draw';
+            return null;
+        }
+
+        function makeMove(i) {
+            if(!tttActive || tttBoard[i]) return;
+            tttBoard[i] = 'X';
+            renderTTT();
+            
+            let result = checkWin(tttBoard);
+            if(result) return endTTT(result);
+
+            // AI Move (Simple Minimax or Random for now to keep lightweight)
+            const empty = tttBoard.map((v, idx) => v ? null : idx).filter(v => v !== null);
+            if(empty.length > 0) {
+                // Try to find winning move
+                let move = -1;
+                // Win?
+                for(let idx of empty) {
+                    tttBoard[idx] = 'O';
+                    if(checkWin(tttBoard) === 'O') { move = idx; tttBoard[idx] = null; break; }
+                    tttBoard[idx] = null;
+                }
+                // Block?
+                if(move === -1) {
+                    for(let idx of empty) {
+                        tttBoard[idx] = 'X';
+                        if(checkWin(tttBoard) === 'X') { move = idx; tttBoard[idx] = null; break; }
+                        tttBoard[idx] = null;
+                    }
+                }
+                if(move === -1) move = empty[Math.floor(Math.random() * empty.length)];
+                
+                tttBoard[move] = 'O';
+                renderTTT();
+                if(checkWin(tttBoard)) endTTT(checkWin(tttBoard));
+            }
+        }
+
+        function renderTTT() {
+            const cells = document.querySelectorAll('.ttt-cell');
+            cells.forEach((c, i) => {
+                c.className = `ttt-cell ${tttBoard[i] === 'X' ? 'x' : (tttBoard[i] === 'O' ? 'o' : '')}`;
+                c.innerHTML = tttBoard[i] ? (tttBoard[i] === 'X' ? '<i class="fas fa-xmark"></i>' : '<i class="far fa-circle"></i>') : '';
+            });
+        }
+
+        function endTTT(result) {
+            tttActive = false;
+            const status = document.getElementById('ttt-status');
+            if(result === 'X') { status.innerText = 'You Win!'; status.className = 'text-center font-bold text-emerald-600 py-2 bg-emerald-50 rounded-xl'; }
+            else if(result === 'O') { status.innerText = 'AI Wins!'; status.className = 'text-center font-bold text-red-600 py-2 bg-red-50 rounded-xl'; }
+            else { status.innerText = 'Draw!'; status.className = 'text-center font-bold text-slate-600 py-2 bg-slate-100 rounded-xl'; }
+        }
+
+        function resetTicTacToe() {
+            tttBoard = Array(9).fill(null);
+            tttActive = true;
+            document.getElementById('ttt-status').innerText = 'Your Turn';
+            document.getElementById('ttt-status').className = 'text-center font-bold text-slate-900 py-2 bg-slate-50 rounded-xl';
+            renderTTT();
+        }
+
+        // --- Chess Integration (Fixed Images) ---
+        var board = null;
+        var game = new Chess();
+        
+        function onDragStart (source, piece) {
+            if (game.game_over() || piece.search(/^b/) !== -1) return false;
+        }
+
+        function makeBestMove() {
+            var depth = parseInt(document.getElementById('search-depth').value);
+            var bestMove = minimaxRoot(depth, game, true);
+            game.move(bestMove);
+            board.position(game.fen());
+            updateStatus();
+        }
+        
+        // Minimax (Condensed)
+        function minimaxRoot(depth, game, isMax) {
+            var moves = game.moves();
+            var bestMove = -9999;
+            var bestMoveFound;
+            for(var i=0; i<moves.length; i++) {
+                var move = moves[i];
+                game.move(move);
+                var value = minimax(depth - 1, game, -10000, 10000, !isMax);
+                game.undo();
+                if(value >= bestMove) { bestMove = value; bestMoveFound = move; }
+            }
+            return bestMoveFound;
+        }
+        
+        function minimax(depth, game, alpha, beta, isMax) {
+            if (depth === 0) return -evaluateBoard(game.board());
+            var moves = game.moves();
+            
+            if (isMax) {
+                var bestMove = -9999;
+                for (var i=0; i<moves.length; i++) {
+                    game.move(moves[i]);
+                    bestMove = Math.max(bestMove, minimax(depth - 1, game, alpha, beta, !isMax));
+                    game.undo();
+                    alpha = Math.max(alpha, bestMove);
+                    if (beta <= alpha) return bestMove;
+                }
+                return bestMove;
+            } else {
+                var bestMove = 9999;
+                for (var i=0; i<moves.length; i++) {
+                    game.move(moves[i]);
+                    bestMove = Math.min(bestMove, minimax(depth - 1, game, alpha, beta, !isMax));
+                    game.undo();
+                    beta = Math.min(beta, bestMove);
+                    if (beta <= alpha) return bestMove;
+                }
+                return bestMove;
+            }
+        }
+        
+        // Simple Evaluation
+        function evaluateBoard(board) {
+            var total = 0;
+            board.forEach(row => row.forEach(p => {
+                if(p) {
+                    var val = p.type === 'p' ? 10 : p.type === 'r' ? 50 : p.type === 'n' ? 30 : p.type === 'b' ? 30 : p.type === 'q' ? 90 : 900;
+                    total += (p.color === 'w' ? val : -val);
+                }
+            }));
+            return total;
+        }
+
+        function onDrop (source, target) {
+            var move = game.move({ from: source, to: target, promotion: 'q' });
+            if (move === null) return 'snapback';
+            updateStatus();
+            window.setTimeout(makeBestMove, 250);
+        }
+
+        function updateStatus () {
+            var status = '';
+            var moveColor = game.turn() === 'b' ? 'Black' : 'White';
+            if (game.in_checkmate()) status = 'Game over, ' + moveColor + ' is in checkmate.';
+            else if (game.in_draw()) status = 'Game over, drawn position';
+            else {
+                status = moveColor + ' to move';
+                if (game.in_check()) status += ', ' + moveColor + ' is in check';
+            }
+            document.getElementById('status').innerText = status;
+            document.getElementById('pgn').innerHTML = game.pgn().replace(/\n/g, '<br>');
+        }
+
+        function resetChess() {
+            game.reset();
+            board.position(game.fen());
+            updateStatus();
+        }
+
+        // Initialize Chess Board with Image Fix
+        var config = {
+            draggable: true,
+            position: 'start',
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+        };
+        board = Chessboard('board', config);
+        updateStatus();
+        window.addEventListener('resize', board.resize);
+    </script>
+</body>
+</html>
