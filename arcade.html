@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -26,23 +26,10 @@
                 }
             }
         }
-        
-        // Immediate Theme Sync
-        try {
-            const theme = localStorage.getItem('theme');
-            const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            const html = document.documentElement;
-            if (isDark) {
-                html.classList.add('dark');
-                html.setAttribute('data-theme', 'dark');
-            } else {
-                html.classList.remove('dark');
-                html.setAttribute('data-theme', 'light');
-            }
-        } catch (e) {}
     </script>
     <style>
-        body { background-color: #f8fafc; color: #0f172a; touch-action: manipulation; }
+        body { background-color: #f8fafc; color: #0f172a; touch-action: manipulation; transition: all 0.3s; }
+        .dark body { background-color: #020617; color: #f8fafc; }
         .game-canvas {
             background-color: #0f172a;
             border-radius: 1rem;
@@ -87,7 +74,7 @@
         .chessboard-63f37 img { max-width: 100%; }
     </style>
 </head>
-<body class="min-h-screen p-4 pb-24 md:p-6 md:pb-20">
+<body class="min-h-screen p-4 pb-24 md:p-6 md:pb-20 bg-slate-50 dark:bg-[#020617] text-slate-900 dark:text-white transition-colors duration-500">
 
     <!-- Header -->
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center mb-6 md:mb-10 gap-4">
