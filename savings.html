@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Savings & Investments - Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+            colors: {
+               slate: { 850: '#1e293b' }
+            }
+          }
+        }
+      };
+      
+      try {
+        const theme = localStorage.getItem('theme');
+        const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const html = document.documentElement;
+        if (isDark) {
+          html.classList.add('dark');
+          html.setAttribute('data-theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          html.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
     <style>
