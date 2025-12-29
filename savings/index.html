@@ -246,6 +246,41 @@
             </div>
         </div>
 
+        <!-- Investment Portfolio (New Section) -->
+        <div class="space-y-4">
+            <h3 class="font-black text-slate-900 dark:text-white text-[9px] px-2 uppercase tracking-[0.2em] flex items-center gap-3">
+                <span class="w-1 h-3 bg-emerald-500 rounded-full"></span> Investment Portfolio Breakdown
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Investment Summary -->
+                <div class="glass-card p-6 rounded-xl border border-white/20 dark:border-white/5 shadow-xl">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-4">Allocation by Type</p>
+                    <div id="invest-summary-list" class="space-y-4">
+                        <!-- Invest summaries injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Investment List -->
+                <div class="lg:col-span-2 glass-card rounded-xl border border-white/20 dark:border-white/5 shadow-xl overflow-hidden">
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-50/50 dark:bg-white/5 text-slate-400 dark:text-slate-500 text-[8px] uppercase font-black tracking-[0.2em]">
+                                <tr>
+                                    <th class="px-6 py-4">Investment</th>
+                                    <th class="px-6 py-4 text-right">Value</th>
+                                    <th class="px-6 py-4 text-right">Share (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invest-list-body" class="divide-y divide-slate-50 dark:divide-white/5 text-[9px] font-bold text-slate-600 dark:text-slate-300">
+                                <!-- Invest list injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Historical Table -->
         <div class="space-y-4">
             <h3 class="font-black text-slate-900 dark:text-white text-[9px] px-2 uppercase tracking-[0.2em] flex items-center gap-3">
@@ -284,6 +319,10 @@
     <script>
       let totalExpArchive = 0;
       let dataCount = 0;
+      let currentSavingsOnly = [];
+      let totalSavingsBalance = 0;
+      let savingsSub = 0;
+      let investSub = 0;
 
       async function loadSavingsData() {
         try {
@@ -294,7 +333,7 @@
             return cleanRow;
           });
 
-          const savingsOnly = data.filter(r => r.Category === "Savings" || r.Category === "Investments");
+          currentSavingsOnly = data.filter(r => r.Category === "Savings" || r.Category === "Investments");
           totalExpArchive = 0;
           data.forEach(r => {
              const cat = (r.Category || "").trim();
@@ -310,10 +349,10 @@
 
           const tbody = document.getElementById('savings-body');
           
-          if (savingsOnly.length === 0) {
+          if (currentSavingsOnly.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" class="py-20 text-center"><div class="flex flex-col items-center opacity-20"><i class="fas fa-piggy-bank text-4xl mb-4"></i><p class="text-[9px] font-black uppercase tracking-[0.3em]">No Asset Records Found</p></div></td></tr>';
           } else {
-            tbody.innerHTML = savingsOnly.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(r => {
+            tbody.innerHTML = currentSavingsOnly.sort((a,b) => new Date(b.Date) - new Date(a.Date)).map(r => {
               const amt = parseFloat(r.Amount) || 0;
               totalSavingsBalance += amt;
               if (r.Category === "Savings") savingsSub += amt;
@@ -341,13 +380,57 @@
           document.getElementById('loading').classList.add('hidden');
           document.getElementById('content').classList.remove('hidden');
 
-        } catch (err) { showToast("Error loading savings data.", "error"); }
+        } catch (err) { console.error(err); showToast("Error loading savings data.", "error"); }
       }
 
       function updateComputations() {
         document.getElementById('savings-total').innerText = formatCurrency(totalSavingsBalance);
         document.getElementById('sub-savings').innerText = formatCurrency(savingsSub);
         document.getElementById('sub-invest').innerText = formatCurrency(investSub);
+
+        // Investment Breakdown Logic
+        const investMap = {};
+        const investments = currentSavingsOnly.filter(r => r.Category === "Investments");
+        investments.forEach(r => {
+            const key = (r.Notes || "Other Investment").trim();
+            investMap[key] = (investMap[key] || 0) + (parseFloat(r.Amount) || 0);
+        });
+
+        const investSummaryList = document.getElementById('invest-summary-list');
+        const investListBody = document.getElementById('invest-list-body');
+
+        if (investments.length === 0) {
+            investSummaryList.innerHTML = '<p class="text-[8px] text-slate-400 italic">No investment assets detected.</p>';
+            investListBody.innerHTML = '<tr><td colspan="3" class="px-6 py-8 text-center text-slate-400 italic">No data available</td></tr>';
+        } else {
+            const sortedInvest = Object.entries(investMap).sort((a,b) => b[1] - a[1]);
+            
+            investSummaryList.innerHTML = sortedInvest.map(([name, val]) => {
+                const perc = (val / (investSub || 1)) * 100;
+                return `
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center text-[9px] font-black uppercase tracking-tight">
+                            <span class="text-slate-600 dark:text-slate-400">${name}</span>
+                            <span class="text-[#801b1b] dark:text-white">${formatCurrency(val)}</span>
+                        </div>
+                        <div class="h-1 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                            <div class="h-full bg-[#801b1b] rounded-full" style="width: ${perc}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            investListBody.innerHTML = sortedInvest.map(([name, val]) => {
+                const perc = (val / (investSub || 1)) * 100;
+                return `
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
+                        <td class="px-6 py-4 uppercase tracking-tighter font-black text-slate-900 dark:text-white">${name}</td>
+                        <td class="px-6 py-4 text-right font-black text-slate-700 dark:text-slate-300">${formatCurrency(val)}</td>
+                        <td class="px-6 py-4 text-right text-slate-400 font-bold">${perc.toFixed(1)}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
 
         // Emergency Fund Logic
         // Simple heuristic: If we don't have enough data (less than 30 txns or something), use a default

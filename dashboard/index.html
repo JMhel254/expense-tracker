@@ -184,6 +184,37 @@
             <h2 id="stat-savings" class="text-xl font-black text-slate-900 dark:text-white truncate tracking-tighter">₱0.00</h2>
           </div>
         </div>
+        
+        <!-- Account Liquidity Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="350">
+          <div class="glass-card p-4 rounded-xl border border-white/20 dark:border-white/5 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+              <i class="fas fa-money-bill-wave text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Physical Cash</p>
+              <h3 id="stat-cash" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+            </div>
+          </div>
+          <div class="glass-card p-4 rounded-xl border border-white/20 dark:border-white/5 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+              <i class="fas fa-mobile-screen text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">GCash Balance</p>
+              <h3 id="stat-gcash" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+            </div>
+          </div>
+          <div class="glass-card p-4 rounded-xl border border-white/20 dark:border-white/5 shadow-sm flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+              <i class="fas fa-building-columns text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Bank Deposits</p>
+              <h3 id="stat-bank" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+            </div>
+          </div>
+        </div>
 
         <!-- Trend Chart & Budget Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="400">
@@ -500,6 +531,7 @@
 
         let inc = 0, exp = 0, monthInc = 0, monthExp = 0, totalSav = 0;
         let prevMonthExp = 0;
+        let cashBal = 0, gcashBal = 0, bankBal = 0;
 
         data.forEach(row => {
           const amt = parseFloat(row.Amount) || 0;
@@ -508,16 +540,29 @@
           const dYear = date.getFullYear();
           
           const cat = (row.Category || "").trim();
+          const meth = (row.Method || "").trim();
 
+          // Calculate Balances by Method
           if (cat === "Income") {
+            if (meth === "Cash") cashBal += amt;
+            else if (meth === "G-Cash") gcashBal += amt;
+            else if (meth === "Bank") bankBal += amt;
+
             inc += amt; 
             if (dMonth === currentMonth && dYear === currentYear) monthInc += amt;
-          } else if (cat === "Savings" || cat === "Investments") {
-            totalSav += amt;
           } else {
-            exp += amt; 
-            if (dMonth === currentMonth && dYear === currentYear) monthExp += amt;
-            if (dMonth === prevMonth && dYear === prevYear) prevMonthExp += amt;
+            // Expenses, Savings, Investments subtract from the method balance
+            if (meth === "Cash") cashBal -= amt;
+            else if (meth === "G-Cash") gcashBal -= amt;
+            else if (meth === "Bank") bankBal -= amt;
+
+            if (cat === "Savings" || cat === "Investments") {
+              totalSav += amt;
+            } else {
+              exp += amt; 
+              if (dMonth === currentMonth && dYear === currentYear) monthExp += amt;
+              if (dMonth === prevMonth && dYear === prevYear) prevMonthExp += amt;
+            }
           }
         });
 
@@ -525,6 +570,11 @@
         document.getElementById("stat-income").innerText = formatCurrency(monthInc);
         document.getElementById("stat-expenses").innerText = formatCurrency(monthExp);
         document.getElementById("stat-savings").innerText = formatCurrency(totalSav);
+        
+        // Update Account Liquidity
+        document.getElementById("stat-cash").innerText = formatCurrency(cashBal);
+        document.getElementById("stat-gcash").innerText = formatCurrency(gcashBal);
+        document.getElementById("stat-bank").innerText = formatCurrency(bankBal);
         
         // Update Comparison
         const compEl = document.getElementById('expense-comparison');

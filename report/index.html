@@ -212,6 +212,37 @@
             </div>
           </div>
 
+          <!-- Account Liquidity Breakdown -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-5 rounded-xl border border-white/20 dark:border-white/5 shadow-md flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                <i class="fas fa-wallet text-sm"></i>
+              </div>
+              <div>
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Physical Cash</p>
+                <h3 id="rep-cash" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+              </div>
+            </div>
+            <div class="glass-card p-5 rounded-xl border border-white/20 dark:border-white/5 shadow-md flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                <i class="fas fa-mobile-screen text-sm"></i>
+              </div>
+              <div>
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">GCash Ledger</p>
+                <h3 id="rep-gcash" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+              </div>
+            </div>
+            <div class="glass-card p-5 rounded-xl border border-white/20 dark:border-white/5 shadow-md flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+                <i class="fas fa-university text-sm"></i>
+              </div>
+              <div>
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Bank Institutions</p>
+                <h3 id="rep-bank" class="text-base font-black text-slate-900 dark:text-white mt-0.5">₱0.00</h3>
+              </div>
+            </div>
+          </div>
+
           <!-- Monthly Comparison -->
           <div class="glass-card rounded-xl border border-white/20 dark:border-white/5 shadow-md p-6">
              <h3 class="font-black text-slate-900 dark:text-white text-[9px] uppercase tracking-[0.2em] mb-4">Historical Performance</h3>
@@ -331,6 +362,30 @@
         document.getElementById('rep-income').innerText = formatCurrency(income);
         document.getElementById('rep-expenses').innerText = formatCurrency(expenses);
         document.getElementById('rep-balance').innerText = formatCurrency(income - expenses);
+        
+        // Account Liquidity Calculation (Global - ignoring report date range as user usually wants CURRENT total)
+        // However, user said "reports the current summary", and usually reports are for a range.
+        // But "current summary" implies all time balance of those accounts.
+        // I'll calculate it based on ALL data.
+        let cash = 0, gcash = 0, bank = 0;
+        allData.forEach(item => {
+            const amt = parseFloat(item.Amount) || 0;
+            const meth = (item.Method || "").trim();
+            const cat = (item.Category || "").trim();
+            
+            if (cat === 'Income') {
+                if (meth === 'Cash') cash += amt;
+                else if (meth === 'G-Cash') gcash += amt;
+                else if (meth === 'Bank') bank += amt;
+            } else {
+                if (meth === 'Cash') cash -= amt;
+                else if (meth === 'G-Cash') gcash -= amt;
+                else if (meth === 'Bank') bank -= amt;
+            }
+        });
+        document.getElementById('rep-cash').innerText = formatCurrency(cash);
+        document.getElementById('rep-gcash').innerText = formatCurrency(gcash);
+        document.getElementById('rep-bank').innerText = formatCurrency(bank);
         
         renderComparison(allData);
 
